@@ -1,8 +1,8 @@
 from django.db import models
-from utils.base_model import BaseModel
+# from utils.base_model import BaseModel
 
 # Create your models here.
-class Api(BaseModel):
+class Api(models.Model):
     """
     title,price,unit_price,community_name,
     region,type,construction_area,
@@ -11,8 +11,8 @@ class Api(BaseModel):
     house_structure,image_urls,from_url
     """
     title = models.CharField(max_length=500, verbose_name="名称")
-    price = models.CharField(max_length=50, default="", verbose_name="总价")
-    unit_price = models.CharField(max_length=50, verbose_name="单价")
+    price = models.DecimalField(max_digits=9,decimal_places=1, verbose_name="总价")
+    unit_price = models.DecimalField(max_digits=9,decimal_places=1, verbose_name="单价")
     community_name = models.CharField(max_length=100, verbose_name="小区名")
     region = models.CharField(max_length=50, verbose_name="区域")
     type = models.CharField(max_length=50, verbose_name="户型")
@@ -22,7 +22,7 @@ class Api(BaseModel):
     floor = models.CharField(max_length=15, verbose_name="楼层")
     elevator = models.CharField(max_length=10, verbose_name="电梯")
     purposes = models.CharField(max_length=15, verbose_name="房屋类型")
-    release_date = models.DateTimeField(verbose_name="挂牌时间")
+    release_date = models.DateField(verbose_name="挂牌时间")
     house_structure = models.CharField(max_length=20, verbose_name="建筑类型")
     image_urls = models.CharField(max_length=1500, verbose_name="房屋详情图")
     from_url = models.CharField(max_length=100, verbose_name="房屋链接")
