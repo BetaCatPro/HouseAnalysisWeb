@@ -7,12 +7,6 @@ import Layout from '@/layout'
 
 export const constantRoutes = [
   {
-    path: '/login',
-    component: () => import('@/views/login/index'),
-    hidden: true
-  },
-
-  {
     path: '/404',
     component: () => import('@/views/404'),
     hidden: true
@@ -26,26 +20,55 @@ export const constantRoutes = [
       path: 'dashboard',
       name: 'Dashboard',
       component: () => import('@/views/dashboard/index'),
-      meta: { title: 'Dashboard', icon: 'dashboard' }
+      meta: { title: '房源信息', icon: 'house' }
     }]
   },
 
   {
-    path: '/example',
+    path: '/house',
     component: Layout,
     redirect: '/example/table',
-    name: 'Example',
-    meta: { title: 'Example', icon: 'example' },
+    name: 'House',
+    meta: { title: '房价分析', icon: 'chart' },
     children: [
       {
-        path: 'table',
-        name: 'Table',
-        component: () => import('@/views/table/index'),
-        meta: { title: 'Table', icon: 'table' }
+        path: 'Single',
+        name: 'Single factor',
+        component: () => import('@/views/single/index'),
+        meta: { title: '单因子探索分析', icon: 'analysis' }
+      },
+      {
+        path: 'Multifactor',
+        name: 'Multifactor',
+        component: () => import('@/views/multiple/index'),
+        meta: { title: '多因子分析', icon: 'manalysis' }
+      },
+      {
+        path: 'Word',
+        component: () => import('@/views/word/index'),
+        name: 'Word',
+        meta: { title: '词云', icon: 'word' }
+      },
+      {
+        path: 'HopMap',
+        component: () => import('@/views/hotmap/index'),
+        name: 'HopMap',
+        meta: { title: '热力图', icon: 'hotmap' }
       }
     ]
   },
 
+  {
+    path: '/map',
+    component: Layout,
+    redirect: '/dashboard',
+    children: [{
+      path: 'map',
+      name: 'Map',
+      component: () => import('@/views/map/index'),
+      meta: { title: '地图找房', icon: 'wan_map' }
+    }]
+  },
   // 404 page must be placed at the end !!!
   { path: '*', redirect: '/404', hidden: true }
 ]

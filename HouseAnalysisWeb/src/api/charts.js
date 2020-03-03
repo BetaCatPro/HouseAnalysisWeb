@@ -1,8 +1,11 @@
 import request from '@/utils/request'
 
-export function getList(params) {
+/**
+ * @param send data
+ */
+export function getMean(params) {
   return request({
-    url: '/vue-admin-template/table/list',
+    url: '/meanprice',
     method: 'get',
     params
   })

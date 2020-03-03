@@ -8,6 +8,7 @@
       </app-link>
     </template>
 
+    <!--存在多子节点item时-->
     <el-submenu v-else ref="subMenu" :index="resolvePath(item.path)" popper-append-to-body>
       <template slot="title">
         <item v-if="item.meta" :icon="item.meta && item.meta.icon" :title="item.meta.title" />
