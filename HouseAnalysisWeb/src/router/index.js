@@ -50,9 +50,9 @@ export const constantRoutes = [
         meta: { title: '词云', icon: 'word' }
       },
       {
-        path: 'HopMap',
-        component: () => import('@/views/hotmap/index'),
-        name: 'HopMap',
+        path: 'HeatMap',
+        component: () => import('@/views/heatmap/index'),
+        name: 'HeatMap',
         meta: { title: '热力图', icon: 'hotmap' }
       }
     ]
@@ -74,7 +74,7 @@ export const constantRoutes = [
 ]
 
 const createRouter = () => new Router({
-  // mode: 'history', // require service support
+  mode: 'history', // require service support
   scrollBehavior: () => ({ y: 0 }),
   routes: constantRoutes
 })

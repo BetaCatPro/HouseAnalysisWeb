@@ -5,7 +5,7 @@ import request from '@/utils/request'
  */
 export function getMean(params) {
   return request({
-    url: '/meanprice',
+    url: '/all_house',
     method: 'get',
     params
   })

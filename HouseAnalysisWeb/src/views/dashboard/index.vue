@@ -33,6 +33,8 @@ import RaddarChart from './components/RaddarChart'
 import PieChart from './components/PieChart'
 import BarChart from './components/BarChart'
 
+import { getMean } from '@/api/charts.js'
+
 const lineChartData = {
   totleHouseNum: {
     expectedData: [100, 120, 161, 134, 105, 160, 165],
@@ -67,8 +69,13 @@ export default {
     }
   },
   methods: {
-    handleSetLineChartData(type) {
+    async handleSetLineChartData(type) {
       this.lineChartData = lineChartData[type]
+      let res = await getMean()
+//      result.count 总数
+//      result.next 前一页
+//      result.previous 下一页
+      console.log(res.results)
     }
   }
 }
