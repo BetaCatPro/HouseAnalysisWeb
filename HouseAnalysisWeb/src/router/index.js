@@ -41,19 +41,35 @@ export const constantRoutes = [
         path: 'Multifactor',
         name: 'Multifactor',
         component: () => import('@/views/multiple/index'),
-        meta: { title: '多因子分析', icon: 'manalysis' }
+        meta: { title: '多因子探索分析', icon: 'manalysis' }
       },
       {
         path: 'Word',
         component: () => import('@/views/word/index'),
         name: 'Word',
         meta: { title: '词云', icon: 'word' }
+      }
+    ]
+  },
+
+  {
+    path: '/HeatMap',
+    component: Layout,
+    redirect: '/dashboard',
+    name: 'HeatMap',
+    meta: { title: '热力图', icon: '热力图' },
+    children: [
+      {
+        path: 'MeanHeatMap',
+        component: () => import('@/views/heatmap/mean'),
+        name: 'MeanHeatMap',
+        meta: { title: '均价热力图', icon: 'hotmap' }
       },
       {
-        path: 'HeatMap',
-        component: () => import('@/views/heatmap/index'),
-        name: 'HeatMap',
-        meta: { title: '热力图', icon: 'hotmap' }
+        path: 'TotalHeatMap',
+        component: () => import('@/views/heatmap/total'),
+        name: 'TotalHeatMap',
+        meta: { title: '总价热力图', icon: '热力图 (1)' }
       }
     ]
   },
