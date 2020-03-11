@@ -13,7 +13,7 @@ from .serializers import HouseSerializer
 
 
 class HousePagination(PageNumberPagination):
-    page_size = 20
+    page_size = 30
     page_size_query_param = 'page_size'
     page_query_param = "page"
     max_page_size = 100

@@ -115,7 +115,7 @@ WSGI_APPLICATION = 'HouseAnalysis.wsgi.application'
 DATABASES = {
     'default': {
         'ENGINE': 'django.db.backends.mysql',
-        'NAME': 'house_info',
+        'NAME': 'house',
         'USER': 'root',
         'PASSWORD': '123456',
         'HOST': '127.0.0.1',

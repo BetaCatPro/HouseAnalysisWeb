@@ -26,9 +26,12 @@ class Api(models.Model):
     house_structure = models.CharField(max_length=20, verbose_name="建筑类型")
     image_urls = models.CharField(max_length=1500, verbose_name="房屋详情图")
     from_url = models.CharField(max_length=100, verbose_name="房屋链接")
+    idi = models.IntegerField()
+    lat = models.DecimalField(max_digits=12,decimal_places=9,verbose_name="纬度")
+    lng = models.DecimalField(max_digits=12,decimal_places=9,verbose_name="经度")
 
     class Meta:
-        verbose_name = 'house_info'
+        verbose_name = 'house'
         verbose_name_plural = verbose_name
 
     def __str__(self):

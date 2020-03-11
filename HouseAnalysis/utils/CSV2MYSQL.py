@@ -2,33 +2,21 @@
 import pandas as pd
 from sqlalchemy import create_engine
 
-# engine = create_engine('mysql+pymysql://root:123456@localhost:3306/house_info')
-engine = create_engine('mysql+pymysql://root:123456@localhost:3306/csv2sql')
+engine = create_engine('mysql+pymysql://root:123456@localhost:3306/house')
 
+df = pd.read_csv("E:\\Graduation Project\\DataAnalysis\\housedata\\fin_house2.csv", sep=',',encoding='gbk')
 
-"""
-import pymysql
-conn=pymysql.connect('localhost',port=3306,user='root',passwd=123,db='test')
-cursor=conn.cursor()
-cursor.execute(sql)
-result=cursor.fetchall()   
-cursor.close()
-conn.close()
-res = pd.DataFrame(list(result))
-
-据量很小的情况下
-import pandas as pd
-import pymysql
-conn=pymysql.connect('localhost',port=3306,user='root',passwd='test',db='test')
-result=pd.read_sql(sql,conn)
-#或者
-result=pd.read_sql_query(sql,conn)
-"""
-
-df = pd.read_csv("E:\Graduation Project\DataAnalysis\data\jianyang_house.csv", sep=',')
-
-
-# 将新建的DataFrame储存为MySQL中的数据表，不储存index列
-df.to_sql('house_api', engine, index= False)
+count = 0
+l=0
+r = 1000
+df.iloc[l:r,:].to_sql('house_api', engine, if_exists='append', index=False)
+len = df.shape[0]
+while len-r > 1000:
+    l = l+1001
+    r = r+1001
+    df.iloc[l:r,:].to_sql('house_api', engine, if_exists='append', index=False)
+    print('insert success{} to {}'.format(l,r))
+if len-r >0:
+    df.iloc[r+1:len, :].to_sql('house_api', engine, if_exists='append', index=False)
 
 print("Write to MySQL successfully!")
