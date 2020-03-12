@@ -36,3 +36,116 @@ class Api(models.Model):
 
     def __str__(self):
         return self.title
+
+class Elevator(models.Model):
+    version = models.CharField(max_length=8,verbose_name="接口版本")
+    title = models.CharField(max_length=12,verbose_name="接口info")
+    has_el_num = models.IntegerField(verbose_name="存在电梯的房源数")
+    no_el_num = models.IntegerField(verbose_name="不存在电梯的房源数")
+    has_mean_price = models.DecimalField(max_digits=8,decimal_places=3,verbose_name="总价均价")
+    has_mean_unit_price = models.DecimalField(max_digits=8,decimal_places=3,verbose_name="单价均价")
+    no_mean_price = models.DecimalField(max_digits=8,decimal_places=3,verbose_name="总价均价")
+    no_mean_unit_price = models.DecimalField(max_digits=8,decimal_places=3,verbose_name="单价均价")
+
+    class Meta:
+        verbose_name = 'elevatorinfo'
+        verbose_name_plural = verbose_name
+
+    def __str__(self):
+        return self.title
+
+class Floor(models.Model):
+    version = models.CharField(max_length=8,verbose_name="接口版本")
+    title = models.CharField(max_length=12,verbose_name="接口info")
+    floor = models.CharField(max_length=20,verbose_name="楼层")
+    num = models.IntegerField(verbose_name="数量")
+
+    class Meta:
+        verbose_name = 'floorinfo'
+        verbose_name_plural = verbose_name
+
+    def __str__(self):
+        return self.title
+
+class Layout(models.Model):
+    version = models.CharField(max_length=8,verbose_name="接口版本")
+    title = models.CharField(max_length=12,verbose_name="接口info")
+    layout = models.CharField(max_length=20,verbose_name="户型")
+    num = models.IntegerField(verbose_name="数量")
+
+    class Meta:
+        verbose_name = 'layoutinfo'
+        verbose_name_plural = verbose_name
+
+    def __str__(self):
+        return self.title
+
+class Region(models.Model):
+    version = models.CharField(max_length=8,verbose_name="接口版本")
+    title = models.CharField(max_length=12,verbose_name="接口info")
+    layout = models.CharField(max_length=10,verbose_name="行政区划")
+    num = models.IntegerField(verbose_name="数量")
+    mean_price = models.DecimalField(max_digits=8, decimal_places=3, verbose_name="总价均价")
+    mean_unit_price = models.DecimalField(max_digits=8, decimal_places=3, verbose_name="单价均价")
+
+    class Meta:
+        verbose_name = 'regioninfo'
+        verbose_name_plural = verbose_name
+
+    def __str__(self):
+        return self.title
+
+class Decortion(models.Model):
+    version = models.CharField(max_length=8,verbose_name="接口版本")
+    title = models.CharField(max_length=12,verbose_name="接口info")
+    layout = models.CharField(max_length=10,verbose_name="装修情况")
+    num = models.IntegerField(verbose_name="数量")
+    mean_price = models.DecimalField(max_digits=8, decimal_places=3, verbose_name="总价均价")
+    mean_unit_price = models.DecimalField(max_digits=8, decimal_places=3, verbose_name="单价均价")
+
+    class Meta:
+        verbose_name = 'decorationinfo'
+        verbose_name_plural = verbose_name
+
+    def __str__(self):
+        return self.title
+
+class Purposes(models.Model):
+    version = models.CharField(max_length=8,verbose_name="接口版本")
+    title = models.CharField(max_length=12,verbose_name="接口info")
+    layout = models.CharField(max_length=10,verbose_name="房屋用途")
+    num = models.IntegerField(verbose_name="数量")
+
+    class Meta:
+        verbose_name = 'purposesinfo'
+        verbose_name_plural = verbose_name
+
+    def __str__(self):
+        return self.title
+
+class Orientation(models.Model):
+    version = models.CharField(max_length=8,verbose_name="接口版本")
+    title = models.CharField(max_length=12,verbose_name="接口info")
+    layout = models.CharField(max_length=15,verbose_name="房屋朝向")
+    num = models.IntegerField(verbose_name="数量")
+
+    class Meta:
+        verbose_name = 'orientationinfo'
+        verbose_name_plural = verbose_name
+
+    def __str__(self):
+        return self.title
+
+class Constructure(models.Model):
+    version = models.CharField(max_length=8,verbose_name="接口版本")
+    title = models.CharField(max_length=12,verbose_name="接口info")
+    layout = models.CharField(max_length=10,verbose_name="建筑类型")
+    num = models.IntegerField(verbose_name="数量")
+
+    class Meta:
+        verbose_name = 'constructureinfo'
+        verbose_name_plural = verbose_name
+
+    def __str__(self):
+        return self.title
+

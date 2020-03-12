@@ -20,16 +20,19 @@ from django.urls import path,re_path, include
 from rest_framework.documentation import include_docs_urls
 from rest_framework.routers import DefaultRouter
 
-from house.views import HouseListViewSet
+from house.views import HouseListViewSet, ElevaorViewSet
+# from house.views import Elevator
 
 
 router = DefaultRouter()
 router.register(r'v1/api/all_house', HouseListViewSet, base_name="house")
+router.register(r'v1/api/elevator', ElevaorViewSet, base_name="elevator")
 
 
 urlpatterns = [
     path('admin/', admin.site.urls),
     path('xadmin/', xadmin.site.urls),
+    # re_path('v1/api/el',Elevator.as_view(),name='el'),
     re_path(r'docs/', include_docs_urls(title="HA")),
     re_path(r'^api-auth/', include('rest_framework.urls', namespace='rest_framework')),
     path('', include(router.urls)),

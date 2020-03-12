@@ -1,4 +1,6 @@
 build/*.js
+src/api/*.js
+src/utils/*.js
 src/assets
 public
 dist
