@@ -1,5 +1,6 @@
 # -*- coding: utf-8 -*-
 import pandas as pd
+import json,re
 from sqlalchemy import create_engine
 
 from utils.dataProcessing import single, multiple
@@ -32,20 +33,20 @@ elevator_sql = '''
 #     "no_mean_price":no_mean_price,
 #     "no_mean_unit_price":no_mean_unit_price
 # }
-# # print(son.dumps(data,sort_keys=True))
+# print(json.dumps(data,sort_keys=True))
 
 floor_sql = '''
     select floor from house_api
 '''
-# floor_df = pd.read_sql(floor_sql, engine)
-# floor_df[floor_df['floor']=='暂无数据'] = '18'
-# floor_df['floor'] = floor_df['floor'].astype(str)
-# floor_df['floor'] = floor_df['floor'].apply(lambda x: re.findall('\d+',x)[0])
-# floor_res = floor_df['floor'].value_counts()
-# index = floor_res.index #楼层
-# values = floor_res.values # 对应房源数
-# for inx,val in zip(index,values):
-#     print(inx,val)
+floor_df = pd.read_sql(floor_sql, engine)
+floor_df[floor_df['floor']=='暂无数据'] = '18'
+floor_df['floor'] = floor_df['floor'].astype(str)
+floor_df['floor'] = floor_df['floor'].apply(lambda x: re.findall('\d+',x)[0])
+floor_res = floor_df['floor'].value_counts()
+index = floor_res.index #楼层
+values = floor_res.values # 对应房源数
+for inx,val in zip(index,values):
+    print(inx,val)
 
 layout_sql = '''
     select type from house_api

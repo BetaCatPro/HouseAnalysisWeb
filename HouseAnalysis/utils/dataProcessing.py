@@ -33,13 +33,13 @@ def multiple(sql,engine,feature):
     df = pd.read_sql(df_sql, engine)
     df[feature] = df[feature].astype(str)
     if feature == 'region':
-        df[feature] = df[feature].apply(lambda x: re.findall('\d+',x)[0])
+        df[feature] = df[feature].apply(lambda x:re.sub(r"\[|\]|'",'',x).split(',')[0])
     feature_res = df[feature].value_counts()
     index = feature_res.index
     values = feature_res.values
-    price_mean = 0
-    unit_price_mean = 0
+    price_mean = []
+    unit_price_mean = []
     for inx,val in zip(index,values):
-        price_mean = df[df[feature]==inx]['price'].astype(float).mean()
-        unit_price_mean = df[df[feature]==inx]['unit_price'].astype(float).mean()
+        price_mean.append(format(df[df[feature]==inx]['price'].astype(float).mean(),'.3f'))
+        unit_price_mean.append(format(df[df[feature]==inx]['unit_price'].astype(float).mean(),'.3f'))
     return index, values, price_mean, unit_price_mean

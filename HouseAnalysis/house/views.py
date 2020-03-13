@@ -47,24 +47,24 @@ class ElevaorViewSet(CacheResponseMixin, mixins.ListModelMixin, GenericViewSet):
         serializer = self.get_serializer(instance)
         return Response(serializer.data)
 
-class Elevator(View):
-    def get(self, request):
-        h = Api.objects.filter(elevator='有')
-        n = Api.objects.filter(elevator='无')
-        has_el_num = h.count()
-        has_mean_price = h.aggregate(Avg('price'))
-        has_mean_unit_price = h.aggregate(Avg('unit_price'))
-        no_el_num = n.count()
-        no_mean_price = n.aggregate(Avg('price'))
-        no_mean_unit_price = n.aggregate(Avg('unit_price'))
-
-        data = {
-            "has_el_num":has_el_num,
-            "no_el_num":no_el_num,
-            "has_mean_price":has_mean_price,
-            "has_mean_unit_price":has_mean_unit_price,
-            "no_mean_price":no_mean_price,
-            "no_mean_unit_price":no_mean_unit_price
-        }
-        res_json = json.dumps(data,sort_keys=True)
-        return HttpResponse(res_json, content_type='application/json')
+# class Elevator(View):
+#     def get(self, request):
+#         h = Api.objects.filter(elevator='有')
+#         n = Api.objects.filter(elevator='无')
+#         has_el_num = h.count()
+#         has_mean_price = h.aggregate(Avg('price'))
+#         has_mean_unit_price = h.aggregate(Avg('unit_price'))
+#         no_el_num = n.count()
+#         no_mean_price = n.aggregate(Avg('price'))
+#         no_mean_unit_price = n.aggregate(Avg('unit_price'))
+#
+#         data = {
+#             "has_el_num":has_el_num,
+#             "no_el_num":no_el_num,
+#             "has_mean_price":has_mean_price,
+#             "has_mean_unit_price":has_mean_unit_price,
+#             "no_mean_price":no_mean_price,
+#             "no_mean_unit_price":no_mean_unit_price
+#         }
+#         res_json = json.dumps(data,sort_keys=True)
+#         return HttpResponse(res_json, content_type='application/json')

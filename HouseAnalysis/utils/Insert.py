@@ -1,0 +1,20 @@
+# -*- coding: utf-8 -*-
+from utils.InsertMysql import InsertIntoMysql
+
+ins = InsertIntoMysql()
+ins.insertElevator()
+print('ok0')
+ins.insertDecoration()
+print('ok1')
+ins.insertFloor()
+print('ok2')
+ins.insertOrientation()
+print('ok3')
+ins.insertPurposes()
+print('ok4')
+ins.insertRegion()
+print('ok5')
+ins.insertStructure()
+print('ok6')
+ins.insertType()
+print('ok7')
