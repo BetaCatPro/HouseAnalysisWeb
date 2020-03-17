@@ -39,7 +39,7 @@ class HouseListViewSet(CacheResponseMixin, mixins.ListModelMixin, mixins.Retriev
         return Response(serializer.data)
 
 
-class ElevaorViewSet(CacheResponseMixin, mixins.ListModelMixin, GenericViewSet):
+class ElevaorViewSet(CacheResponseMixin, mixins.ListModelMixin, mixins.RetrieveModelMixin, GenericViewSet):
     queryset = Elevator.objects.all()
     serializer_class = ElevatorSerializer
 
@@ -49,7 +49,7 @@ class ElevaorViewSet(CacheResponseMixin, mixins.ListModelMixin, GenericViewSet):
         return Response(serializer.data)
 
 
-class FloorViewSet(CacheResponseMixin, mixins.ListModelMixin, GenericViewSet):
+class FloorViewSet(CacheResponseMixin, mixins.ListModelMixin, mixins.RetrieveModelMixin, GenericViewSet):
     queryset = Floor.objects.all()
     serializer_class = FloorSerializer
 
@@ -59,7 +59,7 @@ class FloorViewSet(CacheResponseMixin, mixins.ListModelMixin, GenericViewSet):
         return Response(serializer.data)
 
 
-class LayoutViewSet(CacheResponseMixin, mixins.ListModelMixin, GenericViewSet):
+class LayoutViewSet(CacheResponseMixin, mixins.ListModelMixin, mixins.RetrieveModelMixin, GenericViewSet):
     queryset = Layout.objects.all()
     serializer_class = LayoutSerializer
 
@@ -69,7 +69,7 @@ class LayoutViewSet(CacheResponseMixin, mixins.ListModelMixin, GenericViewSet):
         return Response(serializer.data)
 
 
-class RegionViewSet(CacheResponseMixin, mixins.ListModelMixin, GenericViewSet):
+class RegionViewSet(CacheResponseMixin, mixins.ListModelMixin, mixins.RetrieveModelMixin, GenericViewSet):
     queryset = Region.objects.all()
     serializer_class = RegionSerializer
 
@@ -79,7 +79,7 @@ class RegionViewSet(CacheResponseMixin, mixins.ListModelMixin, GenericViewSet):
         return Response(serializer.data)
 
 
-class DecortionViewSet(CacheResponseMixin, mixins.ListModelMixin, GenericViewSet):
+class DecortionViewSet(CacheResponseMixin, mixins.ListModelMixin, mixins.RetrieveModelMixin, GenericViewSet):
     queryset = Decortion.objects.all()
     serializer_class = DecortionSerializer
 
@@ -89,9 +89,9 @@ class DecortionViewSet(CacheResponseMixin, mixins.ListModelMixin, GenericViewSet
         return Response(serializer.data)
 
 
-class PurposesViewSet(CacheResponseMixin, mixins.ListModelMixin, GenericViewSet):
+class PurposesViewSet(CacheResponseMixin, mixins.ListModelMixin, mixins.RetrieveModelMixin, GenericViewSet):
     queryset = Purposes.objects.all()
-    serializer_class = PurposesSerializer()
+    serializer_class = PurposesSerializer
 
     def retrieve(self, request, *args, **kwargs):
         instance = self.get_object()
@@ -99,7 +99,7 @@ class PurposesViewSet(CacheResponseMixin, mixins.ListModelMixin, GenericViewSet)
         return Response(serializer.data)
 
 
-class ConstructureViewSet(CacheResponseMixin, mixins.ListModelMixin, GenericViewSet):
+class ConstructureViewSet(CacheResponseMixin, mixins.ListModelMixin, mixins.RetrieveModelMixin, GenericViewSet):
     queryset = Constructure.objects.all()
     serializer_class = ConstructureSerializer
 
@@ -109,7 +109,7 @@ class ConstructureViewSet(CacheResponseMixin, mixins.ListModelMixin, GenericView
         return Response(serializer.data)
 
 
-class OrientationViewSet(CacheResponseMixin, mixins.ListModelMixin, GenericViewSet):
+class OrientationViewSet(CacheResponseMixin, mixins.ListModelMixin, mixins.RetrieveModelMixin, GenericViewSet):
     queryset = Orientation.objects.all()
     serializer_class = OrientationSerializer
 

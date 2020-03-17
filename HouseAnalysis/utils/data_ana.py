@@ -38,15 +38,15 @@ elevator_sql = '''
 floor_sql = '''
     select floor from house_api
 '''
-floor_df = pd.read_sql(floor_sql, engine)
-floor_df[floor_df['floor']=='暂无数据'] = '18'
-floor_df['floor'] = floor_df['floor'].astype(str)
-floor_df['floor'] = floor_df['floor'].apply(lambda x: re.findall('\d+',x)[0])
-floor_res = floor_df['floor'].value_counts()
-index = floor_res.index #楼层
-values = floor_res.values # 对应房源数
-for inx,val in zip(index,values):
-    print(inx,val)
+# floor_df = pd.read_sql(floor_sql, engine)
+# floor_df[floor_df['floor']=='暂无数据'] = '18'
+# floor_df['floor'] = floor_df['floor'].astype(str)
+# floor_df['floor'] = floor_df['floor'].apply(lambda x: re.findall('\d+',x)[0])
+# floor_res = floor_df['floor'].value_counts()
+# index = floor_res.index #楼层
+# values = floor_res.values # 对应房源数
+# for inx,val in zip(index,values):
+#     print(inx,val)
 
 layout_sql = '''
     select type from house_api
@@ -116,10 +116,10 @@ orientation_sql = '''
 constructure_sql = '''
     select house_structure from house_api
 '''
-# constructure_df = pd.read_sql(constructure_sql, engine)
-# constructure_df['house_structure'] = constructure_df['house_structure'].astype(str)
-# constructure_df = constructure_df['house_structure'].value_counts()
-# index = constructure_df.index # 建筑类型
-# values = constructure_df.values # 数量
-# for inx,val in zip(index,values):
-#     print(inx,val)
+constructure_df = pd.read_sql(constructure_sql, engine)
+constructure_df['house_structure'] = constructure_df['house_structure'].astype(str)
+constructure_df = constructure_df['house_structure'].value_counts()
+index = constructure_df.index # 建筑类型
+values = constructure_df.values # 数量
+for inx,val in zip(index,values):
+    print(inx,val)

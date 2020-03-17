@@ -20,21 +20,21 @@ from django.urls import path,re_path, include
 from rest_framework.documentation import include_docs_urls
 from rest_framework.routers import DefaultRouter
 
-from house.views import HouseListViewSet, ElevaorViewSet, FloorSerializer,LayoutSerializer,RegionSerializer,DecortionSerializer
-from house.views import PurposesSerializer,OrientationSerializer,ConstructureSerializer
+from house.views import HouseListViewSet, ElevaorViewSet, FloorViewSet, LayoutViewSet, RegionViewSet
+from house.views import DecortionViewSet, PurposesViewSet, OrientationViewSet, ConstructureViewSet
 # from house.views import Elevator
 
 
 router = DefaultRouter()
 router.register(r'v1/api/all_house', HouseListViewSet, base_name="house")
 router.register(r'v1/api/elevator', ElevaorViewSet, base_name="elevator")
-router.register(r'v1/api/floor', FloorSerializer, base_name="floor")
-router.register(r'v1/api/layout', LayoutSerializer, base_name="layout")
-router.register(r'v1/api/region', RegionSerializer, base_name="region")
-router.register(r'v1/api/decoration', DecortionSerializer, base_name="decoration")
-router.register(r'v1/api/purpose', PurposesSerializer, base_name="purpose")
-router.register(r'v1/api/oritentation', OrientationSerializer, base_name="oritentation")
-router.register(r'v1/api/constrcture', ConstructureSerializer, base_name="constrcture")
+router.register(r'v1/api/floor', FloorViewSet, base_name="floor")
+router.register(r'v1/api/layout', LayoutViewSet, base_name="layout")
+router.register(r'v1/api/region', RegionViewSet, base_name="region")
+router.register(r'v1/api/decoration', DecortionViewSet, base_name="decoration")
+router.register(r'v1/api/purpose', PurposesViewSet, base_name="purpose")
+router.register(r'v1/api/oritentation', OrientationViewSet, base_name="oritentation")
+router.register(r'v1/api/constrcture', ConstructureViewSet, base_name="constrcture")
 
 
 urlpatterns = [

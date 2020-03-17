@@ -115,7 +115,7 @@ class InsertIntoMysql():
             structure = Constructure()
             structure.version = 'v1'
             structure.title = '建筑结构分布情况'
-            structure.structure = inx
+            structure.constructure = inx
             structure.num = val
             structure.save()
 
