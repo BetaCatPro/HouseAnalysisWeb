@@ -8,11 +8,13 @@ from rest_framework import mixins
 from rest_framework.pagination import PageNumberPagination
 from rest_framework.viewsets import GenericViewSet
 
-#缓存（内存级别）
+# 缓存（内存级别）
 from rest_framework_extensions.cache.mixins import CacheResponseMixin
 
-from .models import Api
-from .serializers import HouseSerializer, ElevatorSerializer
+from .models import Api, Elevator, Floor, Layout, Region, Decortion, Purposes, Orientation, Constructure
+from .serializers import HouseSerializer, ElevatorSerializer, FloorSerializer, LayoutSerializer
+from .serializers import RegionSerializer, DecortionSerializer, PurposesSerializer, OrientationSerializer, ConstructureSerializer
+
 
 # Create your views here.
 
@@ -33,17 +35,86 @@ class HouseListViewSet(CacheResponseMixin, mixins.ListModelMixin, mixins.Retriev
 
     def retrieve(self, request, *args, **kwargs):
         instance = self.get_object()
-        instance.save()
         serializer = self.get_serializer(instance)
         return Response(serializer.data)
 
 
 class ElevaorViewSet(CacheResponseMixin, mixins.ListModelMixin, GenericViewSet):
-    queryset = Api.objects.all()
+    queryset = Elevator.objects.all()
     serializer_class = ElevatorSerializer
+
     def retrieve(self, request, *args, **kwargs):
         instance = self.get_object()
-        instance.save()
+        serializer = self.get_serializer(instance)
+        return Response(serializer.data)
+
+
+class FloorViewSet(CacheResponseMixin, mixins.ListModelMixin, GenericViewSet):
+    queryset = Floor.objects.all()
+    serializer_class = FloorSerializer
+
+    def retrieve(self, request, *args, **kwargs):
+        instance = self.get_object()
+        serializer = self.get_serializer(instance)
+        return Response(serializer.data)
+
+
+class LayoutViewSet(CacheResponseMixin, mixins.ListModelMixin, GenericViewSet):
+    queryset = Layout.objects.all()
+    serializer_class = LayoutSerializer
+
+    def retrieve(self, request, *args, **kwargs):
+        instance = self.get_object()
+        serializer = self.get_serializer(instance)
+        return Response(serializer.data)
+
+
+class RegionViewSet(CacheResponseMixin, mixins.ListModelMixin, GenericViewSet):
+    queryset = Region.objects.all()
+    serializer_class = RegionSerializer
+
+    def retrieve(self, request, *args, **kwargs):
+        instance = self.get_object()
+        serializer = self.get_serializer(instance)
+        return Response(serializer.data)
+
+
+class DecortionViewSet(CacheResponseMixin, mixins.ListModelMixin, GenericViewSet):
+    queryset = Decortion.objects.all()
+    serializer_class = DecortionSerializer
+
+    def retrieve(self, request, *args, **kwargs):
+        instance = self.get_object()
+        serializer = self.get_serializer(instance)
+        return Response(serializer.data)
+
+
+class PurposesViewSet(CacheResponseMixin, mixins.ListModelMixin, GenericViewSet):
+    queryset = Purposes.objects.all()
+    serializer_class = PurposesSerializer()
+
+    def retrieve(self, request, *args, **kwargs):
+        instance = self.get_object()
+        serializer = self.get_serializer(instance)
+        return Response(serializer.data)
+
+
+class ConstructureViewSet(CacheResponseMixin, mixins.ListModelMixin, GenericViewSet):
+    queryset = Constructure.objects.all()
+    serializer_class = ConstructureSerializer
+
+    def retrieve(self, request, *args, **kwargs):
+        instance = self.get_object()
+        serializer = self.get_serializer(instance)
+        return Response(serializer.data)
+
+
+class OrientationViewSet(CacheResponseMixin, mixins.ListModelMixin, GenericViewSet):
+    queryset = Orientation.objects.all()
+    serializer_class = OrientationSerializer
+
+    def retrieve(self, request, *args, **kwargs):
+        instance = self.get_object()
         serializer = self.get_serializer(instance)
         return Response(serializer.data)
 
