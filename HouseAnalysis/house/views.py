@@ -8,6 +8,10 @@ from rest_framework import mixins
 from rest_framework.pagination import PageNumberPagination
 from rest_framework.viewsets import GenericViewSet
 
+import redis
+redis_pool = redis.ConnectionPool(host='127.0.0.1', port=6379, password='', db=4)
+redis_conn = redis.Redis(connection_pool=redis_pool)
+
 # 缓存（内存级别）
 from rest_framework_extensions.cache.mixins import CacheResponseMixin
 
@@ -25,6 +29,18 @@ class HousePagination(PageNumberPagination):
     page_query_param = "page"
     max_page_size = 100
 
+import time
+class index(View):
+    def get(self,request):
+        redis_conn.mget(["all_number", "com_number", "mean_price", "mean_unit_price"])
+        data = {
+            "all_number": all_number,
+            "com_number": com_number,
+            "mean_price": mean_price,
+            "mean_unit_price": mean_unit_price
+        }
+        res_json = json.dumps(data)
+        return HttpResponse(res_json, content_type='application/json')
 
 class HouseListViewSet(CacheResponseMixin, mixins.ListModelMixin, mixins.RetrieveModelMixin, GenericViewSet):
     queryset = Api.objects.all()

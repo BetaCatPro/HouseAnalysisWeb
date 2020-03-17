@@ -22,7 +22,7 @@ from rest_framework.routers import DefaultRouter
 
 from house.views import HouseListViewSet, ElevaorViewSet, FloorViewSet, LayoutViewSet, RegionViewSet
 from house.views import DecortionViewSet, PurposesViewSet, OrientationViewSet, ConstructureViewSet
-# from house.views import Elevator
+from house.views import index
 
 
 router = DefaultRouter()
@@ -41,6 +41,7 @@ urlpatterns = [
     path('admin/', admin.site.urls),
     path('xadmin/', xadmin.site.urls),
     re_path(r'docs/', include_docs_urls(title="HA")),
+    re_path(r'v1/api/index/', index.as_view(),name='index'),
     re_path(r'^api-auth/', include('rest_framework.urls', namespace='rest_framework')),
     path('', include(router.urls)),
 ]
