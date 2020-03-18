@@ -9,12 +9,6 @@ const service = axios.create({
 })
 
 service.interceptors.request.use(config => {
-  Message({
-    message: '请求数据中……',
-    type: 'info',
-    duration: 1 * 1000
-  })
-
   config.method === 'post'
     ? config.data = qs.stringify({ ...config.data })
     : config.params = { ...config.params }

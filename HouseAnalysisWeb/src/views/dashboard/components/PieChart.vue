@@ -6,6 +6,7 @@
 import echarts from 'echarts'
 require('echarts/theme/macarons') // echarts theme
 import resize from './mixins/resize'
+import { getRegionInfo } from '@/api/charts.js'
 
 export default {
   mixins: [resize],
@@ -20,7 +21,7 @@ export default {
     },
     height: {
       type: String,
-      default: '300px'
+      default: '330px'
     }
   },
   data() {
@@ -45,6 +46,7 @@ export default {
       this.chart = echarts.init(this.$el, 'macarons')
 
       this.chart.setOption({
+        backgroundColor: '#eee',
         tooltip: {
           trigger: 'item',
           formatter: '{a} <br/>{b} : {c} ({d}%)'

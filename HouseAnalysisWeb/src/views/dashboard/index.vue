@@ -1,25 +1,25 @@
 <template>
   <div class="dashboard-editor-container">
-    <panel-group @handleSetLineChartData="handleSetLineChartData" />
+    <panel-group/>
 
-    <el-row style="background:#fff;padding:16px 16px 0;margin-bottom:32px;">
-      <line-chart :chart-data="lineChartData" />
+    <el-row v-loading="loading" element-loading-text="拼命加载中"
+            element-loading-background="rgba(255, 255, 255, 0.8)"
+            style="background:#fff;padding:16px 16px;margin-bottom:30px;">
+      <bar-chart @hideloading="hideLoading" />
     </el-row>
 
     <el-row :gutter="32">
-      <el-col :xs="24" :sm="24" :lg="8">
-        <div class="chart-wrapper">
-          <raddar-chart />
-        </div>
-      </el-col>
-      <el-col :xs="24" :sm="24" :lg="8">
+      <el-col :xs="24" :sm="24" :lg="12">
         <div class="chart-wrapper">
           <pie-chart />
         </div>
       </el-col>
-      <el-col :xs="24" :sm="24" :lg="8">
+      <el-col :xs="24" :sm="24" :lg="12"
+              v-loading="loading"
+              element-loading-text="拼命加载中"
+              element-loading-background="rgba(255, 255, 255, 0.8)">
         <div class="chart-wrapper">
-          <bar-chart />
+          <bar-chartp @hideloading="hideLoading" />
         </div>
       </el-col>
     </el-row>
@@ -28,54 +28,26 @@
 
 <script>
 import PanelGroup from './components/PanelGroup'
-import LineChart from './components/LineChart'
-import RaddarChart from './components/RaddarChart'
 import PieChart from './components/PieChart'
 import BarChart from './components/BarChart'
-
-import { getMean } from '@/api/charts.js'
-
-const lineChartData = {
-  totleHouseNum: {
-    expectedData: [100, 120, 161, 134, 105, 160, 165],
-    actualData: [120, 82, 91, 154, 162, 140, 145]
-  },
-  totleCommunityNum: {
-    expectedData: [200, 192, 120, 144, 160, 130, 140],
-    actualData: [180, 160, 151, 106, 145, 150, 130]
-  },
-  unitPriceMean: {
-    expectedData: [80, 100, 121, 104, 105, 90, 100],
-    actualData: [120, 90, 100, 138, 142, 130, 130]
-  },
-  totleMean: {
-    expectedData: [130, 140, 141, 142, 145, 150, 160],
-    actualData: [120, 82, 91, 154, 162, 140, 130]
-  }
-}
+import BarChartp from './components/BarChartp'
 
 export default {
   name: 'DashboardAdmin',
   components: {
     PanelGroup,
-    LineChart,
-    RaddarChart,
     PieChart,
-    BarChart
+    BarChart,
+    BarChartp
   },
   data() {
     return {
-      lineChartData: lineChartData.totleHouseNum
+      loading: true
     }
   },
   methods: {
-    async handleSetLineChartData(type) {
-      this.lineChartData = lineChartData[type]
-      let res = await getMean()
-//      result.count 总数
-//      result.next 前一页
-//      result.previous 下一页
-      console.log(res.results)
+    hideLoading(val) {
+      this.loading = val
     }
   }
 }
@@ -89,7 +61,7 @@ export default {
 
   .chart-wrapper {
     background: #fff;
-    padding: 16px 16px 0;
+    padding: 16px 16px;
     margin-bottom: 32px;
   }
 }

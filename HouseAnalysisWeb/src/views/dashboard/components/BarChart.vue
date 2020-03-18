@@ -6,8 +6,7 @@
 import echarts from 'echarts'
 require('echarts/theme/macarons') // echarts theme
 import resize from './mixins/resize'
-
-const animationDuration = 6000
+import { getRegionInfo } from '@/api/charts.js'
 
 export default {
   mixins: [resize],
@@ -44,57 +43,59 @@ export default {
   },
   methods: {
     initChart() {
+      this.$emit('hideloading',false)
       this.chart = echarts.init(this.$el, 'macarons')
+      var xAxisData = [];
+      var number = [];
 
-      this.chart.setOption({
-        tooltip: {
-          trigger: 'axis',
-          axisPointer: { // 坐标轴指示器，坐标轴触发有效
-            type: 'shadow' // 默认为直线，可选为：'line' | 'shadow'
-          }
-        },
-        grid: {
-          top: 10,
-          left: '2%',
-          right: '2%',
-          bottom: '3%',
-          containLabel: true
-        },
-        xAxis: [{
-          type: 'category',
-          data: ['Mon', 'Tue', 'Wed', 'Thu', 'Fri', 'Sat', 'Sun'],
-          axisTick: {
-            alignWithLabel: true
-          }
-        }],
-        yAxis: [{
-          type: 'value',
-          axisTick: {
-            show: false
-          }
-        }],
-        series: [{
-          name: 'pageA',
-          type: 'bar',
-          stack: 'vistors',
-          barWidth: '60%',
-          data: [79, 52, 200, 334, 390, 330, 220],
-          animationDuration
-        }, {
-          name: 'pageB',
-          type: 'bar',
-          stack: 'vistors',
-          barWidth: '60%',
-          data: [80, 52, 200, 334, 390, 330, 220],
-          animationDuration
-        }, {
-          name: 'pageC',
-          type: 'bar',
-          stack: 'vistors',
-          barWidth: '60%',
-          data: [30, 52, 200, 334, 390, 330, 220],
-          animationDuration
-        }]
+      getRegionInfo().then((res,err)=>{
+        Array.from(res).map((item,index)=>{
+          xAxisData.push(item.region)
+          number.push(item.num)
+
+          this.chart.setOption({
+            backgroundColor: '#eee',
+
+            title: {
+              text: '成都整体房源数量分布'
+            },
+            toolbox: {
+              // y: 'bottom',
+              feature: {
+                saveAsImage: {
+                  pixelRatio: 2
+                }
+              }
+            },
+            tooltip: {},
+            xAxis: {
+              data: xAxisData,
+              splitLine: {
+                show: false
+              }
+            },
+            yAxis: {
+            },
+            series: [{
+              name: 'bar',
+              type: 'bar',
+              data: number,
+              animationDelay: function (idx) {
+                return idx * 10;
+              }
+            }],
+            animationEasing: 'elasticOut',
+            animationDelayUpdate: function (idx) {
+              return idx * 5;
+            }
+          })
+        })
+
+        this.$emit('hideloading',false)
+
+        if(err) {
+          Promise.reject(err)
+        }
       })
     }
   }
