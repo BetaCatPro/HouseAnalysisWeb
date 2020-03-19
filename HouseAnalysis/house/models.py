@@ -85,6 +85,8 @@ class Region(models.Model):
     num = models.IntegerField(verbose_name="数量")
     mean_price = models.DecimalField(max_digits=8, decimal_places=3, verbose_name="总价均价")
     mean_unit_price = models.DecimalField(max_digits=8, decimal_places=3, verbose_name="单价均价")
+    max_unit_price = models.DecimalField(max_digits=8, decimal_places=3, verbose_name="最大单价")
+    min_unit_price = models.DecimalField(max_digits=8, decimal_places=3, verbose_name="最小单价")
 
     class Meta:
         verbose_name = 'regioninfo'

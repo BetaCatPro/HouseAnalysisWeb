@@ -66,7 +66,7 @@ class InsertIntoMysql():
             layout.save()
 
     def insertRegion(self):
-        index, values, price_mean, unit_price_mean = multiple(self.region_sql, engine, 'region')
+        index, values, price_mean, unit_price_mean, max_unit_price, min_unit_price = multiple(self.region_sql, engine, 'region')
         for i in range(len(index)):
             region = Region()
             region.version = 'v1'
@@ -75,6 +75,8 @@ class InsertIntoMysql():
             region.num = values[i]
             region.mean_price = price_mean[i]
             region.mean_unit_price = unit_price_mean[i]
+            region.max_unit_price = max_unit_price[i]
+            region.min_unit_price = min_unit_price[i]
             region.save()
 
     def insertDecoration(self):

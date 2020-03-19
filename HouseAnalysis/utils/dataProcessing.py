@@ -39,7 +39,11 @@ def multiple(sql,engine,feature):
     values = feature_res.values
     price_mean = []
     unit_price_mean = []
+    max_unit_price = []
+    min_unit_price = []
     for inx,val in zip(index,values):
         price_mean.append(format(df[df[feature]==inx]['price'].astype(float).mean(),'.3f'))
         unit_price_mean.append(format(df[df[feature]==inx]['unit_price'].astype(float).mean(),'.3f'))
-    return index, values, price_mean, unit_price_mean
+        max_unit_price.append(format(df[df[feature]==inx]['unit_price'].astype(float).max(),'.3f'))
+        min_unit_price.append(format(df[df[feature]==inx]['unit_price'].astype(float).min(),'.3f'))
+    return index, values, price_mean, unit_price_mean, max_unit_price, min_unit_price

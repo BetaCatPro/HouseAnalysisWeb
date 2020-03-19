@@ -6,7 +6,6 @@
 import echarts from 'echarts'
 require('echarts/theme/macarons') // echarts theme
 import resize from './mixins/resize'
-import { getRegionInfo } from '@/api/charts.js'
 
 export default {
   mixins: [resize],
@@ -52,6 +51,7 @@ export default {
         Array.from(res).map((item,index)=>{
           xAxisData.push(item.region)
           number.push(item.num)
+          this.$emit('hideloading',false)
 
           this.chart.setOption({
             backgroundColor: '#eee',
@@ -90,8 +90,6 @@ export default {
             }
           })
         })
-
-        this.$emit('hideloading',false)
 
         if(err) {
           Promise.reject(err)

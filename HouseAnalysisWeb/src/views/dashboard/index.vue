@@ -5,7 +5,7 @@
     <el-row v-loading="loading" element-loading-text="拼命加载中"
             element-loading-background="rgba(255, 255, 255, 0.8)"
             style="background:#fff;padding:16px 16px;margin-bottom:30px;">
-      <bar-chart @hideloading="hideLoading" />
+      <bar-chart />
     </el-row>
 
     <el-row :gutter="32">
@@ -32,6 +32,8 @@ import PieChart from './components/PieChart'
 import BarChart from './components/BarChart'
 import BarChartp from './components/BarChartp'
 
+import { getRegionInfo } from '@/api/charts.js'
+
 export default {
   name: 'DashboardAdmin',
   components: {
@@ -43,11 +45,6 @@ export default {
   data() {
     return {
       loading: true
-    }
-  },
-  methods: {
-    hideLoading(val) {
-      this.loading = val
     }
   }
 }
