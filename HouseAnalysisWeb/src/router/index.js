@@ -27,13 +27,13 @@ export const constantRoutes = [
   {
     path: '/house',
     component: Layout,
-    redirect: '/example/table',
+    redirect: '/dashboard',
     name: 'House',
     meta: { title: '房价分析', icon: 'chart' },
     children: [
       {
         path: 'Single',
-        name: 'Single factor',
+        name: 'Single',
         component: () => import('@/views/single/index'),
         meta: { title: '单因子探索分析', icon: 'analysis' }
       },

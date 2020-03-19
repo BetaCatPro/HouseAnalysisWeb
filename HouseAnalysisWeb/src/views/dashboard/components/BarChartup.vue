@@ -4,7 +4,7 @@
 
 <script>
 import echarts from 'echarts'
-require('echarts/theme/shine') // echarts theme
+require('echarts/theme/roma') // echarts theme
 import resize from './mixins/resize'
 import { getRegionInfo } from '@/api/charts.js'
 
@@ -43,16 +43,16 @@ export default {
   },
   methods: {
     initChart() {
-      this.chart = echarts.init(this.$el, 'shine')
+      this.chart = echarts.init(this.$el, 'macarons')
       let xAxisData = []
-      let mean_price = []
+      let mean_unit_price = []
 
       getRegionInfo().then((res,err)=>{
         Array.from(res).map((item,index)=>{
           xAxisData.push(item.region)
-          mean_price.push(item.mean_price)
+          mean_unit_price.push(item.mean_unit_price)
         })
-        this.$emit('hideloading2',false)
+        this.$emit('hideloading4',false)
         this.chart.setOption({
           backgroundColor: '#eee',
 
@@ -63,7 +63,7 @@ export default {
             trigger: 'axis'
           },
           legend: {
-            data: ['总价']
+            data: ['单价']
           },
           calculable: true,
           xAxis: [
@@ -79,9 +79,9 @@ export default {
           ],
           series: [
             {
-              name: '总价',
+              name: '单价',
               type: 'bar',
-              data: mean_price,
+              data: mean_unit_price,
               markPoint: {
                 data: [
                   {type: 'max', name: '最大值'},
