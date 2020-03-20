@@ -7,7 +7,7 @@
               element-loading-text="拼命加载中"
               element-loading-background="rgba(255, 255, 255, 0.8)">
         <div class="chart-wrapper">
-          <elevator-bar-chart @hideloading="hideloading" />
+          <elevator-bar-chart/>
         </div>
       </el-col>
 
@@ -16,7 +16,16 @@
               element-loading-text="拼命加载中"
               element-loading-background="rgba(255, 255, 255, 0.8)">
         <div class="chart-wrapper">
-          <constrcuture-bar-chart @hideloading="hideloading" />
+          <constrcuture-pie-chart/>
+        </div>
+      </el-col>
+
+      <el-col :xs="24" :sm="24" :lg="12"
+              v-loading="loading"
+              element-loading-text="拼命加载中"
+              element-loading-background="rgba(255, 255, 255, 0.8)">
+        <div class="chart-wrapper">
+          <purpose-pie-chart/>
         </div>
       </el-col>
     </el-row>
@@ -25,13 +34,15 @@
 
 <script>
 import ElevatorBarChart from './components/ElevatorBarChart'
-import ConstrcutureBarChart from './components/ConstrcutureBarChart'
+import ConstrcuturePieChart from './components/ConstrcuturePieChart'
+import PurposePieChart from './components/PurposePieChart.vue'
 
 export default {
-  name: 'DashboardAdmin',
+  name: 'DataAnalysis',
   components: {
     ElevatorBarChart,
-    ConstrcutureBarChart
+    ConstrcuturePieChart,
+    PurposePieChart
   },
   data() {
     return {

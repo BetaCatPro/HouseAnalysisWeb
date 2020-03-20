@@ -6,6 +6,7 @@
 import echarts from 'echarts'
 require('echarts/theme/macarons') // echarts theme
 import resize from './mixins/resize'
+import { getEelevatorInfo } from '@/api/charts.js'
 
 export default {
   mixins: [resize],
@@ -43,79 +44,110 @@ export default {
   methods: {
     initChart() {
       this.chart = echarts.init(this.$el, 'macarons')
+      let has_el_num = 0
+      let no_el_num = 0
+      let has_mean_price = []
+      let no_mean_price = []
+      let has_unit_mean_price = []
+      let no_unit_mean_price = []
 
-      this.chart.setOption({
-        title: {
-          text: '世界人口总量',
-          subtext: '数据来自网络'
-        },
-        tooltip: {
-          trigger: 'axis',
-          axisPointer: {
-            type: 'shadow'
-          }
-        },
-        legend: {
-          data: ['2011年', '2012年']
-        },
-        grid: [{
-          top:40,
-          bottom: '58%'
-        },
-        {
-          top:'58%',
-          bottom: 40
-        }],
-        xAxis: [{
-          type: 'value',
-//          boundaryGap: [0, 0.01],
-          gridIndex:0
-        },
-        {
-          type: 'value',
-//          boundaryGap: [0, 0.01],
-          gridIndex:1
-        }],
-        yAxis: [{
-          type: 'category',
-          data: ['巴西', '印尼', '美国', '印度', '中国'],
-          gridIndex:0
-        },
-        {
-          type: 'category',
-          data: ['巴', '印', '美', '印', '中'],
-          gridIndex:1
-        }],
-        series: [
-          {
-            name: '2011年',
-            type: 'bar',
-            data: [18203, 23489, 29034, 104970, 131744],
-            xAxisIndex: 0,
-            yAxisIndex: 0
+      getEelevatorInfo().then((res,err)=>{
+        let results = Array.from(res)
+        has_el_num = results[0].el_num
+        no_el_num = results[1].el_num
+        has_mean_price.push(parseFloat(results[0].mean_price))
+        has_unit_mean_price.push(parseFloat(results[0].mean_unit_price))
+        no_mean_price.push(parseFloat(results[1].mean_price))
+        no_unit_mean_price.push(parseFloat(results[1].mean_unit_price))
+
+        this.chart.setOption({
+          title: {
+            text: '电梯与房价的关系'
+          },
+          tooltip: {},
+          legend: {
+            data: ['有', '无']
+          },
+          grid: [{
+            top:40,
+            bottom: '72%'
           },
           {
-            name: '2012年',
-            type: 'bar',
-            data: [19325, 23438, 31000, 121594, 134141],
-            xAxisIndex: 0,
-            yAxisIndex: 0
+            top:'72%',
+            bottom: 40
+          }],
+          xAxis: [{
+            type: 'value',
+            boundaryGap: [0, 0.01],
+            gridIndex:0
           },
-          {
-            name: '2013年',
-            type: 'bar',
-            data: [18203, 23489, 29034, 104970, 131744],
-            xAxisIndex: 1,
-            yAxisIndex: 1
+            {
+              type: 'value',
+              boundaryGap: [0, 0.01],
+              gridIndex:1
+            }],
+          yAxis: [{
+            type: 'category',
+            data: ['Elevator'],
+            gridIndex:0
           },
-          {
-            name: '2014年',
-            type: 'bar',
-            data: [19325, 23438, 31000, 121594, 134141],
-            xAxisIndex: 1,
-            yAxisIndex: 1
-          }
-        ]
+            {
+              type: 'category',
+              data: ['Elevator'],
+              gridIndex:1
+            }],
+          series: [
+            {
+              name: '有',
+              type: 'bar',
+              data: has_mean_price,
+              xAxisIndex: 0,
+              yAxisIndex: 0
+            },
+            {
+              name: '无',
+              type: 'bar',
+              data: no_mean_price,
+              xAxisIndex: 0,
+              yAxisIndex: 0
+            },
+            {
+              name: '有',
+              type: 'bar',
+              data: has_unit_mean_price,
+              xAxisIndex: 1,
+              yAxisIndex: 1
+            },
+            {
+              name: '无',
+              type: 'bar',
+              data: no_unit_mean_price,
+              xAxisIndex: 1,
+              yAxisIndex: 1
+            },
+            {
+              name: '电梯情况',
+              type: 'pie',
+              radius: '30%',
+              center: ['47%', '52%'],
+              data: [
+                {value: has_el_num, name: '有电梯'},
+                {value: no_el_num, name: '无电梯'}
+              ],
+              emphasis: {
+                itemStyle: {
+                  shadowBlur: 10,
+                  shadowOffsetX: 0,
+                  shadowColor: 'rgba(0, 0, 0, 0.5)'
+                }
+              }
+            }
+          ]
+        })
+
+        if(err) {
+          Promise.reject(err)
+        }
       })
     }
   }

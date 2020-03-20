@@ -6,6 +6,7 @@
 import echarts from 'echarts'
 require('echarts/theme/macarons') // echarts theme
 import resize from './mixins/resize'
+import { getConstructureInfo } from '@/api/charts.js'
 
 export default {
   mixins: [resize],
@@ -43,8 +44,22 @@ export default {
   methods: {
     initChart() {
       this.chart = echarts.init(this.$el, 'macarons')
+      let constructure = []
+      let number = []
+      let data = []
+
+      getConstructureInfo().then((res,err)=>{
+        Array.from(res).map((item,index)=>{
+          constructure.push(item.constructure)
+          number.push(item.num)
+          data.push({value:item.num,name:item.constructure})
+        })
+      })
 
       this.chart.setOption({
+        title: {
+          text: '建筑结构分布情况'
+        },
         tooltip: {
           trigger: 'item',
           formatter: '{a} <br/>{b} : {c} ({d}%)'
@@ -52,22 +67,16 @@ export default {
         legend: {
           left: 'center',
           bottom: '10',
-          data: ['Industries', 'Technology', 'Forex', 'Gold', 'Forecasts']
+          data: constructure
         },
         series: [
           {
-            name: 'WEEKLY WRITE ARTICLES',
+            name: '建筑结构',
             type: 'pie',
             roseType: 'radius',
             radius: [15, 95],
             center: ['50%', '38%'],
-            data: [
-              { value: 320, name: 'Industries' },
-              { value: 240, name: 'Technology' },
-              { value: 149, name: 'Forex' },
-              { value: 100, name: 'Gold' },
-              { value: 59, name: 'Forecasts' }
-            ],
+            data: data,
             animationEasing: 'cubicInOut',
             animationDuration: 2600
           }

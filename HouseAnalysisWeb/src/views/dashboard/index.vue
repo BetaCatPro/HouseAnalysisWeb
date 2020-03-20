@@ -40,6 +40,7 @@
 <script>
 import PanelGroup from './components/PanelGroup'
 import BarChart from './components/BarChart'
+import PieChart from './components/PieChart'
 import BarChartp from './components/BarChartp'
 import BarChartup from './components/BarChartup'
 
@@ -48,6 +49,7 @@ export default {
   components: {
     PanelGroup,
     BarChart,
+    PieChart,
     BarChartp,
     BarChartup
   },
