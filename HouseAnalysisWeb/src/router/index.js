@@ -35,13 +35,13 @@ export const constantRoutes = [
         path: 'Single',
         name: 'Single',
         component: () => import('@/views/single/index'),
-        meta: { title: '单因子探索分析', icon: 'analysis' }
+        meta: { title: '数据探索分析', icon: 'analysis' }
       },
       {
         path: 'Multifactor',
         name: 'Multifactor',
         component: () => import('@/views/multiple/index'),
-        meta: { title: '多因子探索分析', icon: 'manalysis' }
+        meta: { title: '各区划详细信息', icon: 'manalysis' }
       },
       {
         path: 'Word',

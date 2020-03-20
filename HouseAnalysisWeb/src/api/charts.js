@@ -37,7 +37,7 @@ export function getEelevatorInfo(params) {
 
 export function getConstructureInfo(params) {
   return request({
-    url: '/constructure',
+    url: '/constrcture',
     method: 'get',
     params
   })
@@ -45,7 +45,7 @@ export function getConstructureInfo(params) {
 
 export function getPurposeInfo(params) {
   return request({
-    url: '/purposes',
+    url: '/purpose',
     method: 'get',
     params
   })
