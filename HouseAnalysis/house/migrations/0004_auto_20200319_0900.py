@@ -10,49 +10,6 @@ class Migration(migrations.Migration):
     ]
 
     operations = [
-        migrations.CreateModel(
-            name='CommunityRange',
-            fields=[
-                ('id', models.AutoField(auto_created=True, primary_key=True, serialize=False, verbose_name='ID')),
-                ('version', models.CharField(max_length=8, verbose_name='接口版本')),
-                ('title', models.CharField(max_length=12, verbose_name='接口info')),
-                ('name', models.CharField(max_length=20, verbose_name='小区名字')),
-                ('mean_unit_price', models.DecimalField(decimal_places=3, max_digits=8, verbose_name='单价均价')),
-            ],
-            options={
-                'verbose_name': 'CommunityRange',
-                'verbose_name_plural': 'CommunityRange',
-            },
-        ),
-        migrations.CreateModel(
-            name='Neighbor',
-            fields=[
-                ('id', models.AutoField(auto_created=True, primary_key=True, serialize=False, verbose_name='ID')),
-                ('version', models.CharField(max_length=8, verbose_name='接口版本')),
-                ('title', models.CharField(max_length=12, verbose_name='接口info')),
-                ('number', models.IntegerField()),
-                ('mean_unit_price', models.DecimalField(decimal_places=3, max_digits=8, verbose_name='单价均价')),
-            ],
-            options={
-                'verbose_name': 'Neighbor',
-                'verbose_name_plural': 'Neighbor',
-            },
-        ),
-        migrations.CreateModel(
-            name='SingleRegion',
-            fields=[
-                ('id', models.AutoField(auto_created=True, primary_key=True, serialize=False, verbose_name='ID')),
-                ('version', models.CharField(max_length=8, verbose_name='接口版本')),
-                ('title', models.CharField(max_length=12, verbose_name='接口info')),
-                ('singlereg', models.CharField(max_length=8)),
-                ('category_type', models.IntegerField(choices=[(1, '一级类目'), (2, '二级类目')], help_text='类目级别', verbose_name='类目级别')),
-                ('parent_category', models.ForeignKey(blank=True, help_text='父目录', null=True, on_delete=None, related_name='sub_cat', to='house.SingleRegion', verbose_name='父类目级别')),
-            ],
-            options={
-                'verbose_name': 'SingleRegion',
-                'verbose_name_plural': 'SingleRegion',
-            },
-        ),
         migrations.AddField(
             model_name='region',
             name='max_unit_price',
@@ -64,15 +21,5 @@ class Migration(migrations.Migration):
             name='min_unit_price',
             field=models.DecimalField(decimal_places=3, default=0, max_digits=8, verbose_name='最小单价'),
             preserve_default=False,
-        ),
-        migrations.AddField(
-            model_name='neighbor',
-            name='singleregion',
-            field=models.ForeignKey(on_delete=None, to='house.SingleRegion', verbose_name='行政区划'),
-        ),
-        migrations.AddField(
-            model_name='communityrange',
-            name='singleregion',
-            field=models.ForeignKey(on_delete=None, to='house.SingleRegion', verbose_name='行政区划'),
         ),
     ]

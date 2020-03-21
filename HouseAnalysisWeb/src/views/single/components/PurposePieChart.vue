@@ -69,7 +69,7 @@
             },
             series: [
               {
-                name: '建筑结构',
+                name: '房屋用途',
                 type: 'pie',
                 radius: '50%',
                 center: ['50%', '45%'],

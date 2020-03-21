@@ -3,19 +3,19 @@ api/v1/allregioninfo/chenghua
 	"region": "xxx",
 	// 各街道信息
 	"data": [{
-		"location": "xx",
+		"community": "xx",
 		"num": 100,
 		"unit_price": 10000
 	}, {
-		"location": "xx",
+		"community": "xx",
 		"num": 100,
 		"unit_price": 10000
 	}, {
-		"location": "xx",
+		"community": "xx",
 		"num": 100,
 		"unit_price": 10000
 	}],
-	// 小区排行
+	// 当前区划小区排行
 	"range": [{
 		"community": "xxs",
 		"unit_price": 12500
@@ -29,8 +29,6 @@ api/v1/allregioninfo/chenghua
 }
 
 region table
-vesion vachar(12)
-region vachar(12)
 
-location table foreign key = region table
+data table foreign key = region table
 range table foreign key = region table

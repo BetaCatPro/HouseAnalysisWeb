@@ -58,7 +58,7 @@
 
         this.chart.setOption({
           title: {
-            text: '房屋用途分布情况'
+            text: '房屋朝向分布情况'
           },
           tooltip: {
             trigger: 'item',
@@ -71,7 +71,7 @@
           },
           series: [
             {
-              name: '建筑结构',
+              name: '房屋朝向',
               type: 'pie',
 //              roseType: 'radius',
 //              radius: [15, 95],

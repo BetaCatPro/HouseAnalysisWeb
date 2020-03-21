@@ -1,7 +1,6 @@
 # -*- coding: utf-8 -*-
 from utils.dataProcessing import single, multiple
 from sqlalchemy import create_engine
-import numpy as np
 
 engine = create_engine('mysql+pymysql://root:123456@localhost:3306/house')
 

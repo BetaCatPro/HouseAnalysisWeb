@@ -149,31 +149,11 @@ class Constructure(models.Model):
     def __str__(self):
         return self.title
 
-class SingleRegion(models.Model):
-    CATEGORY_TYPE = (
-        (1, "一级类目"),
-        (2, "二级类目")
-    )
-
+class Community(models.Model):
     version = models.CharField(max_length=8, verbose_name="接口版本")
     title = models.CharField(max_length=12, verbose_name="接口info")
-    singlereg = models.CharField(max_length=8)
-    category_type = models.IntegerField(choices=CATEGORY_TYPE, verbose_name="类目级别", help_text="类目级别")
-    parent_category = models.ForeignKey("self", on_delete=None, null=True, blank=True, verbose_name="父类目级别",
-                                        help_text="父目录", related_name="sub_cat")
-
-    class Meta:
-        verbose_name = 'SingleRegion'
-        verbose_name_plural = verbose_name
-
-    def __str__(self):
-        return self.title
-
-class Neighbor(models.Model):
-    version = models.CharField(max_length=8, verbose_name="接口版本")
-    title = models.CharField(max_length=12, verbose_name="接口info")
-    singleregion = models.ForeignKey(SingleRegion, on_delete=None,verbose_name="行政区划")
-    number = models.IntegerField()
+    region = models.ForeignKey(Region, on_delete=None,verbose_name="行政区划")
+    name = models.CharField(max_length=30,verbose_name="小区名")
     mean_unit_price = models.DecimalField(max_digits=8, decimal_places=3, verbose_name="单价均价")
 
     class Meta:
@@ -186,8 +166,8 @@ class Neighbor(models.Model):
 class CommunityRange(models.Model):
     version = models.CharField(max_length=8, verbose_name="接口版本")
     title = models.CharField(max_length=12, verbose_name="接口info")
-    singleregion = models.ForeignKey(SingleRegion, on_delete=None, verbose_name="行政区划")
-    name = models.CharField(max_length=20,verbose_name="小区名字")
+    region = models.ForeignKey(Region, on_delete=None, verbose_name="行政区划")
+    name = models.CharField(max_length=30,verbose_name="小区名")
     mean_unit_price = models.DecimalField(max_digits=8, decimal_places=3, verbose_name="单价均价")
 
     class Meta:
