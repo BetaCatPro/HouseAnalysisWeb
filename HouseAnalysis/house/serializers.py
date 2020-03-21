@@ -1,6 +1,6 @@
 from rest_framework import serializers
 
-from house.models import Api,Elevator,Floor,Layout,Region,Decortion,Purposes,Orientation,Constructure
+from house.models import Api,Elevator,Floor,Layout,Region,Decortion,Purposes,Orientation,Constructure,Community,CommunityRange
 
 class HouseSerializer(serializers.ModelSerializer):
 
@@ -26,12 +26,28 @@ class LayoutSerializer(serializers.ModelSerializer):
         model = Layout
         fields = "__all__"
 
-
 class RegionSerializer(serializers.ModelSerializer):
     class Meta:
         model = Region
         fields = "__all__"
 
+class RegionS(serializers.ModelSerializer):
+    class Meta:
+        model = Region
+        fields = ["region"]
+
+
+class CommunitySerializer(serializers.ModelSerializer):
+    region = RegionS()
+    class Meta:
+        model = Community
+        fields = "__all__"
+
+class CommunityRangeSerializer(serializers.ModelSerializer):
+    region = RegionS()
+    class Meta:
+        model = CommunityRange
+        fields = "__all__"
 
 class DecortionSerializer(serializers.ModelSerializer):
     class Meta:

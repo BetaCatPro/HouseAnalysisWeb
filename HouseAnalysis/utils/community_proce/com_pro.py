@@ -17,7 +17,7 @@ import django
 
 django.setup()
 
-from house.models import Community, CommunityRange
+from house.models import Community, CommunityRange, Region
 
 engine = create_engine('mysql+pymysql://root:123456@localhost:3306/house')
 df_sql = 'select community_name, region, unit_price from house_api'
@@ -26,7 +26,6 @@ df['region'] = df['region'].apply(lambda x:re.sub(r"\[|\]|'",'',x).split(',')[0]
 
 region = df['region'].value_counts().index
 
-foreignkey = 1
 for reg in region:
     mean_prices = []
     communities = []
@@ -35,15 +34,19 @@ for reg in region:
     for comm in community:
         mean_price = df[df['region'] == reg][df['community_name'] == comm]['unit_price'].mean()
         mean_price = float(format(mean_price, '.3f'))
-        # Community = Community()
-        # Community.version = 'v1'
-        # Community.title = '小区信息'
-        # Community.region = foreignkey
-        # Community.name = comm
-        # Community.mean_unit_price = mean_price
-        # Community.save()
         mean_prices.append(mean_price)
         communities.append(comm)
+
+        CommunityModel = Community()
+        RegionModel = Region.objects.filter(region=reg)
+        CommunityModel.version = 'v1'
+        CommunityModel.title = '小区信息'
+        CommunityModel.region = RegionModel[0]
+        CommunityModel.name = comm
+        CommunityModel.mean_unit_price = mean_price
+        CommunityModel.save()
+
+    print(reg+'community执行完成')
 
     mean_prices = np.array(mean_prices)
     # 降序排列,取前10个元素
@@ -52,15 +55,13 @@ for reg in region:
     max_ten_communities = np.array(communities)[max_ten_price_index]
 
     for i in range(10):
-        CommunityRange = CommunityRange()
-        CommunityRange.version = 'v1'
-        CommunityRange.title = '小区信息'
-        CommunityRange.region = foreignkey
-        CommunityRange.name = max_ten_communities[i]
-        CommunityRange.mean_unit_price = mean_prices[i]
-        CommunityRange.save()
+        CommunityRangeModel = CommunityRange()
+        RegionModel = Region.objects.filter(region=reg)
+        CommunityRangeModel.version = 'v1'
+        CommunityRangeModel.title = '小区信息'
+        CommunityRangeModel.region = RegionModel[0]
+        CommunityRangeModel.name = max_ten_communities[i]
+        CommunityRangeModel.mean_unit_price = mean_prices[i]
+        CommunityRangeModel.save()
 
-    foreignkey = foreignkey + 1
-
-
-
+    print(reg+'community_range执行完成')

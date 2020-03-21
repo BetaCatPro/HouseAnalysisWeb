@@ -11,9 +11,10 @@ from rest_framework.viewsets import GenericViewSet
 # 缓存（内存级别）
 from rest_framework_extensions.cache.mixins import CacheResponseMixin
 
-from .models import Api, Elevator, Floor, Layout, Region, Decortion, Purposes, Orientation, Constructure
+from .models import Api, Elevator, Floor, Layout, Region, Decortion, Purposes, Orientation, Constructure, Community,CommunityRange
 from .serializers import HouseSerializer, ElevatorSerializer, FloorSerializer, LayoutSerializer
 from .serializers import RegionSerializer, DecortionSerializer, PurposesSerializer, OrientationSerializer, ConstructureSerializer
+from .serializers import CommunitySerializer,CommunityRangeSerializer
 
 from utils.getinfo import res
 
@@ -84,6 +85,20 @@ class RegionViewSet(CacheResponseMixin, mixins.ListModelMixin, mixins.RetrieveMo
         serializer = self.get_serializer(instance)
         return Response(serializer.data)
 
+class CommunityViewSet(CacheResponseMixin, mixins.ListModelMixin, mixins.RetrieveModelMixin,GenericViewSet):
+    pagination_class = HousePagination
+    queryset = Community.objects.all()
+    serializer_class = CommunitySerializer
+
+    def retrieve(self, request, *args, **kwargs):
+        instance = self.get_object()
+        serializer = self.get_serializer(instance)
+        return Response(serializer.data)
+
+class CommunityRangeViewSet(CacheResponseMixin, mixins.ListModelMixin,GenericViewSet):
+    pagination_class = HousePagination
+    queryset = CommunityRange.objects.all()
+    serializer_class = CommunityRangeSerializer
 
 class DecortionViewSet(CacheResponseMixin, mixins.ListModelMixin, mixins.RetrieveModelMixin, GenericViewSet):
     queryset = Decortion.objects.all()
@@ -124,24 +139,3 @@ class OrientationViewSet(CacheResponseMixin, mixins.ListModelMixin, mixins.Retri
         serializer = self.get_serializer(instance)
         return Response(serializer.data)
 
-# class Elevator(View):
-#     def get(self, request):
-#         h = Api.objects.filter(elevator='有')
-#         n = Api.objects.filter(elevator='无')
-#         has_el_num = h.count()
-#         has_mean_price = h.aggregate(Avg('price'))
-#         has_mean_unit_price = h.aggregate(Avg('unit_price'))
-#         no_el_num = n.count()
-#         no_mean_price = n.aggregate(Avg('price'))
-#         no_mean_unit_price = n.aggregate(Avg('unit_price'))
-#
-#         data = {
-#             "has_el_num":has_el_num,
-#             "no_el_num":no_el_num,
-#             "has_mean_price":has_mean_price,
-#             "has_mean_unit_price":has_mean_unit_price,
-#             "no_mean_price":no_mean_price,
-#             "no_mean_unit_price":no_mean_unit_price
-#         }
-#         res_json = json.dumps(data,sort_keys=True)
-#         return HttpResponse(res_json, content_type='application/json')
