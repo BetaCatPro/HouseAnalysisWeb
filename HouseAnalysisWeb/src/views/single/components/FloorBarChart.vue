@@ -77,6 +77,41 @@
                 type: 'value'
               }
             ],
+            dataZoom: [{
+              endValue: '16层'
+            }, {
+              type: 'inside'
+            }],visualMap: {
+              top: 10,
+              right: 10,
+              pieces: [{
+                gt: 0,
+                lte: 100,
+                color: '#096'
+              }, {
+                gt: 100,
+                lte: 500,
+                color: '#ffde33'
+              }, {
+                gt: 500,
+                lte: 1000,
+                color: '#ff9933'
+              }, {
+                gt: 1000,
+                lte: 5000,
+                color: '#cc0033'
+              }, {
+                gt: 5000,
+                lte: 10000,
+                color: '#660099'
+              }, {
+                gt: 10000,
+                color: '#7e0023'
+              }],
+              outOfRange: {
+                color: '#999'
+              }
+            },
             series: [
               {
                 name: '楼层',

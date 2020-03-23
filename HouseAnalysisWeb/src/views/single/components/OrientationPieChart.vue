@@ -54,33 +54,28 @@
             number.push(item.num)
             data.push({value:item.num,name:item.orientation})
           })
-        })
 
-        this.chart.setOption({
-          title: {
-            text: '房屋朝向分布情况'
-          },
-          tooltip: {
-            trigger: 'item',
-            formatter: '{a} <br/>{b} : {c} ({d}%)'
-          },
-          legend: {
-            left: 'center',
-            bottom: '10',
-            data: orientation
-          },
-          series: [
-            {
-              name: '房屋朝向',
-              type: 'pie',
+          this.chart.setOption({
+            title: {
+              text: '房屋朝向分布情况'
+            },
+            tooltip: {
+              trigger: 'item',
+              formatter: '{a} <br/>{b} : {c} ({d}%)'
+            },
+            series: [
+              {
+                name: '房屋朝向',
+                type: 'pie',
 //              roseType: 'radius',
 //              radius: [15, 95],
-              center: ['50%', '38%'],
-              data: data,
-              animationEasing: 'cubicInOut',
-              animationDuration: 2600
-            }
-          ]
+                center: ['55%', '50%'],
+                data: data,
+                animationEasing: 'cubicInOut',
+                animationDuration: 2600
+              }
+            ]
+          })
         })
       }
     }

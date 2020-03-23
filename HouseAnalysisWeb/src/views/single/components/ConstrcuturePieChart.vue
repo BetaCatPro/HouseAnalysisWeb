@@ -43,7 +43,7 @@ export default {
   },
   methods: {
     initChart() {
-      this.chart = echarts.init(this.$el, 'macarons')
+      this.chart = echarts.init(this.$el, 'light')
       let constructure = []
       let number = []
       let data = []

@@ -46,34 +46,19 @@ class HouseListViewSet(CacheResponseMixin, mixins.ListModelMixin, mixins.Retriev
         return Response(serializer.data)
 
 
-class ElevaorViewSet(CacheResponseMixin, mixins.ListModelMixin, mixins.RetrieveModelMixin, GenericViewSet):
+class ElevaorViewSet(CacheResponseMixin, mixins.ListModelMixin, GenericViewSet):
     queryset = Elevator.objects.all()
     serializer_class = ElevatorSerializer
 
-    def retrieve(self, request, *args, **kwargs):
-        instance = self.get_object()
-        serializer = self.get_serializer(instance)
-        return Response(serializer.data)
 
-
-class FloorViewSet(CacheResponseMixin, mixins.ListModelMixin, mixins.RetrieveModelMixin, GenericViewSet):
+class FloorViewSet(CacheResponseMixin, mixins.ListModelMixin, GenericViewSet):
     queryset = Floor.objects.all()
     serializer_class = FloorSerializer
 
-    def retrieve(self, request, *args, **kwargs):
-        instance = self.get_object()
-        serializer = self.get_serializer(instance)
-        return Response(serializer.data)
 
-
-class LayoutViewSet(CacheResponseMixin, mixins.ListModelMixin, mixins.RetrieveModelMixin, GenericViewSet):
+class LayoutViewSet(CacheResponseMixin, mixins.ListModelMixin, GenericViewSet):
     queryset = Layout.objects.all()
     serializer_class = LayoutSerializer
-
-    def retrieve(self, request, *args, **kwargs):
-        instance = self.get_object()
-        serializer = self.get_serializer(instance)
-        return Response(serializer.data)
 
 
 class RegionViewSet(CacheResponseMixin, mixins.ListModelMixin, mixins.RetrieveModelMixin, GenericViewSet):
@@ -89,6 +74,16 @@ class CommunityViewSet(CacheResponseMixin, mixins.ListModelMixin, mixins.Retriev
     pagination_class = HousePagination
     queryset = Community.objects.all()
     serializer_class = CommunitySerializer
+    lookup_field = 'region'
+
+
+    # def get_object(self):
+    #     queryset = Community.objects.filter(region__id=self.request.rid)
+    #
+    #     return queryset
+
+    def get_queryset(self):
+        return Community.objects.filter(region=self.request.GET['rid'])
 
     def retrieve(self, request, *args, **kwargs):
         instance = self.get_object()
@@ -100,42 +95,25 @@ class CommunityRangeViewSet(CacheResponseMixin, mixins.ListModelMixin,GenericVie
     queryset = CommunityRange.objects.all()
     serializer_class = CommunityRangeSerializer
 
-class DecortionViewSet(CacheResponseMixin, mixins.ListModelMixin, mixins.RetrieveModelMixin, GenericViewSet):
+    def get_queryset(self):
+        return CommunityRange.objects.filter(region=self.request.GET['rid'])
+
+class DecortionViewSet(CacheResponseMixin, mixins.ListModelMixin, GenericViewSet):
     queryset = Decortion.objects.all()
     serializer_class = DecortionSerializer
 
-    def retrieve(self, request, *args, **kwargs):
-        instance = self.get_object()
-        serializer = self.get_serializer(instance)
-        return Response(serializer.data)
 
-
-class PurposesViewSet(CacheResponseMixin, mixins.ListModelMixin, mixins.RetrieveModelMixin, GenericViewSet):
+class PurposesViewSet(CacheResponseMixin, mixins.ListModelMixin, GenericViewSet):
     queryset = Purposes.objects.all()
     serializer_class = PurposesSerializer
 
-    def retrieve(self, request, *args, **kwargs):
-        instance = self.get_object()
-        serializer = self.get_serializer(instance)
-        return Response(serializer.data)
 
-
-class ConstructureViewSet(CacheResponseMixin, mixins.ListModelMixin, mixins.RetrieveModelMixin, GenericViewSet):
+class ConstructureViewSet(CacheResponseMixin, mixins.ListModelMixin, GenericViewSet):
     queryset = Constructure.objects.all()
     serializer_class = ConstructureSerializer
 
-    def retrieve(self, request, *args, **kwargs):
-        instance = self.get_object()
-        serializer = self.get_serializer(instance)
-        return Response(serializer.data)
 
-
-class OrientationViewSet(CacheResponseMixin, mixins.ListModelMixin, mixins.RetrieveModelMixin, GenericViewSet):
+class OrientationViewSet(CacheResponseMixin, mixins.ListModelMixin, GenericViewSet):
     queryset = Orientation.objects.all()
     serializer_class = OrientationSerializer
-
-    def retrieve(self, request, *args, **kwargs):
-        instance = self.get_object()
-        serializer = self.get_serializer(instance)
-        return Response(serializer.data)
 

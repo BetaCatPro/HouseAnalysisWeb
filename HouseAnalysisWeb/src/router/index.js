@@ -35,7 +35,7 @@ export const constantRoutes = [
         path: 'Single',
         name: 'Single',
         component: () => import('@/views/single/index'),
-        meta: { title: '数据探索分析', icon: 'analysis' }
+        meta: { title: '数据探索分析可视化', icon: 'analysis' }
       },
       {
         path: 'Multifactor',

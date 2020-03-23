@@ -77,7 +77,7 @@ export function getLayoutInfo(params) {
 
 export function getOrientationInfo(params) {
   return request({
-    url: '/orientation',
+    url: '/oritentation',
     method: 'get',
     params
   })

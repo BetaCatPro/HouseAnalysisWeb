@@ -54,33 +54,34 @@
             number.push(item.num)
             data.push({value:item.num,name:item.decoration})
           })
-        })
 
-        this.chart.setOption({
-          title: {
-            text: '房屋装修程度分布情况'
-          },
-          tooltip: {
-            trigger: 'item',
-            formatter: '{a} <br/>{b} : {c} ({d}%)'
-          },
-          legend: {
-            left: 'center',
-            bottom: '10',
-            data: decoration
-          },
-          series: [
-            {
-              name: '装修情况',
-              type: 'pie',
-              roseType: 'radius',
-              radius: [15, 95],
-              center: ['50%', '38%'],
-              data: data,
-              animationEasing: 'cubicInOut',
-              animationDuration: 2600
-            }
-          ]
+          this.chart.setOption({
+            backgroundColor: '#eee',
+            title: {
+              text: '房屋装修程度分布情况'
+            },
+            tooltip: {
+              trigger: 'item',
+              formatter: '{a} <br/>{b} : {c} ({d}%)'
+            },
+            legend: {
+              left: 'center',
+              bottom: '10',
+              data: decoration
+            },
+            series: [
+              {
+                name: '装修情况',
+                type: 'pie',
+                roseType: 'radius',
+                radius: [15, 95],
+                center: ['50%', '50%'],
+                data: data,
+                animationEasing: 'cubicInOut',
+                animationDuration: 2600
+              }
+            ]
+          })
         })
       }
     }

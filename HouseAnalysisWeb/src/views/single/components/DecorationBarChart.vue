@@ -43,7 +43,7 @@
     },
     methods: {
       initChart() {
-        this.chart = echarts.init(this.$el, 'macarons')
+        this.chart = echarts.init(this.$el, 'roma')
         let xAxisData = []
         let mean_unit_price = []
 
