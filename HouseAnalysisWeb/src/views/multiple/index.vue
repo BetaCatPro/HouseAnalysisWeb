@@ -1,14 +1,14 @@
 <template>
   <div>
     <div class="navtags">
-      <nav-tags />
+      <nav-tags @getCommnuity="getCommnuity"/>
     </div>
     <el-row :gutter="20">
-      <el-col :span="18">
-        <table-list />
+      <el-col :xs="24" :sm="16" :lg="18">
+        <table-list :community="community" />
       </el-col>
-      <el-col :span="6">
-        <box-card />
+      <el-col :xs="24" :sm="8" :lg="6">
+        <box-card :communityRange="communityRange" />
       </el-col>
     </el-row>
   </div>
@@ -19,17 +19,44 @@ import NavTags from './components/NavTags'
 import BoxCard from './components/BoxCard'
 import TableList from './components/TableList'
 
+import { getCommunityInfo, getCommunityRangeInfo } from '@/api/charts.js'
+
 export default {
+  data() {
+    return {
+      pagenum: 0,
+      community: [],
+      communityRange: []
+    }
+  },
   components: {
     NavTags,
     BoxCard,
     TableList
+  },
+  methods: {
+    getCommnuity(id) {
+      getCommunityInfo({rid:id}).then((res,err)=>{
+        this.community.length = 0
+//        页码
+        this.pagenum = res.count
+        Array.from(res.results).map((item,index)=>{
+          this.community.push({reg:item.region.region,name:item.name,number:item.region.num,price:item.mean_unit_price})
+        })
+      })
+      this.communityRange.length = 0
+      getCommunityRangeInfo({rid:id}).then((res,err)=>{
+        Array.from(res.results).map((item,index)=>{
+          this.communityRange.push({id:res.id,reg:item.region.region,name:item.name,price:item.mean_unit_price})
+        })
+      })
+    }
   }
 }
 </script>
 
 <style lang="scss">
 .navtags {
-  padding:5px 18px;
+  padding:2px 12px;
 }
 </style>

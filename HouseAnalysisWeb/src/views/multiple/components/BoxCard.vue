@@ -1,24 +1,30 @@
 <template>
   <el-card style="width: 280px;">
     <div slot="header" class="clearfix">
-      <span>卡片名称</span>
+      <span>{{ this.region }}小区排行</span>
     </div>
-    <div v-for="o in 4" :key="o" class="text item">
-      {{'列表内容 ' + o }}
+    <div v-for="community in this.communityRange" :key="community.id" class="text item">
+      <div class="name">{{ community.name }}均价<span>{{ community.price }}</span></div>
     </div>
   </el-card>
 </template>
 
 <script>
-
+import resize from './mixins/resize'
 export default {
+  mixins: [resize],
+  props: ['communityRange'],
   data() {
     return {
+      region: '',
       statisticsData: {
         article_count: 1024,
         pageviews_count: 1024
       }
     }
+  },
+  mounted() {
+    this.region = this.communityRange.reg
   }
 }
 </script>

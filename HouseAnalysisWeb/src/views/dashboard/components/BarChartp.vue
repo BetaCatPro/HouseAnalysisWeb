@@ -47,7 +47,7 @@ export default {
       let xAxisData = []
       let mean_price = []
 
-      getRegionInfo().then((res,err)=>{
+      getRegionInfo('').then((res,err)=>{
         Array.from(res).map((item,index)=>{
           xAxisData.push(item.region)
           mean_price.push(item.mean_price)

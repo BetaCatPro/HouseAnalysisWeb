@@ -34,7 +34,7 @@ class RegionSerializer(serializers.ModelSerializer):
 class RegionS(serializers.ModelSerializer):
     class Meta:
         model = Region
-        fields = ["region"]
+        fields = ["region","num"]
 
 
 class CommunitySerializer(serializers.ModelSerializer):

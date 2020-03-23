@@ -48,7 +48,7 @@ export default {
       let num = []
       let piedata = []
 
-      getRegionInfo().then((res,err)=>{
+      getRegionInfo('').then((res,err)=>{
         Array.from(res).map((item,index)=>{
           xAxisData.push(item.region)
           num.push(item.num)

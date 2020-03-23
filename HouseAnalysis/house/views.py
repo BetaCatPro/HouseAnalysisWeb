@@ -83,7 +83,7 @@ class CommunityViewSet(CacheResponseMixin, mixins.ListModelMixin, mixins.Retriev
     #     return queryset
 
     def get_queryset(self):
-        return Community.objects.filter(region=self.request.POST['rid'])
+        return Community.objects.filter(region=self.request.GET['rid'])
 
     def retrieve(self, request, *args, **kwargs):
         instance = self.get_object()

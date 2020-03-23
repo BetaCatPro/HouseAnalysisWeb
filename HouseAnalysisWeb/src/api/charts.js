@@ -19,9 +19,9 @@ export function getIndex(params) {
   })
 }
 
-export function getRegionInfo(params) {
+export function getRegionInfo(id,params) {
   return request({
-    url: '/region',
+    url: '/region/'+id,
     method: 'get',
     params
   })
@@ -86,7 +86,7 @@ export function getOrientationInfo(params) {
 export function getCommunityInfo(params) {
   return request({
     url: '/community',
-    method: 'post',
+    method: 'get',
     params
   })
 }
@@ -94,7 +94,7 @@ export function getCommunityInfo(params) {
 export function getCommunityRangeInfo(params) {
   return request({
     url: '/communityrange',
-    method: 'post',
+    method: 'get',
     params
   })
 }

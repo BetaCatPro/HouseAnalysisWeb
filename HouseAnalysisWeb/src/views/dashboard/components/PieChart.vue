@@ -48,7 +48,7 @@ export default {
       var regions = []
       var barHeight = 50;
 
-      getRegionInfo().then((res,err)=>{
+      getRegionInfo('').then((res,err)=>{
         Array.from(res).map((item,index)=>{
           data.push([item.min_unit_price,item.max_unit_price,item.mean_unit_price])
           regions.push(item.region)
