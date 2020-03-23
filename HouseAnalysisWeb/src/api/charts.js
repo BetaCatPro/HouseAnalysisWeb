@@ -82,3 +82,19 @@ export function getOrientationInfo(params) {
     params
   })
 }
+
+export function getCommunityInfo(params) {
+  return request({
+    url: '/community',
+    method: 'post',
+    params
+  })
+}
+
+export function getCommunityRangeInfo(params) {
+  return request({
+    url: '/communityrange',
+    method: 'post',
+    params
+  })
+}
