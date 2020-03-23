@@ -61,7 +61,7 @@ for reg in region:
         CommunityRangeModel.title = '小区信息'
         CommunityRangeModel.region = RegionModel[0]
         CommunityRangeModel.name = max_ten_communities[i]
-        CommunityRangeModel.mean_unit_price = mean_prices[i]
+        CommunityRangeModel.mean_unit_price = max_ten_price[i]
         CommunityRangeModel.save()
 
     print(reg+'community_range执行完成')
