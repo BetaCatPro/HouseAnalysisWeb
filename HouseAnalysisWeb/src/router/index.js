@@ -44,6 +44,12 @@ export const constantRoutes = [
         meta: { title: '各区划详细信息', icon: 'manalysis' }
       },
       {
+        path: 'HouseSearch',
+        name: 'HouseSearch',
+        component: () => import('@/views/house/index'),
+        meta: { title: '搜索房源', icon: 'search' }
+      },
+      {
         path: 'Word',
         component: () => import('@/views/word/index'),
         name: 'Word',

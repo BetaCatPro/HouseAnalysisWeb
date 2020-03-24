@@ -1,12 +1,14 @@
 <template>
-  <el-card style="width: 280px;">
-    <div slot="header" class="clearfix">
-      <span>{{ this.region }}小区排行</span>
-    </div>
-    <div v-for="community in this.communityRange" :key="community.id" class="text item">
-      <div class="name">{{ community.name }}均价<span>{{ community.price }}</span></div>
-    </div>
-  </el-card>
+  <div class="card">
+    <el-card style="width: 280px;">
+      <div slot="header" class="clearfix">
+        <span>{{ this.region }}小区排行</span>
+      </div>
+      <div v-for="community in this.communityRange" :key="community.id" class="text item">
+        <div class="name">{{ community.name }}均价<span>{{ community.price }}</span></div>
+      </div>
+    </el-card>
+  </div>
 </template>
 
 <script>
@@ -37,6 +39,9 @@ export default {
 }
 </style>
 <style lang="scss" scoped>
+.card {
+  margin-top: 50px;
+}
 .text {
   font-size: 14px;
 }

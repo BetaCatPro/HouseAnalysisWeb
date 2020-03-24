@@ -43,6 +43,7 @@ INSTALLED_APPS = [
     'xadmin',
     'crispy_forms',
     'rest_framework',
+    'django_filters',
     'house'
 ]
 

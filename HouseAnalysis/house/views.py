@@ -5,6 +5,8 @@ from django.db.models import Avg
 
 from rest_framework.response import Response
 from rest_framework import mixins
+from rest_framework import filters
+from django_filters.rest_framework import DjangoFilterBackend
 from rest_framework.pagination import PageNumberPagination
 from rest_framework.viewsets import GenericViewSet
 
@@ -17,9 +19,6 @@ from .serializers import RegionSerializer, DecortionSerializer, PurposesSerializ
 from .serializers import CommunitySerializer,CommunityRangeSerializer
 
 from utils.getinfo import res
-
-# Create your views here.
-
 
 class HousePagination(PageNumberPagination):
     page_size = 30
@@ -37,6 +36,8 @@ class HouseListViewSet(CacheResponseMixin, mixins.ListModelMixin, mixins.Retriev
     queryset = Api.objects.all()
     serializer_class = HouseSerializer
     pagination_class = HousePagination
+    filter_backends = (DjangoFilterBackend, filters.SearchFilter, filters.OrderingFilter)
+    filter_fields = ('price',)
     search_fields = ('title', 'region', 'community_name')
     ordering_fields = ('price', 'unit_price')
 

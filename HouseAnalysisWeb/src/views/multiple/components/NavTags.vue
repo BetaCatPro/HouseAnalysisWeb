@@ -1,6 +1,6 @@
 <template>
   <el-row :gutter="25">
-    <el-col :xs="24" :sm="24" :lg="18">
+    <el-col :xs="24" :sm="24" :lg="24">
       <el-menu :default-active="defaultActive"
                class="el-menu-demo"
                mode="horizontal"
@@ -9,19 +9,6 @@
         <el-menu-item  v-for="region in regions" :keys=region.id :index=region.id>{{region.region}}</el-menu-item>
       </el-menu>
       <div class="line"></div>
-    </el-col>
-    <el-col :xs="24" :sm="24" :lg="6">
-      <el-autocomplete
-        class="inline-input"
-        v-model="state2"
-        :fetch-suggestions="querySearch"
-        placeholder="请输入内容"
-        :trigger-on-focus="false"
-        @select="handleSelectSearch"
-        size="6"
-        suffix-icon="analysis"
-        style="padding-top: 10px;width:100%;"
-      ></el-autocomplete>
     </el-col>
   </el-row>
 </template>

@@ -3,9 +3,9 @@ import request from '@/utils/request'
 /**
  * @param send data
  */
-export function getAll(params) {
+export function getAll(community,params) {
   return request({
-    url: '/all_house',
+    url: '/all_house/?search='+community,
     method: 'get',
     params
   })
