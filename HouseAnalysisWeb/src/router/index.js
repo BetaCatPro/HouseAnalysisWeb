@@ -91,6 +91,17 @@ export const constantRoutes = [
       meta: { title: '地图找房', icon: 'wan_map' }
     }]
   },
+
+  {
+    path: '/show',
+    component: Layout,
+    redirect: '/dashboard',
+    children: [{
+      path: 'houseinfo',
+      name: 'HouseInfo',
+      component: () => import('@/views/house/components/houseinfo')
+    }]
+  },
   // 404 page must be placed at the end !!!
   { path: '*', redirect: '/404', hidden: true }
 ]
