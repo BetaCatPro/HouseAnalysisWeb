@@ -44,18 +44,24 @@ export const constantRoutes = [
         meta: { title: '各区划详细信息', icon: 'manalysis' }
       },
       {
-        path: 'HouseSearch',
-        name: 'HouseSearch',
-        component: () => import('@/views/house/index'),
-        meta: { title: '搜索房源', icon: 'search' }
-      },
-      {
         path: 'Word',
         component: () => import('@/views/word/index'),
         name: 'Word',
-        meta: { title: '词云', icon: 'word' }
+        meta: { title: '房源信息词云', icon: 'word' }
       }
     ]
+  },
+
+  {
+    path: '/search',
+    component: Layout,
+    redirect: '/dashboard',
+    children: [{
+      path: 'house',
+      name: 'Search',
+      component: () => import('@/views/house/index'),
+      meta: { title: '搜索房源', icon: 'search' }
+    }]
   },
 
   {
@@ -70,12 +76,6 @@ export const constantRoutes = [
         component: () => import('@/views/heatmap/mean'),
         name: 'MeanHeatMap',
         meta: { title: '均价热力图', icon: 'hotmap' }
-      },
-      {
-        path: 'TotalHeatMap',
-        component: () => import('@/views/heatmap/total'),
-        name: 'TotalHeatMap',
-        meta: { title: '总价热力图', icon: '热力图 (1)' }
       }
     ]
   },

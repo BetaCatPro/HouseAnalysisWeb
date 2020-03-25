@@ -1,5 +1,88 @@
 <template>
   <div class="table">
+    <transition name="fade">
+      <div class="house" v-if="isClosed">
+        <div class="close" @click="closeTable">
+          <el-button type="primary" icon="el-icon-close"></el-button>
+        </div>
+        <el-table
+          :data="houseData"
+          max-height="480"
+          :stripe=true
+          style="width: 100%"
+          v-if="hasData">
+          <el-table-column type="expand">
+            <template slot-scope="props">
+              <el-form label-position="left" inline class="demo-table-expand">
+                <el-form-item label="名称">
+                  <span>{{ props.row.title }}</span>
+                </el-form-item>
+                <el-form-item label="总价">
+                  <span>{{ props.row.price }}</span>
+                </el-form-item>
+                <el-form-item label="单价">
+                  <span>{{ props.row.unit_price }}</span>
+                </el-form-item>
+                <el-form-item label="小区名">
+                  <span>{{ props.row.community_name }}</span>
+                </el-form-item>
+                <el-form-item label="区划">
+                  <span>{{ props.row.region }}</span>
+                </el-form-item>
+                <el-form-item label="户型">
+                  <span>{{ props.row.type }}</span>
+                </el-form-item>
+                <el-form-item label="建筑面积">
+                  <span>{{ props.row.construction_area }}</span>
+                </el-form-item>
+                <el-form-item label="朝向">
+                  <span>{{ props.row.orientation }}</span>
+                </el-form-item>
+                <el-form-item label="装修情况">
+                  <span>{{ props.row.decoration }}</span>
+                </el-form-item>
+                <el-form-item label="楼层">
+                  <span>{{ props.row.floor }}</span>
+                </el-form-item>
+                <el-form-item label="电梯">
+                  <span>{{ props.row.elevator }}</span>
+                </el-form-item>
+                <el-form-item label="房屋类型">
+                  <span>{{ props.row.purposes }}</span>
+                </el-form-item>
+                <el-form-item label="发布时间">
+                  <span>{{ props.row.release_date }}</span>
+                </el-form-item>
+                <el-form-item label="建筑结构">
+                  <span>{{ props.row.house_structure }}</span>
+                </el-form-item>
+              </el-form>
+            </template>
+          </el-table-column>
+          <el-table-column
+            label="房源名称"
+            prop="title"
+            width="320">
+          </el-table-column>
+          <el-table-column
+            label="小区名称"
+            prop="community_name">
+          </el-table-column>
+          <el-table-column
+            label="区划"
+            prop="region">
+          </el-table-column>
+        </el-table>
+        <div class="pages">
+          <el-pagination
+            background
+            :page-size=30
+            layout="prev, pager, next"
+            :total="pagenums">
+          </el-pagination>
+        </div>
+      </div>
+    </transition>
     <div class="community">
       <el-table
         :data="communities"
@@ -36,203 +119,110 @@
           </template>
         </el-table-column>
       </el-table>
-    </div>
-    <transition name="fade">
-      <div class="house" v-if="isClosed">
-        <div class="close" @click="closeTable">
-          <el-button type="primary" icon="el-icon-close"></el-button>
-        </div>
-        <el-table
-          :data="tableData5"
-          max-height="480"
-          stripe="true"
-          style="width: 100%">
-          <el-table-column type="expand">
-            <template slot-scope="props">
-              <el-form label-position="left" inline class="demo-table-expand">
-                <el-form-item label="商品名称">
-                  <span>{{ props.row.name }}</span>
-                </el-form-item>
-                <el-form-item label="所属店铺">
-                  <span>{{ props.row.shop }}</span>
-                </el-form-item>
-                <el-form-item label="商品 ID">
-                  <span>{{ props.row.id }}</span>
-                </el-form-item>
-                <el-form-item label="店铺 ID">
-                  <span>{{ props.row.shopId }}</span>
-                </el-form-item>
-                <el-form-item label="商品分类">
-                  <span>{{ props.row.category }}</span>
-                </el-form-item>
-                <el-form-item label="店铺地址">
-                  <span>{{ props.row.address }}</span>
-                </el-form-item>
-                <el-form-item label="商品描述">
-                  <span>{{ props.row.desc }}</span>
-                </el-form-item>
-              </el-form>
-            </template>
-          </el-table-column>
-          <el-table-column
-            label="商品 ID"
-            prop="id">
-          </el-table-column>
-          <el-table-column
-            label="商品名称"
-            prop="name">
-          </el-table-column>
-          <el-table-column
-            label="描述"
-            prop="desc">
-          </el-table-column>
-        </el-table>
-        <div class="pages">
-          <el-pagination
-            background
-            page-size="9"
-            layout="prev, pager, next"
-            :total="762">
-          </el-pagination>
-        </div>
+      <div class="commpage">
+        <el-pagination
+          background
+          :page-size=30
+          layout="prev, pager, next"
+          :total="pagenum">
+        </el-pagination>
       </div>
-    </transition>
+    </div>
   </div>
 </template>
 
 <script>
-  import { getAll } from '@/api/charts.js'
-  import resize from './mixins/resize'
-  export default {
-    mixins: [resize],
-    props: ['community'],
-    data() {
-      return {
-        isClosed: true,
-        communities: [],
-        tableData5: [{
-          id: '12987122',
-          name: '好滋好味鸡蛋仔',
-          category: '江浙小吃、小吃零食',
-          desc: '荷兰优质淡奶，奶香浓而不腻',
-          address: '上海市普陀区真北路',
-          shop: '王小虎夫妻店',
-          shopId: '10333'
-        }, {
-          id: '12987123',
-          name: '好滋好味鸡蛋仔',
-          category: '江浙小吃、小吃零食',
-          desc: '荷兰优质淡奶，奶香浓而不腻',
-          address: '上海市普陀区真北路',
-          shop: '王小虎夫妻店',
-          shopId: '10333'
-        }, {
-          id: '12987125',
-          name: '好滋好味鸡蛋仔',
-          category: '江浙小吃、小吃零食',
-          desc: '荷兰优质淡奶，奶香浓而不腻',
-          address: '上海市普陀区真北路',
-          shop: '王小虎夫妻店',
-          shopId: '10333'
-        }, {
-          id: '12987126',
-          name: '好滋好味鸡蛋仔',
-          category: '江浙小吃、小吃零食',
-          desc: '荷兰优质淡奶，奶香浓而不腻',
-          address: '上海市普陀区真北路',
-          shop: '王小虎夫妻店',
-          shopId: '10333'
-        }, {
-          id: '12987126',
-          name: '好滋好味鸡蛋仔',
-          category: '江浙小吃、小吃零食',
-          desc: '荷兰优质淡奶，奶香浓而不腻',
-          address: '上海市普陀区真北路',
-          shop: '王小虎夫妻店',
-          shopId: '10333'
-        }, {
-          id: '12987126',
-          name: '好滋好味鸡蛋仔',
-          category: '江浙小吃、小吃零食',
-          desc: '荷兰优质淡奶，奶香浓而不腻',
-          address: '上海市普陀区真北路',
-          shop: '王小虎夫妻店',
-          shopId: '10333'
-        }, {
-          id: '12987126',
-          name: '好滋好味鸡蛋仔',
-          category: '江浙小吃、小吃零食',
-          desc: '荷兰优质淡奶，奶香浓而不腻',
-          address: '上海市普陀区真北路',
-          shop: '王小虎夫妻店',
-          shopId: '10333'
-        }, {
-          id: '12987126',
-          name: '好滋好味鸡蛋仔',
-          category: '江浙小吃、小吃零食',
-          desc: '荷兰优质淡奶，奶香浓而不腻',
-          address: '上海市普陀区真北路',
-          shop: '王小虎夫妻店',
-          shopId: '10333'
-        }]
-      }
-    },
-    methods: {
-      async handleClick(row) {
-        this.isClosed = true
-        console.log(row.name)
-        let houseData = await getAll(row.name)
-      },
-      tableRowClassName({row, rowIndex}) {
-        if (rowIndex%2 === 1) {
-          return 'warning-row';
-        } else if (rowIndex%2 === 0) {
-          return 'success-row';
-        }
-        return '';
-      },
-      closeTable() {
-        this.isClosed = false
-      }
-    },
-    mounted() {
-      this.communities = this.community
+import { getAll } from '@/api/charts.js'
+import resize from './mixins/resize'
+export default {
+  mixins: [resize],
+  props: ['community','pagenum'],
+  data() {
+    return {
+      isClosed: false,
+      communities: [],
+      commpagenums: 0,
+      houseData: [],
+      pagenums: 0,
+      hasData: false
     }
+  },
+  methods: {
+    async handleClick(row) {
+      this.isClosed = true
+      this.$emit('closeWraper',this.isClosed)
+      this.hasData = false
+      let houseData = await getAll(row.name)
+      this.pagenums = houseData.count
+      this.houseData.length = 0
+      Array.from(houseData.results).map((item,index)=>{
+        this.houseData.push({
+          "title": item.title,
+          "price": item.price+'万',
+          "unit_price": item.unit_price+'元/平米',
+          "community_name": item.community_name,
+          "region": item.region,
+          "type": item.type,
+          "construction_area": item.construction_area+'㎡',
+          "orientation": item.orientation,
+          "decoration": item.decoration,
+          "floor": item.floor,
+          "elevator": item.elevator,
+          "purposes": item.purposes,
+          "release_date": item.release_date,
+          "house_structure": item.house_structure,
+        })
+      })
+      this.hasData = true
+    },
+    tableRowClassName({row, rowIndex}) {
+      if (rowIndex%2 === 1) {
+        return 'warning-row';
+      } else if (rowIndex%2 === 0) {
+        return 'success-row';
+      }
+      return '';
+    },
+    closeTable() {
+      this.isClosed = false
+      this.$emit('closeWraper',this.isClosed)
+    }
+  },
+  mounted() {
+    this.communities = this.community
   }
+}
 </script>
 
 <style lang="scss">
 .table {
   padding: 5px 18px;
   margin: 0 5px;
-  position: relative;
-  .community {
-    z-index: -1;
-  }
+
   .house {
     z-index: 999;
     position: absolute;
-    top: 55%;
-    left: 30%;
-    width: 70%;
-    height: 550px;
+    top: -60px;
+    left: 20%;
+    width: 60%;
+    height: 600px;
     border: none;
+    background-color: #fff;
+    -webkit-border-radius: 4px;
+    -moz-border-radius: 4px;
+    border-radius: 4px;
     -webkit-box-shadow: 1px 1px 5px #ccc;
     -moz-box-shadow: 1px 1px 5px #ccc ;
     box-shadow: 1px 1px 5px #ccc;
 
     .close {
-      /*position: absolute;*/
-      /*right:1px;*/
-      /*top:0;*/
       float: right;
-      z-index: 999;
     }
 
     .pages {
       position: absolute;
-      bottom:10px;
-      left:20%;
+      bottom:18px;
+      left:30%;
     }
   }
 
@@ -244,6 +234,11 @@
     background: #f0f9eb;
   }
 }
+
+.commpage {
+  margin:35px 21%;
+}
+
 .demo-table-expand {
   font-size: 0;
 }
@@ -261,7 +256,7 @@
   transition: all .3s ease;
 }
 .fade-leave-active {
-  transition: all .8s cubic-bezier(1.0, 0.5, 0.8, 1.0);
+  transition: all .3s cubic-bezier(1.0, 0.5, 0.8, 1.0);
 }
 .fade-enter, .fade-leave-to
   /* .fade-leave-active for below version 2.1.8 */ {
