@@ -1,6 +1,6 @@
 <template>
   <div class='wrapper'>
-    <search />
+    <search @gethouse="gethouse" />
 
     <el-row style="margin-left: 20px">
       <el-col :span="18">
@@ -14,83 +14,26 @@
     </el-row>
     <el-row style="margin-left: 20px">
       <el-col :span="18">
-        <div class="title">共找到 <span>131472</span> 套成都二手房</div>
+        <div class="title">共找到 <span>{{ pagenums }}</span> 套成都二手房</div>
         <ul class="houselist">
-          <li class="houseitem">
-              <div class="leftimg" style="background-size:cover;background: url('https://ke-image.ljcdn.com/510100-inspection/pc0_jsAP7OUNP_1.jpg!m_fill,w_710,h_400,lg_north_west,lx_0,ly_0,l_fbk,f_jpg,ls_50?from=ke.com');"></div>
+          <li class="houseitem" v-for="house in houselist" :key="house.id">
+              <div class="leftimg" :style="{'background': 'url('+ house.image_urls|getimg +') no-repeat cover'}"></div>
               <div class="rightinfo">
-                <router-link target="_blank" :to="{path:'/show/houseinfo'}">
-                  <p>{{ this.house.name }}</p>
+                <router-link target="_blank" :to="{path:'/show/houseinfo',query: {id: house.id}}">
+                  <p>{{ house.title }}</p>
                 </router-link>
                 <div class="price">
                   <span>
-                    165 <i>万</i>
+                    {{ house.price }} <i>万</i>
                   </span>
                   <span>
-                    单价19408元/平米
+                    单价{{ house.unit_price }}元/平米
                   </span>
                 </div>
-                <div><i class="el-icon-location"></i>{{ house.region }}</div>
-                <div><i class="el-icon-arrow-right"></i>{{ house.info }} | {{ house.area }} | {{ house.orientation }} | {{ house.decoration }}</div>
-                <div><i class="el-icon-time"></i>{{ house.structure }} | {{ house.releasedate }}</div>
+                <div><i class="el-icon-location"></i>{{ house.community_name }} | {{ house.region | parseArray }}</div>
+                <div><i class="el-icon-arrow-right"></i>{{ house.type }} | {{ house.construction_area }} | {{ house.orientation }} | {{ house.decoration }}</div>
+                <div><i class="el-icon-time"></i>{{ house.elevator }} | {{ house.floor }} | {{ house.purposes }}</div>
               </div>
-          </li>
-          <li class="houseitem">
-            <div class="leftimg" style="background: url('@/assets/DA.png');"></div>
-            <div class="rightinfo">
-              <router-link target="_blank" :to="{path:'/show/houseinfo'}">
-                <p>{{ this.house.name }}</p>
-              </router-link>
-              <div class="price">
-                  <span>
-                    165 <i>万</i>
-                  </span>
-                <span>
-                    单价19408元/平米
-                  </span>
-              </div>
-              <div><i class="el-icon-location"></i>{{ house.region }}</div>
-              <div><i class="el-icon-arrow-right"></i>{{ house.info }} | {{ house.area }} | {{ house.orientation }} | {{ house.decoration }}</div>
-              <div><i class="el-icon-time"></i>{{ house.structure }} | {{ house.releasedate }}</div>
-            </div>
-          </li>
-          <li class="houseitem">
-            <div class="leftimg" style="background: url('@/assets/DA.png');"></div>
-            <div class="rightinfo">
-              <router-link target="_blank" :to="{path:'/show/houseinfo'}">
-                <p>{{ this.house.name }}</p>
-              </router-link>
-              <div class="price">
-                  <span>
-                    165 <i>万</i>
-                  </span>
-                <span>
-                    单价19408元/平米
-                  </span>
-              </div>
-              <div><i class="el-icon-location"></i>{{ house.region }}</div>
-              <div><i class="el-icon-arrow-right"></i>{{ house.info }} | {{ house.area }} | {{ house.orientation }} | {{ house.decoration }}</div>
-              <div><i class="el-icon-time"></i>{{ house.structure }} | {{ house.releasedate }}</div>
-            </div>
-          </li>
-          <li class="houseitem">
-            <div class="leftimg" style="background: url('@/assets/DA.png');"></div>
-            <div class="rightinfo">
-              <router-link target="_blank" :to="{path:'/show/houseinfo'}">
-                <p>{{ this.house.name }}</p>
-              </router-link>
-              <div class="price">
-                  <span>
-                    165 <i>万</i>
-                  </span>
-                <span>
-                    单价19408元/平米
-                  </span>
-              </div>
-              <div><i class="el-icon-location"></i>{{ house.region }}</div>
-              <div><i class="el-icon-arrow-right"></i>{{ house.info }} | {{ house.area }} | {{ house.orientation }} | {{ house.decoration }}</div>
-              <div><i class="el-icon-time"></i>{{ house.structure }} | {{ house.releasedate }}</div>
-            </div>
           </li>
         </ul>
       </el-col>
@@ -103,25 +46,33 @@ import Search from '@/components/Search'
 export default {
   data() {
     return {
-        house: {
-          name: '这时python的乐园，走开辣',
-          region: '阿斯弗',
-          info: '给的',
-          area: '份额',
-          orientation: '然后今天',
-          structure: '七二',
-          releasedate: '同一伙人',
-          decoration: '就化工'
-      },
+      pagenums: 0,
+      houselist: [],
       activeIndex: '1',
     }
   },
   components: {
     Search
   },
+  filters: {
+    parseArray: function(value) {
+      if (!value) return ''
+      return value.replace(/\[|\]|'/g,'').split(',').join('-')
+    },
+    getimg: function(value) {
+      re_data = value.match(/'(.+?)'/g)
+      first_img = re_data[0].replace(/\'/g,'')
+      return first_img
+    }
+  },
   methods: {
     handleSelect(key, keyPath) {
       console.log(key, keyPath);
+    },
+    gethouse(data) {
+      let totalData = data
+      this.pagenums = totalData.count
+      this.houselist = totalData.results
     }
   }
 }
@@ -131,10 +82,10 @@ export default {
 .wrapper {
   width: 100%;
   height: 100%;
+  margin-left: 50px;
 }
   .title {
     height: 55px;
-    font-size:14px;
     line-height:55px;
     word-spacing:0;
     font-size:22px;
@@ -172,7 +123,6 @@ export default {
 
       p {
         height: 15px;
-        font-size:14px;
         line-height:15px;
         word-spacing:0;
         font-size:22px;

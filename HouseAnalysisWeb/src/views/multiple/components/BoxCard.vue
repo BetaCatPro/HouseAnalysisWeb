@@ -2,11 +2,11 @@
   <div class="card">
     <el-card style="width: 320px;">
       <div slot="header" class="clearfix">
-        <span>{{ this.region }}小区排行TOP10</span>
+        <span>{{ region }}小区排行TOP10</span>
       </div>
-      <div v-for="community in this.communityRange" :key="community.id" class="text item">
+      <div v-for="community in communityRange" :key="community.id" class="text item">
         <div class="name">
-          <el-tooltip :content=community.name placement="top">
+          <el-tooltip :content="community.name" placement="top">
             <span class="na">{{ community.name }}</span>
           </el-tooltip>
           <span class="pr">{{ community.price+'元/平米' }}</span>
@@ -55,10 +55,10 @@ export default {
   margin-bottom: 18px;
 }
 
-.name{
+.name {
   width: 100%;
   height: 36px;
-  backgroundColor: rgb(255,255,255);
+  background-color: rgb(255,255,255);
   transition:all 1s ease,left 1s ease-in-out;
   opacity:1;
   filter:alpha(opacity=100);
@@ -74,7 +74,7 @@ export default {
   line-height: 36px;
 }
 
-.na{
+.na {
   float: left;
   width: 125px;
   overflow: hidden;
