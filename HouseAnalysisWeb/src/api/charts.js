@@ -3,6 +3,23 @@ import request from '@/utils/request'
 /**
  * @param send data
  */
+export function getAllHouse(params) {
+  return request({
+    url: '/all_house',
+    method: 'get',
+    params
+  })
+}
+
+// 排序
+export function getOrderHouse(methods,params) {
+  return request({
+    url: '/all_house/?ordering='+ methods,
+    method: 'get',
+    params
+  })
+}
+
 export function getAll(community,params) {
   return request({
     url: '/all_house/?search='+community,

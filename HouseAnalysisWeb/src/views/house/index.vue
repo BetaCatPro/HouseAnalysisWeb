@@ -17,7 +17,7 @@
         <div class="title">共找到 <span>{{ pagenums }}</span> 套成都二手房</div>
         <ul class="houselist">
           <li class="houseitem" v-for="house in houselist" :key="house.id">
-              <div class="leftimg" :style="{'background': 'url('+ house.image_urls|getimg +') no-repeat cover'}"></div>
+              <div class="leftimg" :style="{'background': 'url('+ house.image_urls.match(/'(.+?)'/g)[0].replace(/\'/g,'') +') no-repeat cover'}"></div>
               <div class="rightinfo">
                 <router-link target="_blank" :to="{path:'/show/houseinfo',query: {id: house.id}}">
                   <p>{{ house.title }}</p>
@@ -38,10 +38,21 @@
         </ul>
       </el-col>
     </el-row>
+    <el-row style="height: 100px;">
+      <div class="commpage">
+        <el-pagination
+          background
+          :page-size=30
+          layout="prev, pager, next"
+          :total="pagenums">
+        </el-pagination>
+      </div>
+    </el-row>
   </div>
 </template>
 
 <script>
+  import { getOrderHouse } from '@/api/charts.js'
 import Search from '@/components/Search'
 export default {
   data() {
@@ -67,7 +78,11 @@ export default {
   },
   methods: {
     handleSelect(key, keyPath) {
-      console.log(key, keyPath);
+      const tags = ['','price','unit_prcie','area']
+      getOrderHouse(tags[key-1]).then((res,err)=>{
+        this.pagenums = res.count
+        this.houselist = res.results
+      })
     },
     gethouse(data) {
       let totalData = data
@@ -178,4 +193,12 @@ export default {
       }
     }
   }
+.commpage {
+  width: 100%;
+  height: 100%;
+  position: absolute;
+  top:10px;
+  bottom:18px;
+  left:22%;
+}
 </style>

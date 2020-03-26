@@ -27,6 +27,7 @@
 
 <script>
 import { getAll } from '@/api/charts.js'
+import { getAllHouse } from '@/api/charts.js'
 export default {
   data() {
     return {
@@ -42,46 +43,61 @@ export default {
       // 实现input连续输入，只发一次请求
       clearTimeout(this.timeout);
       this.timeout = setTimeout(() => {
-        this.getListPOI(curVal);
+        this.getListPOIWatcher(curVal);
       }, 300);
     }
+  },
+  mounted() {
+    getAllHouse().then((res,err)=>{
+      console.log(res)
+      this.$emit('gethouse',res)
+    })
   },
   methods: {
     querySearch(queryString, cb) {
       var searchPoi = this.searchPoi;
-      console.log(queryString)
       // 调用 callback 返回建议列表的数据
       cb(searchPoi);
     },
     handleSelect(item) {
-//      console.log(item.value);
-      this.getListPOI(item.value);
-      this.$emit('gethouse',this.emitData)
+      this.getListPOI(item.title).then((res,err)=>{
+        this.$emit('gethouse',res)
+      });
     },
     handleIconClick() {
-//      console.log(this.searchinfo);
-      this.$emit('gethouse',this.emitData)
+      this.getListPOI(this.searchinfo).then((res,err)=>{
+        this.$emit('gethouse',res)
+      });
     },
     async getListPOI(inputVal) {
       if (inputVal === '') {
-        return false;
+        return false
       }
-      this.searchPoi.length = 0;
       try {
-        const res = await getAll(inputVal);
-        this.emitData = res
+        const res = await getAll(inputVal)
+        return res
+      } catch (err) {
+        console.log("请求失败", err);
+      }
+    },
+    async getListPOIWatcher(inputVal) {
+      if (inputVal === '') {
+        return false
+      }
+      try {
+        const res = await getAll(inputVal)
         if (this.searchinfo === inputVal) { // 关键代码 避免先请求后返回问题，确保给列表赋值是以当前输入的值为参数的
           if (res.results) {
-            let data = res.results;
+            let data = res.results
             if (data.length === 0) {
-              this.searchPoi = [];
+              this.searchPoi = []
             } else { // 有结果
               Array.from(data).map((item,index)=>{
                 this.searchPoi.push({'title':item.title,'community_name':item.community_name})
               })
             }
           } else {
-            this.searchPoi = [];
+            this.searchPoi = []
           }
         }
       } catch (err) {

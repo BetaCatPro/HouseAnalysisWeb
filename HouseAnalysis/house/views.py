@@ -39,7 +39,7 @@ class HouseListViewSet(CacheResponseMixin, mixins.ListModelMixin, mixins.Retriev
     filter_backends = (DjangoFilterBackend, filters.SearchFilter, filters.OrderingFilter)
     filter_fields = ('price',)
     search_fields = ('title', 'region', 'community_name')
-    ordering_fields = ('price', 'unit_price')
+    ordering_fields = ('price', 'unit_price','construction_area')
 
     def retrieve(self, request, *args, **kwargs):
         instance = self.get_object()
