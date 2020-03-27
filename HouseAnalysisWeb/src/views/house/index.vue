@@ -14,7 +14,7 @@
     </el-row>
     <el-row style="margin-left: 10px">
       <el-col :span="18">
-        <div class="title">共找到 <span>{{ pagenums }}</span> 套成都二手房</div>
+        <div class="title">共找到 <span>{{ housePaginationData.totalNumber }}</span> 套成都二手房</div>
         <ul class="houselist">
           <li class="houseitem" v-for="house in houselist" :key="house.id">
             <router-link target="_blank" :to="{path:'/show/houseinfo',query: {id: house.id}}">
@@ -42,30 +42,38 @@
     </el-row>
     <el-row style="height: 100px;">
       <div class="commpage">
-        <el-pagination
-          background
-          :page-size=30
-          layout="prev, pager, next"
-          :total="pagenums">
-        </el-pagination>
+        <pagination :paginationData="housePaginationData"></pagination>
       </div>
     </el-row>
   </div>
 </template>
 
 <script>
-  import { getOrderHouse } from '@/api/charts.js'
+import { getAll, getOrderHouse } from '@/api/charts.js'
 import Search from '@/components/Search'
+import Pagination from '@/components/Pagination'
+
 export default {
   data() {
     return {
       pagenums: 0,
       houselist: [],
       activeIndex: '1',
+      value: '',
+      housePaginationData: {
+        pageSize: 30,
+        currentPage: 1,
+        totalNumber: 0,
+        handleCurrentChange: psize => {
+          this.housePaginationData.currentPage = psize
+          this.handleClick(this.value,psize)
+        }
+      }
     }
   },
   components: {
-    Search
+    Search,
+    Pagination
   },
   filters: {
     parseArray: function(value) {
@@ -80,16 +88,28 @@ export default {
   },
   methods: {
     handleSelect(key, keyPath) {
+      this.housePaginationData.currentPage = 1
       const tags = ['','price','unit_prcie','area']
       getOrderHouse(tags[key-1]).then((res,err)=>{
-        this.pagenums = res.count
+        this.housePaginationData.totalNumber = res.count
         this.houselist = res.results
       })
     },
     gethouse(data) {
-      let totalData = data
-      this.pagenums = totalData.count
+      let totalData = data.res
+      this.value = data.value
+      this.housePaginationData.totalNumber = totalData.count
       this.houselist = totalData.results
+    },
+    handleClick(inputVal,page) {
+      console.log(inputVal,page)
+      try {
+        getAll(inputVal,page).then((res,err)=>{
+          this.houselist = res.results
+        })
+      } catch (err) {
+        console.log("请求失败", err);
+      }
     }
   }
 }

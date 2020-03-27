@@ -20,9 +20,9 @@ export function getOrderHouse(methods,params) {
   })
 }
 
-export function getAll(community,params) {
+export function getAll(community,num,params) {
   return request({
-    url: '/all_house/?search='+community,
+    url: '/all_house/?search='+community+'&page='+num,
     method: 'get',
     params
   })

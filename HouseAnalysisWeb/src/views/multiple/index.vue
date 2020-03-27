@@ -6,7 +6,7 @@
     </div>
     <el-row :gutter="5">
       <el-col :xs="24" :sm="16" :lg="18">
-        <table-list :community="community" :pagenum="pagenum" @closeWraper="closeWraper" />
+        <table-list :community="community" :pagenum="pagenum" :rid="rid" @closeWraper="closeWraper" />
       </el-col>
       <el-col :xs="24" :sm="8" :lg="6">
         <box-card :communityRange="communityRange" />
@@ -28,7 +28,8 @@ export default {
       closed: false,
       pagenum: 0,
       community: [],
-      communityRange: []
+      communityRange: [],
+      rid: 0
     }
   },
   components: {
@@ -42,6 +43,7 @@ export default {
         this.community.length = 0
 //        页码
         this.pagenum = res.count
+        this.rid = id
         Array.from(res.results).map((item,index)=>{
           this.community.push({reg:item.region.region,name:item.name,number:item.region.num,price:parseFloat(item.mean_unit_price)})
         })

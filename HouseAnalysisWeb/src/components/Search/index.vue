@@ -50,7 +50,7 @@ export default {
   beforeCreate() {
     getAllHouse('/all_house').then((res,err)=>{
       console.log(res)
-      this.$emit('gethouse',res)
+      this.$emit('gethouse',{'res':res,'value':this.searchinfo})
     })
   },
   methods: {
@@ -61,12 +61,12 @@ export default {
     },
     handleSelect(item) {
       this.getListPOI(item.title).then((res,err)=>{
-        this.$emit('gethouse',res)
+        this.$emit('gethouse',{'res':res,'value':this.searchinfo})
       });
     },
     handleIconClick() {
       this.getListPOI(this.searchinfo).then((res,err)=>{
-        this.$emit('gethouse',res)
+        this.$emit('gethouse',{'res':res,'value':this.searchinfo})
       });
     },
     async getListPOI(inputVal) {
@@ -74,7 +74,7 @@ export default {
         return false
       }
       try {
-        const res = await getAll(inputVal)
+        const res = await getAll(inputVal,1)
         return res
       } catch (err) {
         console.log("请求失败", err);
@@ -85,7 +85,7 @@ export default {
         return false
       }
       try {
-        const res = await getAll(inputVal)
+        const res = await getAll(inputVal,1)
         if (this.searchinfo === inputVal) { // 关键代码 避免先请求后返回问题，确保给列表赋值是以当前输入的值为参数的
           if (res.results) {
             let data = res.results

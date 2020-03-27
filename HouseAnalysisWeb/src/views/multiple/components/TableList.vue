@@ -27,7 +27,7 @@
                   <span>{{ props.row.community_name }}</span>
                 </el-form-item>
                 <el-form-item label="区划">
-                  <span>{{ props.row.region }}</span>
+                  <span>{{ props.row.region.replace(/\[|\]|'/g,'').split(',').join('-') }}</span>
                 </el-form-item>
                 <el-form-item label="户型">
                   <span>{{ props.row.type }}</span>
@@ -74,12 +74,15 @@
           </el-table-column>
         </el-table>
         <div class="pages">
-          <el-pagination
-            background
-            :page-size=30
-            layout="prev, pager, next"
-            :total="pagenums">
-          </el-pagination>
+          <!--<el-pagination-->
+            <!--background-->
+            <!--:page-size="housePaginationData.pageSize"-->
+            <!--:current-page="housePaginationData.currentPage"-->
+            <!--layout="prev, pager, next"-->
+            <!--:total="housePaginationData.totalNumber"-->
+            <!--@current-change="housePaginationData.handleCurrentChange">-->
+          <!--</el-pagination>-->
+          <pagination :paginationData="housePaginationData"></pagination>
         </div>
       </div>
     </transition>
@@ -122,9 +125,11 @@
       <div class="commpage">
         <el-pagination
           background
-          :page-size=30
+          :page-size="commPaginationData.pageSize"
+          :current-page="commPaginationData.currentPage"
           layout="prev, pager, next"
-          :total="pagenum">
+          :total="pagenum"
+          @current-change="commPaginationData.handleCurrentChange">
         </el-pagination>
       </div>
     </div>
@@ -132,28 +137,58 @@
 </template>
 
 <script>
-import { getAll } from '@/api/charts.js'
+  import Pagination from '@/components/Pagination'
+import { getAll, getCommunityInfo } from '@/api/charts.js'
 import resize from './mixins/resize'
 export default {
   mixins: [resize],
-  props: ['community','pagenum'],
+  props: ['community','pagenum','rid'],
   data() {
     return {
       isClosed: false,
+      row: '',
       communities: [],
-      commpagenums: 0,
       houseData: [],
-      pagenums: 0,
-      hasData: false
+      hasData: false,
+      commPaginationData: {
+        pageSize: 30,
+        currentPage: 1,
+        totalNumber: this.pagenum,
+        handleCurrentChange: psize => {
+          console.log(this.rid)
+          getCommunityInfo({rid:this.rid,page:psize}).then((res,err)=>{
+            this.community.length = 0
+//        页码
+            this.pagenum = res.count
+            Array.from(res.results).map((item,index)=>{
+              this.community.push({reg:item.region.region,name:item.name,number:item.region.num,price:parseFloat(item.mean_unit_price)})
+            })
+          })
+        }
+      },
+      housePaginationData: {
+        pageSize: 30,
+        currentPage: 1,
+        totalNumber: 0,
+        handleCurrentChange: psize => {
+          this.housePaginationData.currentPage = psize
+          this.handleClick(this.row,psize)
+        }
+      }
     }
   },
+  components: {
+    Pagination
+  },
   methods: {
-    async handleClick(row) {
+    async handleClick(row,page=1) {
+//      记录当前区划
+      this.row = row
       this.isClosed = true
       this.$emit('closeWraper',this.isClosed)
       this.hasData = false
-      let houseData = await getAll(row.name)
-      this.pagenums = houseData.count
+      let houseData = await getAll(row.name,page)
+      this.housePaginationData.totalNumber = houseData.count
       this.houseData.length = 0
       Array.from(houseData.results).map((item,index)=>{
         this.houseData.push({
