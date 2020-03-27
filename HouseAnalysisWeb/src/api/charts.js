@@ -3,9 +3,9 @@ import request from '@/utils/request'
 /**
  * @param send data
  */
-export function getAllHouse(params) {
+export function getAllHouse(url,params) {
   return request({
-    url: '/all_house',
+    url: url,
     method: 'get',
     params
   })

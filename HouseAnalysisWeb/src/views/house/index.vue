@@ -12,28 +12,30 @@
         </el-menu>
       </el-col>
     </el-row>
-    <el-row style="margin-left: 20px">
+    <el-row style="margin-left: 10px">
       <el-col :span="18">
         <div class="title">共找到 <span>{{ pagenums }}</span> 套成都二手房</div>
         <ul class="houselist">
           <li class="houseitem" v-for="house in houselist" :key="house.id">
-              <div class="leftimg" :style="{'background': 'url('+ house.image_urls.match(/'(.+?)'/g)[0].replace(/\'/g,'') +') no-repeat cover'}"></div>
-              <div class="rightinfo">
-                <router-link target="_blank" :to="{path:'/show/houseinfo',query: {id: house.id}}">
-                  <p>{{ house.title }}</p>
-                </router-link>
-                <div class="price">
-                  <span>
-                    {{ house.price }} <i>万</i>
-                  </span>
-                  <span>
-                    单价{{ house.unit_price }}元/平米
-                  </span>
-                </div>
-                <div><i class="el-icon-location"></i>{{ house.community_name }} | {{ house.region | parseArray }}</div>
-                <div><i class="el-icon-arrow-right"></i>{{ house.type }} | {{ house.construction_area }} | {{ house.orientation }} | {{ house.decoration }}</div>
-                <div><i class="el-icon-time"></i>{{ house.elevator }} | {{ house.floor }} | {{ house.purposes }}</div>
+            <router-link target="_blank" :to="{path:'/show/houseinfo',query: {id: house.id}}">
+              <div class="leftimg" :style="{background: 'url('+ house.image_urls.match(/'(.+?)'/g)[0].replace(/\'/g,'') +') no-repeat',backgroundSize:'cover'}"></div>
+            </router-link>
+            <div class="rightinfo">
+              <router-link target="_blank" :to="{path:'/show/houseinfo',query: {id: house.id}}">
+                <p>{{ house.title }}</p>
+              </router-link>
+              <div class="price">
+                <span>
+                  {{ house.price }} <i>万</i>
+                </span>
+                <span>
+                  单价{{ house.unit_price }}元/平米
+                </span>
               </div>
+              <div><i class="el-icon-location"></i>{{ house.community_name }} | {{ house.region | parseArray }}</div>
+              <div><i class="el-icon-arrow-right"></i>{{ house.type }} | {{ house.construction_area }} | {{ house.orientation }} | {{ house.decoration }}</div>
+              <div><i class="el-icon-time"></i>{{ house.elevator }} | {{ house.floor }} | {{ house.purposes }}</div>
+            </div>
           </li>
         </ul>
       </el-col>
@@ -130,6 +132,7 @@ export default {
       float: left;
       width: 232px;
       height: 100%;
+      cursor: pointer;
     }
     .rightinfo {
       float: right;

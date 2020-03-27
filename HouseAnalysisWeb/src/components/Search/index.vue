@@ -1,6 +1,6 @@
 <template>
   <el-row>
-    <el-col :span="24">
+    <el-col :xs="24" :sm="24" :md="24" :lg="24" :xl="24">
       <div class="searchbox">
         <el-autocomplete
           popper-class="my-autocomplete"
@@ -47,8 +47,8 @@ export default {
       }, 300);
     }
   },
-  mounted() {
-    getAllHouse().then((res,err)=>{
+  beforeCreate() {
+    getAllHouse('/all_house').then((res,err)=>{
       console.log(res)
       this.$emit('gethouse',res)
     })

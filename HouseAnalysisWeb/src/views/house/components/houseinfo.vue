@@ -1,180 +1,400 @@
 <template>
-  <div id='app'>
+  <div class="information">
     <el-row>
-      <el-col span="24">
-        <div class="searchbox">
-          <el-autocomplete
-            popper-class="my-autocomplete"
-            v-model="state3"
-            :fetch-suggestions="querySearch"
-            placeholder="请输入内容"
-            @select="handleSelect">
-            <i
-              class="el-icon-edit el-input__icon"
-              slot="suffix"
-              @click="handleIconClick">
-            </i>
-            <template slot-scope="props">
-              <div class="name">{{ props.item.value }}</div>
-              <span class="addr">{{ props.item.address }}</span>
-            </template>
-          </el-autocomplete>
+      <el-col :xs="24" :sm="24" :md="24" :lg="24" :xl="24" style="background: #F5F5F6;">
+        <div class="title">
+          <h1>{{ houseDetail.title }}</h1>
+          <div>{{ houseDetail.title }}</div>
         </div>
       </el-col>
     </el-row>
     <el-row>
-      <el-col :span="14">
+      <el-col :xs="24" :sm="24" :md="24" :lg="24" :xl="24" style="padding-left: 50px">
         <div class="houseinfo">
           <div class="img">
-            <div class="title"></div>
             <div class="big">
-              <el-carousel height="150px">
-                <el-carousel-item v-for="item in 4" :key="item">
-                  <h3>{{ item }}</h3>
+              <el-carousel height="400px" ref="carousel">
+                <el-carousel-item v-for="(item,index) in imgs" :key="item" name="index">
+                  <div class="innerimg"
+                       :style="{background: 'url('+ item +') no-repeat',backgroundSize:'cover'}"
+                       ref="bigimg"></div>
                 </el-carousel-item>
               </el-carousel>
             </div>
             <div class="small">
               <ul>
-                <li><img src="" alt=""></li>
-                <li><img src="" alt=""></li>
-                <li><img src="" alt=""></li>
-                <li><img src="" alt=""></li>
-                <li><img src="" alt=""></li>
+                <li v-for="(img,index) in imgs" @click="setActiveItemC(index)"><img :src="img" alt="" class="active"></li>
               </ul>
             </div>
           </div>
           <div class="info">
-            <div class="top"></div>
-            <div class="bottom"></div>
+            <div class="price">
+              <span class="total">{{ houseDetail.price }}</span>
+              <span class="unit"><span>万</span></span>
+              <div class="text">
+                <div class="unitPrice">
+                  <span class="unitPriceValue" style="">{{ houseDetail.unit_price }}<i style="">元/平米</i></span>
+                </div>
+              </div>
+            </div>
+            <div class="house">
+              <div class="room">
+                <div class="mainInfo">{{ houseDetail.type }}</div>
+                <div class="subInfo">{{ houseDetail.floor }}</div>
+              </div>
+              <div class="type">
+                <div class="mainInfo" title="西北">{{ houseDetail.orientation }}</div>
+                <div class="subInfo">{{ houseDetail.decoration }}</div>
+              </div>
+              <div class="area">
+                <div class="mainInfo">{{ houseDetail.construction_area }}平米</div>
+                <div class="subInfo"></div>
+              </div>
+            </div>
+            <div class="aroundInfo">
+              <div class="communityName">
+                <i></i>
+                <span class="label">小区名称</span>
+                <span class="infor">{{ houseDetail.community_name }}</span>
+              </div>
+              <div class="detail">
+                <i></i>
+                <span class="label">所在区域</span>
+                <span class="infor">{{ houseDetail.region | parseArray }}</span>
+              </div>
+              <div class="detail">
+                <i></i>
+                <span class="label">电梯情况</span>
+                <span class="infor">{{ houseDetail.elevator }}</span>
+              </div>
+              <div class="detail">
+                <i></i>
+                <span class="label">房屋用途</span>
+                <span class="infor">{{ houseDetail.purposes }}</span>
+              </div>
+              <div class="detail">
+                <i></i>
+                <span class="label">挂牌时间</span>
+                <span class="infor">{{ houseDetail.release_date }}</span>
+              </div>
+              <div class="detail">
+                <i></i>
+                <span class="label">建筑结构</span>
+                <span class="infor">{{ houseDetail.house_structure }}</span>
+              </div>
+              <div class="detail">
+                <i></i>
+                <span class="label">房源来源</span>
+                <a class="infor" style="color: red;">查看</a>
+              </div>
+            </div>
           </div>
         </div>
       </el-col>
-      <el-col :span="10">
-        <div class="map"></div>
+    </el-row>
+    <el-row>
+      <el-col :xs="24" :sm="24" :md="24" :lg="24" :xl="24" style="padding:10px 0 0 50px;">
+        <h1 class="zb">周边配套</h1>
+        <div class="map">
+        </div>
       </el-col>
     </el-row>
   </div>
 </template>
 
 <script>
+  import { getAllHouse } from '@/api/charts.js'
   export default {
     data() {
       return {
-        restaurants: [],
-        state3: ''
-      };
-    },
-    methods: {
-      querySearch(queryString, cb) {
-        var restaurants = this.restaurants;
-        var results = queryString ? restaurants.filter(this.createFilter(queryString)) : restaurants;
-        // 调用 callback 返回建议列表的数据
-        cb(results);
-      },
-      createFilter(queryString) {
-        return (restaurant) => {
-          return (restaurant.value.toLowerCase().indexOf(queryString.toLowerCase()) === 0);
-        };
-      },
-      loadAll() {
-        return [
-          { "value": "三全鲜食（北新泾店）", "address": "长宁区新渔路144号" },
-          { "value": "Hot honey 首尔炸鸡（仙霞路）", "address": "上海市长宁区淞虹路661号" },
-          { "value": "新旺角茶餐厅", "address": "上海市普陀区真北路988号创邑金沙谷6号楼113" },
-          { "value": "泷千家(天山西路店)", "address": "天山西路438号" },
-          { "value": "胖仙女纸杯蛋糕（上海凌空店）", "address": "上海市长宁区金钟路968号1幢18号楼一层商铺18-101" },
-          { "value": "贡茶", "address": "上海市长宁区金钟路633号" },
-          { "value": "豪大大香鸡排超级奶爸", "address": "上海市嘉定区曹安公路曹安路1685号" },
-          { "value": "茶芝兰（奶茶，手抓饼）", "address": "上海市普陀区同普路1435号" },
-          { "value": "十二泷町", "address": "上海市北翟路1444弄81号B幢-107" },
-          { "value": "星移浓缩咖啡", "address": "上海市嘉定区新郁路817号" },
-          { "value": "阿姨奶茶/豪大大", "address": "嘉定区曹安路1611号" },
-          { "value": "新麦甜四季甜品炸鸡", "address": "嘉定区曹安公路2383弄55号" },
-          { "value": "Monica摩托主题咖啡店", "address": "嘉定区江桥镇曹安公路2409号1F，2383弄62号1F" },
-          { "value": "浮生若茶（凌空soho店）", "address": "上海长宁区金钟路968号9号楼地下一层" },
-          { "value": "NONO JUICE  鲜榨果汁", "address": "上海市长宁区天山西路119号" },
-          { "value": "CoCo都可(北新泾店）", "address": "上海市长宁区仙霞西路" },
-          { "value": "快乐柠檬（神州智慧店）", "address": "上海市长宁区天山西路567号1层R117号店铺" },
-          { "value": "Merci Paul cafe", "address": "上海市普陀区光复西路丹巴路28弄6号楼819" },
-          { "value": "猫山王（西郊百联店）", "address": "上海市长宁区仙霞西路88号第一层G05-F01-1-306" },
-          { "value": "枪会山", "address": "上海市普陀区棕榈路" },
-          { "value": "纵食", "address": "元丰天山花园(东门) 双流路267号" },
-          { "value": "钱记", "address": "上海市长宁区天山西路" },
-          { "value": "壹杯加", "address": "上海市长宁区通协路" },
-          { "value": "唦哇嘀咖", "address": "上海市长宁区新泾镇金钟路999号2幢（B幢）第01层第1-02A单元" },
-          { "value": "爱茜茜里(西郊百联)", "address": "长宁区仙霞西路88号1305室" },
-          { "value": "爱茜茜里(近铁广场)", "address": "上海市普陀区真北路818号近铁城市广场北区地下二楼N-B2-O2-C商铺" },
-          { "value": "鲜果榨汁（金沙江路和美广店）", "address": "普陀区金沙江路2239号金沙和美广场B1-10-6" },
-          { "value": "开心丽果（缤谷店）", "address": "上海市长宁区威宁路天山路341号" },
-          { "value": "超级鸡车（丰庄路店）", "address": "上海市嘉定区丰庄路240号" },
-          { "value": "妙生活果园（北新泾店）", "address": "长宁区新渔路144号" },
-          { "value": "香宜度麻辣香锅", "address": "长宁区淞虹路148号" },
-          { "value": "凡仔汉堡（老真北路店）", "address": "上海市普陀区老真北路160号" },
-          { "value": "港式小铺", "address": "上海市长宁区金钟路968号15楼15-105室" },
-          { "value": "蜀香源麻辣香锅（剑河路店）", "address": "剑河路443-1" },
-          { "value": "北京饺子馆", "address": "长宁区北新泾街道天山西路490-1号" },
-          { "value": "饭典*新简餐（凌空SOHO店）", "address": "上海市长宁区金钟路968号9号楼地下一层9-83室" },
-          { "value": "焦耳·川式快餐（金钟路店）", "address": "上海市金钟路633号地下一层甲部" },
-          { "value": "动力鸡车", "address": "长宁区仙霞西路299弄3号101B" },
-          { "value": "浏阳蒸菜", "address": "天山西路430号" },
-          { "value": "四海游龙（天山西路店）", "address": "上海市长宁区天山西路" },
-          { "value": "樱花食堂（凌空店）", "address": "上海市长宁区金钟路968号15楼15-105室" },
-          { "value": "壹分米客家传统调制米粉(天山店)", "address": "天山西路428号" },
-          { "value": "福荣祥烧腊（平溪路店）", "address": "上海市长宁区协和路福泉路255弄57-73号" },
-          { "value": "速记黄焖鸡米饭", "address": "上海市长宁区北新泾街道金钟路180号1层01号摊位" },
-          { "value": "红辣椒麻辣烫", "address": "上海市长宁区天山西路492号" },
-          { "value": "(小杨生煎)西郊百联餐厅", "address": "长宁区仙霞西路88号百联2楼" },
-          { "value": "阳阳麻辣烫", "address": "天山西路389号" },
-          { "value": "南拳妈妈龙虾盖浇饭", "address": "普陀区金沙江路1699号鑫乐惠美食广场A13" }
-        ];
-      },
-      handleSelect(item) {
-        console.log(item);
-      },
-      handleIconClick(ev) {
-        console.log(ev);
+        houseDetail: {},
+        imgs:[]
       }
     },
-    mounted() {
-      this.restaurants = this.loadAll();
+    filters: {
+      parseArray: function(value) {
+        if (!value) return ''
+        return value.replace(/\[|\]|'/g,'').split(',').join('-')
+      }
+    },
+    created() {
+      /*
+      {
+        "id": 1,
+        "title": "好方出售户型房子 采光好 。。。。。",
+        "price": "102.0",
+        "unit_price": "10933.6",
+        "community_name": "新绿苑",
+        "region": "['成华', '驷马桥']",
+        "type": "3室2厅1卫",
+        "construction_area": "93.29",
+        "orientation": "北",
+        "decoration": "毛坯",
+        "floor": "中楼层 (共6层)",
+        "elevator": "无",
+        "purposes": "普通住宅",
+        "release_date": "2018-09-27",
+        "house_structure": "钢混结构",
+        "image_urls": "['https://vrlab-image4.ljcdn.com/release/auto3dhd/52e7fb5cb2dc8f97e711541d134d6722/screenshot/1551425211_0/pc0_jeU0YM660.jpg?imageMogr2/quality/70/thumbnail/1024x', 'https://ke-image.ljcdn.com/510100-inspection/prod-86ca45e5-25be-4426-a422-116a1953ffe5.jpg!m_fill,w_120,h_80,f_jpg?from=ke.com', 'https://ke-image.ljcdn.com/hdic-frame/prod-93f2b4da-2322-4ea7-98de-282292f1fec7.png!m_fill,w_120,h_80,f_jpg?from=ke.com', 'https://ke-image.ljcdn.com/510100-inspection/prod-7566368e-a8d3-4c01-b689-d878d9745f58.jpg!m_fill,w_120,h_80,f_jpg?from=ke.com', 'https://ke-image.ljcdn.com/510100-inspection/prod-09213814-7ef1-4432-ac64-e343119f4439.jpg!m_fill,w_120,h_80,f_jpg?from=ke.com', 'https://ke-image.ljcdn.com/510100-inspection/prod-4cb3f159-5478-4370-a971-1ea7405bb31b.jpg!m_fill,w_120,h_80,f_jpg?from=ke.com']",
+        "from_url": "https://cd.ke.com/ershoufang/18122017710105505565.html",
+        "idi": 0,
+        "lat": "30.702538520",
+        "lng": "104.094544000"
+    }
+    */
+      const id = this.$route.query.id
+      getAllHouse('/all_house/'+id).then((res,err)=>{
+        this.houseDetail = res
+        res.image_urls.match(/'(.+?)'/g).map((item,index)=>{
+          this.imgs.push(item.replace(/\'/g,''))
+        })
+      })
+    },
+    methods: {
+      setActiveItemC(index){
+        this.$refs.carousel.setActiveItem(index)
+      }
     }
   }
 </script>
 
 <style lang="scss">
-  .my-autocomplete {
-    li {
-      line-height: normal;
-      padding: 7px;
+.title {
+  height: 67px;
+  width: 100%;
+  padding-left:70px;
+  margin-bottom:40px;
 
-      .name {
-        text-overflow: ellipsis;
-        overflow: hidden;
+  h1 {
+    width: 100%;
+    height: 29px;
+    font-size:26px;
+    font-weight:700;
+    line-height:29px;
+  }
+
+  div {
+    width: 100%;
+    height: 17px;
+    font-size: 14px;
+    line-height: 17px;
+    color: #AAA;
+    margin-top: 15px;
+  }
+}
+
+.houseinfo {
+  margin-top:21px;
+  height: 500px;
+  width: 1150px;
+
+  .img {
+    float: left;
+    width: 710px;
+    height: 100%;
+
+    .big {
+      width: 100%;
+      height: 400px;
+
+      .innerimg {
+        width: 100%;
+        height: 100%;
       }
-      .addr {
-        font-size: 12px;
-        color: #b4b4b4;
+    }
+
+    .small {
+      width: 100%;
+      height:100px;
+      overflow: hidden;
+
+      ul,li {
+        margin: 0;
+        padding: 0;
       }
 
-      .highlighted .addr {
-        color: #ddd;
+      li {
+        list-style: none;
+        float: left;
+        height: 90px;
+        width: 120px;
+        cursor: pointer;
+        margin:5px 10px;
+
+        img {
+          width: 100%;
+          height: 100%;
+          opacity: .5;
+          filter: alpha(opacity=50);
+          border: 0;
+          vertical-align: top;
+        }
+        img:hover {
+          opacity: 1;
+          filter: alpha(opacity=100);
+        }
       }
     }
   }
-  .el-carousel__item h3 {
-    color: #475669;
-    font-size: 14px;
-    opacity: 0.75;
-    line-height: 150px;
-    margin: 0;
-  }
 
-  .el-carousel__item:nth-child(2n) {
-    background-color: #99a9bf;
-  }
+  .info {
+    float: right;
+    width: 380px;
+    height: 100%;
+    border-bottom:1px solid #bfa;
 
-  .el-carousel__item:nth-child(2n+1) {
-    background-color: #d3dce6;
+    .price {
+      font-size: 14px;
+      font-family: "Hiragino Sans GB","Microsoft Yahei UI","Microsoft Yahei","微软雅黑",'Segoe UI',Tahoma,"宋体b8b\4f53",SimSun,sans-serif;
+      text-rendering: optimizeLegibility;
+      -webkit-font-smoothing: antialiased;
+      color: #394043;
+      user-select: none;
+      line-height: 1;
+      margin: 0;
+      padding: 0;
+      position: relative;
+      height: 49px;
+
+      .total {
+        display: inline-block;
+        font-size: 46px;
+        line-height: 46px;
+        color: #e4393c;
+        font-weight: bold;
+        letter-spacing: -1px;
+        max-width: 165px;
+        overflow: hidden;
+        text-overflow: ellipsis;
+        white-space: nowrap;
+      }
+
+      .unit {
+        user-select: none;
+        line-height: 1;
+        display: inline-block;
+        font-size: 16px;
+        color: #e4393c;
+        height: 37px;
+        vertical-align: 6px;
+      }
+
+      .text {
+        margin: 0;
+        padding: 0;
+        font-size: 12px;
+        color: #333333;
+        display: inline-block;
+        margin-left: 15px;
+        vertical-align: 6px;
+
+        .unitPriceValue {
+          font-size: 16px;
+          font-weight: bold;
+          color: #394043;
+          white-space: nowrap;
+        }
+      }
+      }
+
+    .house {
+      box-sizing: border-box;
+      margin-top: 22px;
+      width: 100%;
+      border-top: 1px solid #eeeeee;
+      border-bottom: 1px solid #eeeeee;
+      padding: 30px 0;
+      *zoom: 1;
+
+      .mainInfo {
+        font-size: 20px;
+        font-weight: bold;
+        color: #333333;
+        overflow: hidden;
+        text-overflow: ellipsis;
+        -o-text-overflow: ellipsis;
+        white-space: nowrap;
+      }
+
+      .subInfo {
+        margin-top: 8px;
+        font-size: 12px;
+        color: #394043;
+        overflow: hidden;
+        text-overflow: ellipsis;
+        -o-text-overflow: ellipsis;
+        white-space: nowrap;
+      }
+
+      .room {
+        text-align: center;
+        float: left;
+        width: 33%;
+      }
+
+      .type {
+        text-align: center;
+        float: left;
+        width: 33%;
+      }
+
+      .area {
+        text-align: center;
+        float: left;
+        width: 33%;
+      }
+
+    }
+    .house:before,.house:after {
+      display: table;
+      content: "";
+    }
+    .house:after {
+      clear: both;
+    }
+
+
+    .aroundInfo {
+      padding: 24px 0;
+      line-height: 18px;
+      border-bottom: 1px solid #eeeeee;
+      font-size: 14px;
+
+      i {
+        display: inline-block;
+      }
+
+      .label {
+        color: #aeb0b1;
+        margin-right: 24px;
+      }
+
+      .infor {
+        color: #333333;
+      }
+
+      .detail {
+        margin-top: 14px;
+        white-space: nowrap;
+        overflow: hidden;
+        text-overflow: ellipsis;
+      }
+    }
   }
+}
+
+.zb {
+  width: 100%;
+  height: 29px;
+  font-size:26px;
+  font-weight:700;
+  line-height:29px;
+}
+
+.map {
+  border:1px solid #bfa;
+  margin-top:21px;
+  height: 500px;
+  width: 1150px;
+}
 </style>
