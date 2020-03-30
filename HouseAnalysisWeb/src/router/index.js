@@ -80,17 +80,17 @@ export const constantRoutes = [
     ]
   },
 
-  {
-    path: '/map',
-    component: Layout,
-    redirect: '/dashboard',
-    children: [{
-      path: 'map',
-      name: 'Map',
-      component: () => import('@/views/map/index'),
-      meta: { title: '地图找房', icon: 'wan_map' }
-    }]
-  },
+  // {
+  //   path: '/map',
+  //   component: Layout,
+  //   redirect: '/dashboard',
+  //   children: [{
+  //     path: 'map',
+  //     name: 'Map',
+  //     component: () => import('@/views/map/index'),
+  //     meta: { title: '地图找房', icon: 'wan_map' }
+  //   }]
+  // },
 
   {
     path: '/show',

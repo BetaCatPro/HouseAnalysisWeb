@@ -1,31 +1,36 @@
 <template>
   <div class="mapbox">
     <baidu-map :center="center" :zoom="zoom" :scroll-wheel-zoom="true" style="height:100vh" @ready="handler" @click="getClickInfo" ak="Qmz0VMtKw3uAI2GWClu9Q6iCnP2j2uH2">
-      <!-- 必须给容器指高度，不然地图将显示在一个高度为0的容器中，看不到 -->
-      <bml-navigation anchor="BMAP_ANCHOR_TOP_RIGHT"></bml-navigation>
-      <bml-geolocation anchor="BMAP_ANCHOR_BOTTOM_RIGHT" :showAddressBar="true" :autoLocation="true"></bml-geolocation>
-      <bml-city-list anchor="BMAP_ANCHOR_TOP_LEFT"></bml-city-list>
+      <bm-navigation anchor="BMAP_ANCHOR_TOP_RIGHT"></bm-navigation>
+      <bm-marker :position="center" :dragging="true" @click="infoWindowOpen">
+        <bm-info-window :show="show" @close="infoWindowClose" @open="infoWindowOpen">我爱北京天安门</bm-info-window>
+      </bm-marker>
     </baidu-map>
   </div>
 </template>
 <script>
   import BaiduMap from 'vue-baidu-map/components/map/Map.vue'
-  import {BmlNavigation, Bmlgeolocation, BmlCityList} from 'vue-baidu-map'
+  import { BmNavigation } from 'vue-baidu-map'
   export default {
     name: "mapbox",
     data() {
       return {
+        show: false,
         center: { lng: 0, lat: 0 }, //经纬度
         zoom: 13 //地图展示级别
       };
     },
     components: {
       BaiduMap,
-      BmlNavigation,
-      Bmlgeolocation,
-      BmlCityList
+      BmNavigation
     },
     methods: {
+      infoWindowClose () {
+        this.show = false
+      },
+      infoWindowOpen () {
+        this.show = true
+      },
       handler({ BMap, map }) {
         console.log(BMap, map);
         this.center.lng = 113.6313915479;

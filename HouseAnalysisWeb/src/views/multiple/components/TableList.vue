@@ -5,74 +5,78 @@
         <div class="close" @click="closeTable">
           <el-button type="primary" icon="el-icon-close"></el-button>
         </div>
-        <el-table
-          :data="houseData"
-          max-height="480"
-          :stripe=true
-          style="width: 100%"
-          v-if="hasData">
-          <el-table-column type="expand">
-            <template slot-scope="props">
-              <el-form label-position="left" inline class="demo-table-expand">
-                <el-form-item label="名称">
-                  <span>{{ props.row.title }}</span>
-                </el-form-item>
-                <el-form-item label="总价">
-                  <span>{{ props.row.price }}</span>
-                </el-form-item>
-                <el-form-item label="单价">
-                  <span>{{ props.row.unit_price }}</span>
-                </el-form-item>
-                <el-form-item label="小区名">
-                  <span>{{ props.row.community_name }}</span>
-                </el-form-item>
-                <el-form-item label="区划">
-                  <span>{{ props.row.region.replace(/\[|\]|'/g,'').split(',').join('-') }}</span>
-                </el-form-item>
-                <el-form-item label="户型">
-                  <span>{{ props.row.type }}</span>
-                </el-form-item>
-                <el-form-item label="建筑面积">
-                  <span>{{ props.row.construction_area }}</span>
-                </el-form-item>
-                <el-form-item label="朝向">
-                  <span>{{ props.row.orientation }}</span>
-                </el-form-item>
-                <el-form-item label="装修情况">
-                  <span>{{ props.row.decoration }}</span>
-                </el-form-item>
-                <el-form-item label="楼层">
-                  <span>{{ props.row.floor }}</span>
-                </el-form-item>
-                <el-form-item label="电梯">
-                  <span>{{ props.row.elevator }}</span>
-                </el-form-item>
-                <el-form-item label="房屋类型">
-                  <span>{{ props.row.purposes }}</span>
-                </el-form-item>
-                <el-form-item label="发布时间">
-                  <span>{{ props.row.release_date }}</span>
-                </el-form-item>
-                <el-form-item label="建筑结构">
-                  <span>{{ props.row.house_structure }}</span>
-                </el-form-item>
-              </el-form>
-            </template>
-          </el-table-column>
-          <el-table-column
-            label="房源名称"
-            prop="title"
-            width="320">
-          </el-table-column>
-          <el-table-column
-            label="小区名称"
-            prop="community_name">
-          </el-table-column>
-          <el-table-column
-            label="区划"
-            prop="region">
-          </el-table-column>
-        </el-table>
+        <div class="loadingwraper"
+             v-loading="loadingMask"
+             element-loading-background="rgb(255, 255, 255)"
+             element-loading-text="正在加载中"></div>
+          <el-table
+            :data="houseData"
+            max-height="480"
+            :stripe=true
+            style="width: 100%"
+            v-if="hasData">
+            <el-table-column type="expand">
+              <template slot-scope="props">
+                <el-form label-position="left" inline class="demo-table-expand">
+                  <el-form-item label="名称">
+                    <span>{{ props.row.title }}</span>
+                  </el-form-item>
+                  <el-form-item label="总价">
+                    <span>{{ props.row.price }}</span>
+                  </el-form-item>
+                  <el-form-item label="单价">
+                    <span>{{ props.row.unit_price }}</span>
+                  </el-form-item>
+                  <el-form-item label="小区名">
+                    <span>{{ props.row.community_name }}</span>
+                  </el-form-item>
+                  <el-form-item label="区划">
+                    <span>{{ props.row.region.replace(/\[|\]|'/g,'').split(',').join('-') }}</span>
+                  </el-form-item>
+                  <el-form-item label="户型">
+                    <span>{{ props.row.type }}</span>
+                  </el-form-item>
+                  <el-form-item label="建筑面积">
+                    <span>{{ props.row.construction_area }}</span>
+                  </el-form-item>
+                  <el-form-item label="朝向">
+                    <span>{{ props.row.orientation }}</span>
+                  </el-form-item>
+                  <el-form-item label="装修情况">
+                    <span>{{ props.row.decoration }}</span>
+                  </el-form-item>
+                  <el-form-item label="楼层">
+                    <span>{{ props.row.floor }}</span>
+                  </el-form-item>
+                  <el-form-item label="电梯">
+                    <span>{{ props.row.elevator }}</span>
+                  </el-form-item>
+                  <el-form-item label="房屋类型">
+                    <span>{{ props.row.purposes }}</span>
+                  </el-form-item>
+                  <el-form-item label="发布时间">
+                    <span>{{ props.row.release_date }}</span>
+                  </el-form-item>
+                  <el-form-item label="建筑结构">
+                    <span>{{ props.row.house_structure }}</span>
+                  </el-form-item>
+                </el-form>
+              </template>
+            </el-table-column>
+            <el-table-column
+              label="房源名称"
+              prop="title"
+              width="320">
+            </el-table-column>
+            <el-table-column
+              label="小区名称"
+              prop="community_name">
+            </el-table-column>
+            <el-table-column
+              label="区划"
+              prop="region">
+            </el-table-column>
+          </el-table>
         <div class="pages">
           <!--<el-pagination-->
             <!--background-->
@@ -137,6 +141,7 @@
 </template>
 
 <script>
+  import Vue from 'Vue'
   import Pagination from '@/components/Pagination'
 import { getAll, getCommunityInfo } from '@/api/charts.js'
 import resize from './mixins/resize'
@@ -145,6 +150,7 @@ export default {
   props: ['community','pagenum','rid'],
   data() {
     return {
+      loadingMask:true,
       isClosed: false,
       row: '',
       communities: [],
@@ -181,7 +187,22 @@ export default {
     Pagination
   },
   methods: {
+    loading() {
+      this.$nextTick(()=>{
+        this.loadingMask = Vue.prototype.$loading({
+          lock: true,
+          text: "Loading...",
+          fullscreen: false,
+          target: document.querySelector('.loadingwraper')
+        });
+      })
+    },
+    closeLoading() {
+      this.loadingMask.close()
+    },
     async handleClick(row,page=1) {
+      this.loadingMask = true
+//      this.loading()
 //      记录当前区划
       this.row = row
       this.isClosed = true
@@ -208,6 +229,8 @@ export default {
           "house_structure": item.house_structure,
         })
       })
+//      this.closeLoading()
+      this.loadingMask = false
       this.hasData = true
     },
     tableRowClassName({row, rowIndex}) {
@@ -223,7 +246,7 @@ export default {
       this.$emit('closeWraper',this.isClosed)
     }
   },
-  mounted() {
+  created() {
     this.communities = this.community
   }
 }
@@ -236,8 +259,8 @@ export default {
 
   .house {
     z-index: 999;
-    position: absolute;
-    top: -60px;
+    position: fixed;
+    top: 85px;
     left: 20%;
     width: 60%;
     height: 600px;
@@ -252,6 +275,15 @@ export default {
 
     .close {
       float: right;
+    }
+
+    .loadingwraper {
+      width: 100%;
+      top: 40px;
+      height: 560px;
+      float: left;
+      position: absolute;
+      /*z-index: 10000;*/
     }
 
     .pages {

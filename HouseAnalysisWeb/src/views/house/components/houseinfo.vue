@@ -92,70 +92,73 @@
         </div>
       </el-col>
     </el-row>
-    <el-row>
-      <el-col :xs="24" :sm="24" :md="24" :lg="24" :xl="24" style="padding:10px 0 0 50px;">
-        <h1 class="zb">周边配套</h1>
-        <div class="map">
-        </div>
-      </el-col>
-    </el-row>
   </div>
 </template>
 
 <script>
-  import { getAllHouse } from '@/api/charts.js'
-  export default {
-    data() {
-      return {
-        houseDetail: {},
-        imgs:[]
-      }
-    },
-    filters: {
-      parseArray: function(value) {
-        if (!value) return ''
-        return value.replace(/\[|\]|'/g,'').split(',').join('-')
-      }
-    },
-    created() {
-      /*
-      {
-        "id": 1,
-        "title": "好方出售户型房子 采光好 。。。。。",
-        "price": "102.0",
-        "unit_price": "10933.6",
-        "community_name": "新绿苑",
-        "region": "['成华', '驷马桥']",
-        "type": "3室2厅1卫",
-        "construction_area": "93.29",
-        "orientation": "北",
-        "decoration": "毛坯",
-        "floor": "中楼层 (共6层)",
-        "elevator": "无",
-        "purposes": "普通住宅",
-        "release_date": "2018-09-27",
-        "house_structure": "钢混结构",
-        "image_urls": "['https://vrlab-image4.ljcdn.com/release/auto3dhd/52e7fb5cb2dc8f97e711541d134d6722/screenshot/1551425211_0/pc0_jeU0YM660.jpg?imageMogr2/quality/70/thumbnail/1024x', 'https://ke-image.ljcdn.com/510100-inspection/prod-86ca45e5-25be-4426-a422-116a1953ffe5.jpg!m_fill,w_120,h_80,f_jpg?from=ke.com', 'https://ke-image.ljcdn.com/hdic-frame/prod-93f2b4da-2322-4ea7-98de-282292f1fec7.png!m_fill,w_120,h_80,f_jpg?from=ke.com', 'https://ke-image.ljcdn.com/510100-inspection/prod-7566368e-a8d3-4c01-b689-d878d9745f58.jpg!m_fill,w_120,h_80,f_jpg?from=ke.com', 'https://ke-image.ljcdn.com/510100-inspection/prod-09213814-7ef1-4432-ac64-e343119f4439.jpg!m_fill,w_120,h_80,f_jpg?from=ke.com', 'https://ke-image.ljcdn.com/510100-inspection/prod-4cb3f159-5478-4370-a971-1ea7405bb31b.jpg!m_fill,w_120,h_80,f_jpg?from=ke.com']",
-        "from_url": "https://cd.ke.com/ershoufang/18122017710105505565.html",
-        "idi": 0,
-        "lat": "30.702538520",
-        "lng": "104.094544000"
+//import BaiduMap from 'vue-baidu-map/components/map/Map.vue'
+//import {BmView, BmLocalSearch, BmCircle} from 'vue-baidu-map'
+import { getAllHouse } from '@/api/charts.js'
+
+export default {
+  data() {
+    return {
+      houseDetail: {},
+      imgs:[]
     }
-    */
-      const id = this.$route.query.id
-      getAllHouse('/all_house/'+id).then((res,err)=>{
-        this.houseDetail = res
-        res.image_urls.match(/'(.+?)'/g).map((item,index)=>{
-          this.imgs.push(item.replace(/\'/g,''))
-        })
+  },
+  filters: {
+    parseArray: function(value) {
+      if (!value) return ''
+      return value.replace(/\[|\]|'/g,'').split(',').join('-')
+    }
+  },
+//  components: {
+//    BaiduMap,
+//    BmView,
+//    BmLocalSearch
+//  },
+  created() {
+    /*
+    {
+      "id": 1,
+      "title": "好方出售户型房子 采光好 。。。。。",
+      "price": "102.0",
+      "unit_price": "10933.6",
+      "community_name": "新绿苑",
+      "region": "['成华', '驷马桥']",
+      "type": "3室2厅1卫",
+      "construction_area": "93.29",
+      "orientation": "北",
+      "decoration": "毛坯",
+      "floor": "中楼层 (共6层)",
+      "elevator": "无",
+      "purposes": "普通住宅",
+      "release_date": "2018-09-27",
+      "house_structure": "钢混结构",
+      "image_urls": "['https://vrlab-image4.ljcdn.com/release/auto3dhd/52e7fb5cb2dc8f97e711541d134d6722/screenshot/1551425211_0/pc0_jeU0YM660.jpg?imageMogr2/quality/70/thumbnail/1024x', 'https://ke-image.ljcdn.com/510100-inspection/prod-86ca45e5-25be-4426-a422-116a1953ffe5.jpg!m_fill,w_120,h_80,f_jpg?from=ke.com', 'https://ke-image.ljcdn.com/hdic-frame/prod-93f2b4da-2322-4ea7-98de-282292f1fec7.png!m_fill,w_120,h_80,f_jpg?from=ke.com', 'https://ke-image.ljcdn.com/510100-inspection/prod-7566368e-a8d3-4c01-b689-d878d9745f58.jpg!m_fill,w_120,h_80,f_jpg?from=ke.com', 'https://ke-image.ljcdn.com/510100-inspection/prod-09213814-7ef1-4432-ac64-e343119f4439.jpg!m_fill,w_120,h_80,f_jpg?from=ke.com', 'https://ke-image.ljcdn.com/510100-inspection/prod-4cb3f159-5478-4370-a971-1ea7405bb31b.jpg!m_fill,w_120,h_80,f_jpg?from=ke.com']",
+      "from_url": "https://cd.ke.com/ershoufang/18122017710105505565.html",
+      "idi": 0,
+      "lat": "30.702538520",
+      "lng": "104.094544000"
+  }
+  */
+    const id = this.$route.query.id
+    getAllHouse('/all_house/'+id).then((res,err)=>{
+      this.houseDetail = res
+//      this.nearby.center.lat = res.lat
+//      this.nearby.center.lng = res.lng
+      res.image_urls.match(/'(.+?)'/g).map((item,index)=>{
+        this.imgs.push(item.replace(/\'/g,''))
       })
-    },
-    methods: {
-      setActiveItemC(index){
-        this.$refs.carousel.setActiveItem(index)
-      }
+    })
+  },
+  methods: {
+    setActiveItemC(index){
+      this.$refs.carousel.setActiveItem(index)
     }
   }
+}
 </script>
 
 <style lang="scss">
@@ -391,10 +394,12 @@
   line-height:29px;
 }
 
-.map {
-  border:1px solid #bfa;
+
+.aroundContainer {
   margin-top:21px;
-  height: 500px;
-  width: 1150px;
+  .map {
+    height: 500px;
+    width: 1150px;
+  }
 }
 </style>

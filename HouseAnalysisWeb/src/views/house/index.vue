@@ -12,6 +12,11 @@
         </el-menu>
       </el-col>
     </el-row>
+    <div class="loadingwrapper"
+         v-loading="loading"
+         lock="true"
+         element-loading-background="rgb(255, 255, 255)"
+         element-loading-text="正在加载中"></div>
     <el-row style="margin-left: 10px">
       <el-col :span="18">
         <div class="title">共找到 <span>{{ housePaginationData.totalNumber }}</span> 套成都二手房</div>
@@ -56,6 +61,7 @@ import Pagination from '@/components/Pagination'
 export default {
   data() {
     return {
+      loading: true,
       pagenums: 0,
       houselist: [],
       activeIndex: '1',
@@ -88,18 +94,23 @@ export default {
   },
   methods: {
     handleSelect(key, keyPath) {
+      this.loading = true
       this.housePaginationData.currentPage = 1
-      const tags = ['','price','unit_prcie','area']
+      const tags = ['','price','unit_price','construction_area']
       getOrderHouse(tags[key-1]).then((res,err)=>{
         this.housePaginationData.totalNumber = res.count
         this.houselist = res.results
+        console.log(res.results)
+        this.loading = false
       })
     },
     gethouse(data) {
+      this.loading = true
       let totalData = data.res
       this.value = data.value
       this.housePaginationData.totalNumber = totalData.count
       this.houselist = totalData.results
+      this.loading = false
     },
     handleClick(inputVal,page) {
       console.log(inputVal,page)
@@ -120,6 +131,12 @@ export default {
   width: 100%;
   height: 100%;
   margin-left: 50px;
+
+  .loadingwrapper {
+    width: 100%;
+    height: 600px;
+    position: absolute;
+  }
 }
   .title {
     height: 55px;
