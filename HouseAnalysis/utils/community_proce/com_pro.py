@@ -30,8 +30,9 @@ for reg in region:
     mean_prices = []
     communities = []
     community = df[df['region']==reg]['community_name'].value_counts().index
+    community_num = df[df['region']==reg]['community_name'].value_counts().values
 
-    for comm in community:
+    for comm,num in zip(community,community_num):
         mean_price = df[df['region'] == reg][df['community_name'] == comm]['unit_price'].mean()
         mean_price = float(format(mean_price, '.3f'))
         mean_prices.append(mean_price)
@@ -43,6 +44,7 @@ for reg in region:
         CommunityModel.title = '小区信息'
         CommunityModel.region = RegionModel[0]
         CommunityModel.name = comm
+        CommunityModel.num = num
         CommunityModel.mean_unit_price = mean_price
         CommunityModel.save()
 

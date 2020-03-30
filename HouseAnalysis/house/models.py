@@ -154,6 +154,7 @@ class Community(models.Model):
     title = models.CharField(max_length=12, verbose_name="接口info")
     region = models.ForeignKey(Region, on_delete=None,verbose_name="行政区划")
     name = models.CharField(max_length=30,verbose_name="小区名")
+    num = models.IntegerField(verbose_name="数量")
     mean_unit_price = models.DecimalField(max_digits=8, decimal_places=3, verbose_name="单价均价")
 
     class Meta:
