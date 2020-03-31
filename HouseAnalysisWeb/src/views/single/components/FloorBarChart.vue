@@ -1,5 +1,5 @@
 <template>
-  <div :class="className" :style="{height:height,width:width}" />
+  <div :class="className" :style="{height:height,width:width}" ref="flobar" />
 </template>
 
 <script>
@@ -30,9 +30,10 @@
       }
     },
     mounted() {
-      this.$nextTick(() => {
-        this.initChart()
-      })
+//      this.$nextTick(() => {
+//        this.initChart()
+//      })
+      window.addEventListener('scroll', this.scrollHandle)
     },
     beforeDestroy() {
       if (!this.chart) {
@@ -42,6 +43,14 @@
       this.chart = null
     },
     methods: {
+      scrollHandle(e) {
+        let elbar = this.$refs.flobar
+//        console.log('高度差',(elbar.getBoundingClientRect().top-document.documentElement.clientHeight)<-10)
+        if((elbar.getBoundingClientRect().top-document.documentElement.clientHeight)<-10) {
+          this.initChart()
+          window.removeEventListener('scroll', this.scrollHandle)
+        }
+      },
       initChart() {
         this.chart = echarts.init(this.$el, 'shine')
         let xAxisData = []
@@ -52,7 +61,7 @@
             xAxisData.push(item.floor+'层')
             num.push(item.num)
           })
-          this.$emit('hideloading2',false)
+          this.$emit('showchart8',false)
           this.chart.setOption({
             backgroundColor: '#eee',
 

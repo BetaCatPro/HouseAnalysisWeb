@@ -52,7 +52,7 @@
             xAxisData.push(item.layout)
             num.push(item.num)
           })
-          this.$emit('hideloading2',false)
+          this.$emit('showchart3',false)
           this.chart.setOption({
             backgroundColor: '#eee',
 

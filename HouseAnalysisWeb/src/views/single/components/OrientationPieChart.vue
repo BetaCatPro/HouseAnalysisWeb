@@ -1,5 +1,5 @@
 <template>
-  <div :class="className" :style="{height:height,width:width}" />
+  <div :class="className" :style="{height:height,width:width}" ref="oripie"/>
 </template>
 
 <script>
@@ -30,9 +30,10 @@
       }
     },
     mounted() {
-      this.$nextTick(() => {
-        this.initChart()
-      })
+//      this.$nextTick(() => {
+//        this.initChart()
+//      })
+      window.addEventListener('scroll', this.scrollHandle)
     },
     beforeDestroy() {
       if (!this.chart) {
@@ -42,6 +43,14 @@
       this.chart = null
     },
     methods: {
+      scrollHandle(e) {
+        let elbar = this.$refs.oripie
+//        console.log('高度差',(elbar.getBoundingClientRect().top-document.documentElement.clientHeight)<-10)
+        if((elbar.getBoundingClientRect().top-document.documentElement.clientHeight)<-10) {
+          this.initChart()
+          window.removeEventListener('scroll', this.scrollHandle)
+        }
+      },
       initChart() {
         this.chart = echarts.init(this.$el, 'macarons')
         let orientation = []
@@ -54,6 +63,7 @@
             number.push(item.num)
             data.push({value:item.num,name:item.orientation})
           })
+          this.$emit('showchart7',false)
 
           this.chart.setOption({
             title: {

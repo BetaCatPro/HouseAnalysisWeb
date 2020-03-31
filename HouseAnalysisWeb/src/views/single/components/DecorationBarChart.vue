@@ -52,7 +52,7 @@
             xAxisData.push(item.decoration)
             mean_unit_price.push(parseFloat(item.mean_unit_price))
           })
-          this.$emit('hideloading4',false)
+          this.$emit('showchart2',false)
           this.chart.setOption({
             backgroundColor: '#eee',
 

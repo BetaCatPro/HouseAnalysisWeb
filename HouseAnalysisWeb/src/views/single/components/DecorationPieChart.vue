@@ -26,7 +26,8 @@
     },
     data() {
       return {
-        chart: null
+        chart: null,
+        loading: true
       }
     },
     mounted() {
@@ -54,6 +55,8 @@
             number.push(item.num)
             data.push({value:item.num,name:item.decoration})
           })
+
+          this.$emit('showchart1',false)
 
           this.chart.setOption({
             backgroundColor: '#eee',

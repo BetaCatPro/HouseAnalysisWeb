@@ -1,5 +1,5 @@
 <template>
-  <div :class="className" :style="{height:height,width:width}" />
+  <div :class="className" :style="{height:height,width:width}" ref="conpie"/>
 </template>
 
 <script>
@@ -30,9 +30,10 @@ export default {
     }
   },
   mounted() {
-    this.$nextTick(() => {
-      this.initChart()
-    })
+//    this.$nextTick(() => {
+//      this.initChart()
+//    })
+    window.addEventListener('scroll', this.scrollHandle)
   },
   beforeDestroy() {
     if (!this.chart) {
@@ -42,6 +43,14 @@ export default {
     this.chart = null
   },
   methods: {
+    scrollHandle(e) {
+      let elbar = this.$refs.conpie
+//      console.log('高度差',(elbar.getBoundingClientRect().top-document.documentElement.clientHeight)<-10)
+      if((elbar.getBoundingClientRect().top-document.documentElement.clientHeight)<-10) {
+        this.initChart()
+        window.removeEventListener('scroll', this.scrollHandle)
+      }
+    },
     initChart() {
       this.chart = echarts.init(this.$el, 'light')
       let constructure = []
@@ -54,6 +63,7 @@ export default {
           number.push(item.num)
           data.push({value:item.num,name:item.constructure})
         })
+        this.$emit('showchart5',false)
         this.chart.setOption({
           title: {
             text: '建筑结构分布情况'

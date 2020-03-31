@@ -45,7 +45,7 @@ export default {
         this.pagenum = res.count
         this.rid = id
         Array.from(res.results).map((item,index)=>{
-          this.community.push({reg:item.region.region,name:item.name,number:item.region.num,price:parseFloat(item.mean_unit_price)})
+          this.community.push({reg:item.region.region,name:item.name,number:item.num,price:parseFloat(item.mean_unit_price)})
         })
       })
       this.communityRange.length = 0
