@@ -23,7 +23,7 @@
             </div>
             <div class="small">
               <ul>
-                <li v-for="(img,index) in imgs" @click="setActiveItemC(index)"><img :src="img" alt="" class="active"></li>
+                <li v-for="(img,index) in imgs" @click="setActiveItemC(index)"><img :src="img" alt="" class="active" :onerror="errorImg"></li>
               </ul>
             </div>
           </div>
@@ -104,7 +104,8 @@ export default {
   data() {
     return {
       houseDetail: {},
-      imgs:[]
+      imgs:[],
+      errorImg: 'this.src="' + require('../../../../assets/house_detail.png') + '"'
     }
   },
   filters: {
