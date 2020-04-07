@@ -13,11 +13,13 @@
         <div class="houseinfo">
           <div class="img">
             <div class="big">
-              <el-carousel height="400px" ref="carousel">
+              <el-carousel ref="carousel" height="400px">
                 <el-carousel-item v-for="(item,index) in imgs" :key="item" name="index">
-                  <div class="innerimg"
-                       :style="{background: 'url('+ item +') no-repeat',backgroundSize:'cover'}"
-                       ref="bigimg"></div>
+                  <div
+                    ref="bigimg"
+                    class="innerimg"
+                    :style="{background: 'url('+ item +') no-repeat',backgroundSize:'cover'}"
+                  />
                 </el-carousel-item>
               </el-carousel>
             </div>
@@ -48,42 +50,42 @@
               </div>
               <div class="area">
                 <div class="mainInfo">{{ houseDetail.construction_area }}平米</div>
-                <div class="subInfo"></div>
+                <div class="subInfo" />
               </div>
             </div>
             <div class="aroundInfo">
               <div class="communityName">
-                <i></i>
+                <i />
                 <span class="label">小区名称</span>
                 <span class="infor">{{ houseDetail.community_name }}</span>
               </div>
               <div class="detail">
-                <i></i>
+                <i />
                 <span class="label">所在区域</span>
                 <span class="infor">{{ houseDetail.region | parseArray }}</span>
               </div>
               <div class="detail">
-                <i></i>
+                <i />
                 <span class="label">电梯情况</span>
                 <span class="infor">{{ houseDetail.elevator }}</span>
               </div>
               <div class="detail">
-                <i></i>
+                <i />
                 <span class="label">房屋用途</span>
                 <span class="infor">{{ houseDetail.purposes }}</span>
               </div>
               <div class="detail">
-                <i></i>
+                <i />
                 <span class="label">挂牌时间</span>
                 <span class="infor">{{ houseDetail.release_date }}</span>
               </div>
               <div class="detail">
-                <i></i>
+                <i />
                 <span class="label">建筑结构</span>
                 <span class="infor">{{ houseDetail.house_structure }}</span>
               </div>
               <div class="detail">
-                <i></i>
+                <i />
                 <span class="label">房源来源</span>
                 <a class="infor" style="color: red;">查看</a>
               </div>
@@ -96,29 +98,29 @@
 </template>
 
 <script>
-//import BaiduMap from 'vue-baidu-map/components/map/Map.vue'
-//import {BmView, BmLocalSearch, BmCircle} from 'vue-baidu-map'
+// import BaiduMap from 'vue-baidu-map/components/map/Map.vue'
+// import {BmView, BmLocalSearch, BmCircle} from 'vue-baidu-map'
 import { getAllHouse } from '@/api/charts.js'
 
 export default {
-  data() {
-    return {
-      houseDetail: {},
-      imgs:[],
-      errorImg: 'this.src="' + require('../../../../assets/house_detail.png') + '"'
-    }
-  },
   filters: {
     parseArray: function(value) {
       if (!value) return ''
-      return value.replace(/\[|\]|'/g,'').split(',').join('-')
+      return value.replace(/\[|\]|'/g, '').split(',').join('-')
     }
   },
-//  components: {
-//    BaiduMap,
-//    BmView,
-//    BmLocalSearch
-//  },
+  data() {
+    return {
+      houseDetail: {},
+      imgs: [],
+      errorImg: 'this.src="' + require('../../../assets/house_detail.png') + '"'
+    }
+  },
+  //  components: {
+  //    BaiduMap,
+  //    BmView,
+  //    BmLocalSearch
+  //  },
   created() {
     /*
     {
@@ -145,17 +147,17 @@ export default {
   }
   */
     const id = this.$route.query.id
-    getAllHouse('/all_house/'+id).then((res,err)=>{
+    getAllHouse('/all_house/' + id).then((res, err) => {
       this.houseDetail = res
-//      this.nearby.center.lat = res.lat
-//      this.nearby.center.lng = res.lng
-      res.image_urls.match(/'(.+?)'/g).map((item,index)=>{
-        this.imgs.push(item.replace(/\'/g,''))
+      //      this.nearby.center.lat = res.lat
+      //      this.nearby.center.lng = res.lng
+      res.image_urls.match(/'(.+?)'/g).map((item, index) => {
+        this.imgs.push(item.replace(/\'/g, ''))
       })
     })
   },
   methods: {
-    setActiveItemC(index){
+    setActiveItemC(index) {
       this.$refs.carousel.setActiveItem(index)
     }
   }
@@ -357,7 +359,6 @@ export default {
       clear: both;
     }
 
-
     .aroundInfo {
       padding: 24px 0;
       line-height: 18px;
@@ -394,7 +395,6 @@ export default {
   font-weight:700;
   line-height:29px;
 }
-
 
 .aroundContainer {
   margin-top:21px;

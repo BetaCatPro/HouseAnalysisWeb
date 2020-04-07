@@ -1,15 +1,15 @@
 <template>
   <div>
-    <div class="mask" v-if="closed"></div>
+    <div v-if="closed" class="mask" />
     <div class="navtags">
-      <nav-tags @getCommnuity="getCommnuity"/>
+      <nav-tags @getCommnuity="getCommnuity" />
     </div>
     <el-row :gutter="5">
       <el-col :xs="24" :sm="16" :lg="18">
         <table-list :community="community" :pagenum="pagenum" :rid="rid" @closeWraper="closeWraper" />
       </el-col>
       <el-col :xs="24" :sm="8" :lg="6">
-        <box-card :communityRange="communityRange" />
+        <box-card :community-range="communityRange" />
       </el-col>
     </el-row>
   </div>
@@ -23,6 +23,11 @@ import TableList from './components/TableList'
 import { getCommunityInfo, getCommunityRangeInfo } from '@/api/charts.js'
 
 export default {
+  components: {
+    NavTags,
+    BoxCard,
+    TableList
+  },
   data() {
     return {
       closed: false,
@@ -32,26 +37,21 @@ export default {
       rid: 0
     }
   },
-  components: {
-    NavTags,
-    BoxCard,
-    TableList
-  },
   methods: {
     getCommnuity(id) {
-      getCommunityInfo({rid:id}).then((res,err)=>{
+      getCommunityInfo({ rid: id }).then((res, err) => {
         this.community.length = 0
-//        页码
+        //        页码
         this.pagenum = res.count
         this.rid = id
-        Array.from(res.results).map((item,index)=>{
-          this.community.push({reg:item.region.region,name:item.name,number:item.num,price:parseFloat(item.mean_unit_price)})
+        Array.from(res.results).map((item, index) => {
+          this.community.push({ reg: item.region.region, name: item.name, number: item.num, price: parseFloat(item.mean_unit_price) })
         })
       })
       this.communityRange.length = 0
-      getCommunityRangeInfo({rid:id}).then((res,err)=>{
-        Array.from(res.results).map((item,index)=>{
-          this.communityRange.push({id:res.id,reg:item.region.region,name:item.name,price:item.mean_unit_price})
+      getCommunityRangeInfo({ rid: id }).then((res, err) => {
+        Array.from(res.results).map((item, index) => {
+          this.communityRange.push({ id: res.id, reg: item.region.region, name: item.name, price: item.mean_unit_price })
         })
       })
     },

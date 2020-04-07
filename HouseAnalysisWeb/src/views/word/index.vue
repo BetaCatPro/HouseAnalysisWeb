@@ -1,6 +1,6 @@
 <template>
   <div class="container">
-    <div id="myChart" :style="{width: '300px', height: '300px'}"></div>
+    <div id="myChart" :style="{width: '300px', height: '300px'}" />
   </div>
 </template>
 <script>
@@ -10,19 +10,19 @@ import resize from './mixins/resize'
 
 require('echarts-wordcloud')
 export default {
+  name: 'Hello',
   mixins: [resize],
-  name: 'hello',
-  data () {
+  data() {
     return {
       chart: null,
       msg: 'Welcome to Your Vue.js App'
     }
   },
-  mounted () {
+  mounted() {
     this.drawLine()
   },
   methods: {
-    createRandomItemStyle () {
+    createRandomItemStyle() {
       return {
         normal: {
           color: 'rgb(' + [
@@ -33,11 +33,11 @@ export default {
         }
       }
     },
-    drawLine () {
+    drawLine() {
       // 基于准备好的dom，初始化echarts实例
-      let myChart = echarts.init(document.getElementById('myChart'))
+      const myChart = echarts.init(document.getElementById('myChart'))
       // 绘制图表
-      let option = {
+      const option = {
         title: {
           text: 'Google Trends',
           link: 'http://www.google.com/trends/hottrends'

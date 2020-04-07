@@ -67,16 +67,16 @@ import CountTo from 'vue-count-to'
 import { getIndex } from '@/api/charts.js'
 
 export default {
-  data() {
-    return {
-      total_num : 0,
-      comm_num : 0,
-      mean_price : 0,
-      mean_unit_price : 0
-    }
-  },
   components: {
     CountTo
+  },
+  data() {
+    return {
+      total_num: 0,
+      comm_num: 0,
+      mean_price: 0,
+      mean_unit_price: 0
+    }
   },
   async mounted() {
     const res = await getIndex()

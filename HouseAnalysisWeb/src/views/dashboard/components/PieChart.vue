@@ -1,5 +1,5 @@
 <template>
-  <div :class="className" :style="{height:height,width:width}" ref="pie"/>
+  <div ref="pie" :class="className" :style="{height:height,width:width}" />
 </template>
 
 <script>
@@ -46,15 +46,15 @@ export default {
       this.chart = echarts.init(this.$el, 'roma')
       var data = []
       var regions = []
-      var barHeight = 50;
+      var barHeight = 50
 
-      getRegionInfo('').then((res,err)=>{
-        Array.from(res).map((item,index)=>{
-          data.push([item.min_unit_price,item.max_unit_price,item.mean_unit_price])
+      getRegionInfo('').then((res, err) => {
+        Array.from(res).map((item, index) => {
+          data.push([item.min_unit_price, item.max_unit_price, item.mean_unit_price])
           regions.push(item.region)
         })
 
-        this.$emit('hideloading3',false)
+        this.$emit('hideloading3', false)
         this.chart.setOption({
           backgroundColor: '#eee',
           title: {
@@ -73,9 +73,9 @@ export default {
           },
           tooltip: {
             show: true,
-            formatter: function (params) {
-              var id = params.dataIndex;
-              return regions[id] + '<br>最低：' + data[id][0] + '<br>最高：' + data[id][1] + '<br>平均：' + data[id][2];
+            formatter: function(params) {
+              var id = params.dataIndex
+              return regions[id] + '<br>最低：' + data[id][0] + '<br>最高：' + data[id][1] + '<br>平均：' + data[id][2]
             }
           },
           radiusAxis: {
@@ -87,16 +87,16 @@ export default {
             itemStyle: {
               color: 'transparent'
             },
-            data: data.map(function (d) {
-              return d[0];
+            data: data.map(function(d) {
+              return d[0]
             }),
             coordinateSystem: 'polar',
             stack: '最大最小值',
             silent: true
           }, {
             type: 'bar',
-            data: data.map(function (d) {
-              return d[1] - d[0];
+            data: data.map(function(d) {
+              return d[1] - d[0]
             }),
             coordinateSystem: 'polar',
             name: '价格范围',
@@ -106,8 +106,8 @@ export default {
             itemStyle: {
               color: 'transparent'
             },
-            data: data.map(function (d) {
-              return d[2] - barHeight;
+            data: data.map(function(d) {
+              return d[2] - barHeight
             }),
             coordinateSystem: 'polar',
             stack: '均值',
@@ -115,8 +115,8 @@ export default {
             z: 10
           }, {
             type: 'bar',
-            data: data.map(function (d) {
-              return barHeight * 2;
+            data: data.map(function(d) {
+              return barHeight * 2
             }),
             coordinateSystem: 'polar',
             name: '均值',
@@ -126,7 +126,7 @@ export default {
           }]
         })
 
-        if(err) {
+        if (err) {
           Promise.reject(err)
         }
       })

@@ -1,76 +1,106 @@
 <template>
   <div class="dashboard-editor-container">
     <el-row :gutter="32">
-      <el-col :xs="24" :sm="24" :lg="12"
-              v-loading="loading1"
-              element-loading-text="拼命加载中"
-              element-loading-background="rgba(255, 255, 255, 0.8)">
+      <el-col
+        v-loading="loading1"
+        :xs="24"
+        :sm="24"
+        :lg="12"
+        element-loading-text="拼命加载中"
+        element-loading-background="rgba(255, 255, 255, 0.8)"
+      >
         <div class="chart-wrapper">
-          <decoration-pie-chart @showchart1="showchart1"></decoration-pie-chart>
+          <decoration-pie-chart @showchart1="showchart1" />
         </div>
       </el-col>
-      <el-col :xs="24" :sm="24" :lg="12"
-              v-loading="loading2"
-              element-loading-text="拼命加载中"
-              element-loading-background="rgba(255, 255, 255, 0.8)">
+      <el-col
+        v-loading="loading2"
+        :xs="24"
+        :sm="24"
+        :lg="12"
+        element-loading-text="拼命加载中"
+        element-loading-background="rgba(255, 255, 255, 0.8)"
+      >
         <div class="chart-wrapper">
-          <decoration-bar-chart @showchart2="showchart2"></decoration-bar-chart>
+          <decoration-bar-chart @showchart2="showchart2" />
         </div>
       </el-col>
-      <el-col v-loading="loading3"
-              element-loading-text="拼命加载中"
-              element-loading-background="rgba(255, 255, 255, 0.8)">
+      <el-col
+        v-loading="loading3"
+        element-loading-text="拼命加载中"
+        element-loading-background="rgba(255, 255, 255, 0.8)"
+      >
         <div class="chart-wrapper">
-          <layout-line-chart @showchart3="showchart3"></layout-line-chart>
-        </div>
-      </el-col>
-    </el-row>
-
-    <el-row :gutter="32">
-      <el-col :xs="24" :sm="24" :lg="12"
-              v-loading="loading4"
-              element-loading-text="拼命加载中"
-              element-loading-background="rgba(255, 255, 255, 0.8)">
-        <div class="chart-wrapper">
-          <elevator-bar-chart @showchart4="showchart4"/>
-        </div>
-      </el-col>
-
-      <el-col :xs="24" :sm="24" :lg="12"
-              v-loading="loading5"
-              element-loading-text="拼命加载中"
-              element-loading-background="rgba(255, 255, 255, 0.8)">
-        <div class="chart-wrapper">
-          <constrcuture-pie-chart @showchart5="showchart5"/>
-        </div>
-      </el-col>
-
-      <el-col :xs="24" :sm="24" :lg="12"
-              v-loading="loading6"
-              element-loading-text="拼命加载中"
-              element-loading-background="rgba(255, 255, 255, 0.8)">
-        <div class="chart-wrapper">
-          <purpose-pie-chart @showchart6="showchart6"/>
+          <layout-line-chart @showchart3="showchart3" />
         </div>
       </el-col>
     </el-row>
 
     <el-row :gutter="32">
-      <el-col :xs="24" :sm="24" :lg="12"
-              v-loading="loading7"
-              element-loading-text="拼命加载中"
-              element-loading-background="rgba(255, 255, 255, 0.8)">
+      <el-col
+        v-loading="loading4"
+        :xs="24"
+        :sm="24"
+        :lg="12"
+        element-loading-text="拼命加载中"
+        element-loading-background="rgba(255, 255, 255, 0.8)"
+      >
         <div class="chart-wrapper">
-          <orientatation-pie-chart @showchart7="showchart7"></orientatation-pie-chart>
+          <elevator-bar-chart @showchart4="showchart4" />
         </div>
       </el-col>
 
-      <el-col :xs="24" :sm="24" :lg="12"
-              v-loading="loading8"
-              element-loading-text="拼命加载中"
-              element-loading-background="rgba(255, 255, 255, 0.8)">
+      <el-col
+        v-loading="loading5"
+        :xs="24"
+        :sm="24"
+        :lg="12"
+        element-loading-text="拼命加载中"
+        element-loading-background="rgba(255, 255, 255, 0.8)"
+      >
         <div class="chart-wrapper">
-          <floor-bar-chart @showchart8="showchart8"></floor-bar-chart>
+          <constrcuture-pie-chart @showchart5="showchart5" />
+        </div>
+      </el-col>
+
+      <el-col
+        v-loading="loading6"
+        :xs="24"
+        :sm="24"
+        :lg="12"
+        element-loading-text="拼命加载中"
+        element-loading-background="rgba(255, 255, 255, 0.8)"
+      >
+        <div class="chart-wrapper">
+          <purpose-pie-chart @showchart6="showchart6" />
+        </div>
+      </el-col>
+    </el-row>
+
+    <el-row :gutter="32">
+      <el-col
+        v-loading="loading7"
+        :xs="24"
+        :sm="24"
+        :lg="12"
+        element-loading-text="拼命加载中"
+        element-loading-background="rgba(255, 255, 255, 0.8)"
+      >
+        <div class="chart-wrapper">
+          <orientatation-pie-chart @showchart7="showchart7" />
+        </div>
+      </el-col>
+
+      <el-col
+        v-loading="loading8"
+        :xs="24"
+        :sm="24"
+        :lg="12"
+        element-loading-text="拼命加载中"
+        element-loading-background="rgba(255, 255, 255, 0.8)"
+      >
+        <div class="chart-wrapper">
+          <floor-bar-chart @showchart8="showchart8" />
         </div>
       </el-col>
     </el-row>

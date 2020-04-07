@@ -1,34 +1,49 @@
 <template>
   <div class="dashboard-editor-container">
-    <panel-group/>
+    <panel-group />
 
-    <el-row v-loading="loading" element-loading-text="拼命加载中"
-            element-loading-background="rgba(255, 255, 255, 0.8)"
-            style="background:#fff;padding:16px 16px;margin-bottom:30px;">
+    <el-row
+      v-loading="loading"
+      element-loading-text="拼命加载中"
+      element-loading-background="rgba(255, 255, 255, 0.8)"
+      style="background:#fff;padding:16px 16px;margin-bottom:30px;"
+    >
       <bar-chart @hideloading="hideloading" />
     </el-row>
 
     <el-row :gutter="32">
-      <el-col :xs="24" :sm="24" :lg="12"
-              v-loading="loading3"
-              element-loading-text="拼命加载中"
-              element-loading-background="rgba(255, 255, 255, 0.8)">
+      <el-col
+        v-loading="loading3"
+        :xs="24"
+        :sm="24"
+        :lg="12"
+        element-loading-text="拼命加载中"
+        element-loading-background="rgba(255, 255, 255, 0.8)"
+      >
         <div class="chart-wrapper">
           <pie-chart @hideloading3="hideloading3" />
         </div>
       </el-col>
-      <el-col :xs="24" :sm="24" :lg="12"
-              v-loading="loading2"
-              element-loading-text="拼命加载中"
-              element-loading-background="rgba(255, 255, 255, 0.8)">
+      <el-col
+        v-loading="loading2"
+        :xs="24"
+        :sm="24"
+        :lg="12"
+        element-loading-text="拼命加载中"
+        element-loading-background="rgba(255, 255, 255, 0.8)"
+      >
         <div class="chart-wrapper">
           <bar-chartp @hideloading2="hideloading2" />
         </div>
       </el-col>
-      <el-col :xs="24" :sm="24" :lg="12"
-              v-loading="loading4"
-              element-loading-text="拼命加载中"
-              element-loading-background="rgba(255, 255, 255, 0.8)">
+      <el-col
+        v-loading="loading4"
+        :xs="24"
+        :sm="24"
+        :lg="12"
+        element-loading-text="拼命加载中"
+        element-loading-background="rgba(255, 255, 255, 0.8)"
+      >
         <div class="chart-wrapper">
           <bar-chartup @hideloading4="hideloading4" />
         </div>

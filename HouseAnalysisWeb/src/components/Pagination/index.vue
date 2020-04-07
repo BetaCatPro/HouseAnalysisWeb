@@ -5,12 +5,12 @@
     :current-page="paginationData.currentPage"
     layout="prev, pager, next"
     :total="paginationData.totalNumber"
-    @current-change="paginationData.handleCurrentChange">
-  </el-pagination>
+    @current-change="paginationData.handleCurrentChange"
+  />
 </template>
 
 <script>
-  export default {
-      props: ['paginationData']
-  }
+export default {
+  props: ['paginationData']
+}
 </script>

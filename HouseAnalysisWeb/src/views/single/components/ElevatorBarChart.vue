@@ -1,5 +1,5 @@
 <template>
-  <div :class="className" :style="{height:height,width:width}" ref="elbar"/>
+  <div ref="elbar" :class="className" :style="{height:height,width:width}" />
 </template>
 
 <script>
@@ -31,9 +31,9 @@ export default {
     }
   },
   mounted() {
-//    this.$nextTick(() => {
-//      this.initChart()
-//    })
+    //    this.$nextTick(() => {
+    //      this.initChart()
+    //    })
     window.addEventListener('scroll', this.scrollHandle)
   },
   beforeDestroy() {
@@ -45,30 +45,30 @@ export default {
   },
   methods: {
     scrollHandle(e) {
-//      let top = e.srcElement.scrollingElement.scrollTop;
-        let elbar = this.$refs.elbar
-//        console.log('chart的高度',elbar.getBoundingClientRect().top)
-//      console.log('滚动高度',top)
-//        console.log('页面高度',document.documentElement.clientHeight || document.body.clientHeight)
-//        console.log('高度差',(elbar.getBoundingClientRect().top-document.documentElement.clientHeight)<-10)
-      if((elbar.getBoundingClientRect().top-document.documentElement.clientHeight)<-10) {
+      //      let top = e.srcElement.scrollingElement.scrollTop;
+      const elbar = this.$refs.elbar
+      //        console.log('chart的高度',elbar.getBoundingClientRect().top)
+      //      console.log('滚动高度',top)
+      //        console.log('页面高度',document.documentElement.clientHeight || document.body.clientHeight)
+      //        console.log('高度差',(elbar.getBoundingClientRect().top-document.documentElement.clientHeight)<-10)
+      if ((elbar.getBoundingClientRect().top - document.documentElement.clientHeight) < -10) {
         this.toph1 = true
         this.initChart()
         window.removeEventListener('scroll', this.scrollHandle)
       }
     },
     initChart() {
-      if(this.toph1) {
+      if (this.toph1) {
         this.chart = echarts.init(this.$el, 'macarons')
         let has_el_num = 0
         let no_el_num = 0
-        let has_mean_price = []
-        let no_mean_price = []
-        let has_unit_mean_price = []
-        let no_unit_mean_price = []
+        const has_mean_price = []
+        const no_mean_price = []
+        const has_unit_mean_price = []
+        const no_unit_mean_price = []
 
-        getEelevatorInfo().then((res,err)=>{
-          let results = Array.from(res)
+        getEelevatorInfo().then((res, err) => {
+          const results = Array.from(res)
           has_el_num = results[0].el_num
           no_el_num = results[1].el_num
           has_mean_price.push(parseFloat(results[0].mean_price))
@@ -76,7 +76,7 @@ export default {
           no_mean_price.push(parseFloat(results[1].mean_price))
           no_unit_mean_price.push(parseFloat(results[1].mean_unit_price))
 
-          this.$emit('showchart4',false)
+          this.$emit('showchart4', false)
 
           this.chart.setOption({
             title: {
@@ -87,33 +87,33 @@ export default {
               data: ['有', '无']
             },
             grid: [{
-              top:40,
+              top: 40,
               bottom: '72%'
             },
-              {
-                top:'72%',
-                bottom: 40
-              }],
+            {
+              top: '72%',
+              bottom: 40
+            }],
             xAxis: [{
               type: 'value',
               boundaryGap: [0, 0.01],
-              gridIndex:0
+              gridIndex: 0
             },
-              {
-                type: 'value',
-                boundaryGap: [0, 0.01],
-                gridIndex:1
-              }],
+            {
+              type: 'value',
+              boundaryGap: [0, 0.01],
+              gridIndex: 1
+            }],
             yAxis: [{
               type: 'category',
               data: ['Elevator'],
-              gridIndex:0
+              gridIndex: 0
             },
-              {
-                type: 'category',
-                data: ['Elevator'],
-                gridIndex:1
-              }],
+            {
+              type: 'category',
+              data: ['Elevator'],
+              gridIndex: 1
+            }],
             series: [
               {
                 name: '有',
@@ -149,8 +149,8 @@ export default {
                 radius: '30%',
                 center: ['47%', '52%'],
                 data: [
-                  {value: has_el_num, name: '有电梯'},
-                  {value: no_el_num, name: '无电梯'}
+                  { value: has_el_num, name: '有电梯' },
+                  { value: no_el_num, name: '无电梯' }
                 ],
                 emphasis: {
                   itemStyle: {
@@ -163,7 +163,7 @@ export default {
             ]
           })
 
-          if(err) {
+          if (err) {
             Promise.reject(err)
           }
         })

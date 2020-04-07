@@ -1,5 +1,5 @@
 <template>
-  <div :class="className" :style="{height:height,width:width}" ref="conpie"/>
+  <div ref="conpie" :class="className" :style="{height:height,width:width}" />
 </template>
 
 <script>
@@ -30,9 +30,9 @@ export default {
     }
   },
   mounted() {
-//    this.$nextTick(() => {
-//      this.initChart()
-//    })
+    //    this.$nextTick(() => {
+    //      this.initChart()
+    //    })
     window.addEventListener('scroll', this.scrollHandle)
   },
   beforeDestroy() {
@@ -44,26 +44,26 @@ export default {
   },
   methods: {
     scrollHandle(e) {
-      let elbar = this.$refs.conpie
-//      console.log('高度差',(elbar.getBoundingClientRect().top-document.documentElement.clientHeight)<-10)
-      if((elbar.getBoundingClientRect().top-document.documentElement.clientHeight)<-10) {
+      const elbar = this.$refs.conpie
+      //      console.log('高度差',(elbar.getBoundingClientRect().top-document.documentElement.clientHeight)<-10)
+      if ((elbar.getBoundingClientRect().top - document.documentElement.clientHeight) < -10) {
         this.initChart()
         window.removeEventListener('scroll', this.scrollHandle)
       }
     },
     initChart() {
       this.chart = echarts.init(this.$el, 'light')
-      let constructure = []
-      let number = []
-      let data = []
+      const constructure = []
+      const number = []
+      const data = []
 
-      getConstructureInfo().then((res,err)=>{
-        Array.from(res).map((item,index)=>{
+      getConstructureInfo().then((res, err) => {
+        Array.from(res).map((item, index) => {
           constructure.push(item.constructure)
           number.push(item.num)
-          data.push({value:item.num,name:item.constructure})
+          data.push({ value: item.num, name: item.constructure })
         })
-        this.$emit('showchart5',false)
+        this.$emit('showchart5', false)
         this.chart.setOption({
           title: {
             text: '建筑结构分布情况'
@@ -90,7 +90,7 @@ export default {
           ]
         })
 
-        if(err) {
+        if (err) {
           Promise.reject(err)
         }
       })

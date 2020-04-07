@@ -44,15 +44,15 @@ export default {
   methods: {
     initChart() {
       this.chart = echarts.init(this.$el, 'shine')
-      let xAxisData = []
-      let mean_price = []
+      const xAxisData = []
+      const mean_price = []
 
-      getRegionInfo('').then((res,err)=>{
-        Array.from(res).map((item,index)=>{
+      getRegionInfo('').then((res, err) => {
+        Array.from(res).map((item, index) => {
           xAxisData.push(item.region)
           mean_price.push(item.mean_price)
         })
-        this.$emit('hideloading2',false)
+        this.$emit('hideloading2', false)
         this.chart.setOption({
           backgroundColor: '#eee',
 
@@ -84,13 +84,13 @@ export default {
               data: mean_price,
               markPoint: {
                 data: [
-                  {type: 'max', name: '最大值'},
-                  {type: 'min', name: '最小值'}
+                  { type: 'max', name: '最大值' },
+                  { type: 'min', name: '最小值' }
                 ]
               },
               markLine: {
                 data: [
-                  {type: 'average', name: '平均值'}
+                  { type: 'average', name: '平均值' }
                 ]
               }
             }
@@ -98,7 +98,7 @@ export default {
 
         })
 
-        if(err) {
+        if (err) {
           Promise.reject(err)
         }
       })

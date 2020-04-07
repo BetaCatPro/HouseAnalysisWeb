@@ -1,5 +1,5 @@
 <template>
-  <div :class="className" :style="{height:height,width:width}" ref="chart"/>
+  <div ref="chart" :class="className" :style="{height:height,width:width}" />
 </template>
 
 <script>
@@ -44,15 +44,15 @@ export default {
   methods: {
     initChart() {
       this.chart = echarts.init(this.$el, 'macarons')
-      let xAxisData = []
-      let mean_unit_price = []
+      const xAxisData = []
+      const mean_unit_price = []
 
-      getRegionInfo('').then((res,err)=>{
-        Array.from(res).map((item,index)=>{
+      getRegionInfo('').then((res, err) => {
+        Array.from(res).map((item, index) => {
           xAxisData.push(item.region)
           mean_unit_price.push(item.mean_unit_price)
         })
-        this.$emit('hideloading4',false)
+        this.$emit('hideloading4', false)
         this.chart.setOption({
           backgroundColor: '#eee',
 
@@ -84,13 +84,13 @@ export default {
               data: mean_unit_price,
               markPoint: {
                 data: [
-                  {type: 'max', name: '最大值'},
-                  {type: 'min', name: '最小值'}
+                  { type: 'max', name: '最大值' },
+                  { type: 'min', name: '最小值' }
                 ]
               },
               markLine: {
                 data: [
-                  {type: 'average', name: '平均值'}
+                  { type: 'average', name: '平均值' }
                 ]
               }
             }
@@ -98,7 +98,7 @@ export default {
 
         })
 
-        if(err) {
+        if (err) {
           Promise.reject(err)
         }
       })

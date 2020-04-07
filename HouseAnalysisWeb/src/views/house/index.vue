@@ -1,5 +1,5 @@
 <template>
-  <div class='wrapper'>
+  <div class="wrapper">
     <search @gethouse="gethouse" />
 
     <el-row style="margin-left: 20px">
@@ -12,18 +12,20 @@
         </el-menu>
       </el-col>
     </el-row>
-    <div class="loadingwrapper"
-         v-loading="loading"
-         lock="true"
-         element-loading-background="rgb(255, 255, 255)"
-         element-loading-text="正在加载中"></div>
+    <div
+      v-loading="loading"
+      class="loadingwrapper"
+      lock="true"
+      element-loading-background="rgb(255, 255, 255)"
+      element-loading-text="正在加载中"
+    />
     <el-row style="margin-left: 10px">
       <el-col :span="18">
         <div class="title">共找到 <span>{{ housePaginationData.totalNumber }}</span> 套成都二手房</div>
         <ul class="houselist">
-          <li class="houseitem" v-for="house in houselist" :key="house.id">
+          <li v-for="house in houselist" :key="house.id" class="houseitem">
             <router-link target="_blank" :to="{path:'/show/houseinfo',query: {id: house.id}}">
-              <div class="leftimg" :style="{background: 'url('+ house.image_urls.match(/'(.+?)'/g)[0].replace(/\'/g,'') +') no-repeat',backgroundSize:'cover'}"></div>
+              <div class="leftimg" :style="{background: 'url('+ house.image_urls.match(/'(.+?)'/g)[0].replace(/\'/g,'') +') no-repeat',backgroundSize:'cover'}" />
             </router-link>
             <div class="rightinfo">
               <router-link target="_blank" :to="{path:'/show/houseinfo',query: {id: house.id}}">
@@ -37,9 +39,9 @@
                   单价{{ house.unit_price }}元/平米
                 </span>
               </div>
-              <div><i class="el-icon-location"></i>{{ house.community_name }} | {{ house.region | parseArray }}</div>
-              <div><i class="el-icon-arrow-right"></i>{{ house.type }} | {{ house.construction_area }} | {{ house.orientation }} | {{ house.decoration }}</div>
-              <div><i class="el-icon-time"></i>{{ house.elevator }} | {{ house.floor }} | {{ house.purposes }}</div>
+              <div><i class="el-icon-location" />{{ house.community_name }} | {{ house.region | parseArray }}</div>
+              <div><i class="el-icon-arrow-right" />{{ house.type }} | {{ house.construction_area }} | {{ house.orientation }} | {{ house.decoration }}</div>
+              <div><i class="el-icon-time" />{{ house.elevator }} | {{ house.floor }} | {{ house.purposes }}</div>
             </div>
           </li>
         </ul>
@@ -47,7 +49,7 @@
     </el-row>
     <el-row style="height: 100px;">
       <div class="commpage">
-        <pagination :paginationData="housePaginationData"></pagination>
+        <pagination :pagination-data="housePaginationData" />
       </div>
     </el-row>
   </div>
@@ -59,6 +61,21 @@ import Search from '@/components/Search'
 import Pagination from '@/components/Pagination'
 
 export default {
+  components: {
+    Search,
+    Pagination
+  },
+  filters: {
+    parseArray: function(value) {
+      if (!value) return ''
+      return value.replace(/\[|\]|'/g, '').split(',').join('-')
+    },
+    getimg: function(value) {
+      re_data = value.match(/'(.+?)'/g)
+      first_img = re_data[0].replace(/\'/g, '')
+      return first_img
+    }
+  },
   data() {
     return {
       loading: true,
@@ -72,32 +89,17 @@ export default {
         totalNumber: 0,
         handleCurrentChange: psize => {
           this.housePaginationData.currentPage = psize
-          this.handleClick(this.value,psize)
+          this.handleClick(this.value, psize)
         }
       }
-    }
-  },
-  components: {
-    Search,
-    Pagination
-  },
-  filters: {
-    parseArray: function(value) {
-      if (!value) return ''
-      return value.replace(/\[|\]|'/g,'').split(',').join('-')
-    },
-    getimg: function(value) {
-      re_data = value.match(/'(.+?)'/g)
-      first_img = re_data[0].replace(/\'/g,'')
-      return first_img
     }
   },
   methods: {
     handleSelect(key, keyPath) {
       this.loading = true
       this.housePaginationData.currentPage = 1
-      const tags = ['','price','unit_price','construction_area']
-      getOrderHouse(tags[key-1]).then((res,err)=>{
+      const tags = ['', 'price', 'unit_price', 'construction_area']
+      getOrderHouse(tags[key - 1]).then((res, err) => {
         this.housePaginationData.totalNumber = res.count
         this.houselist = res.results
         console.log(res.results)
@@ -106,20 +108,20 @@ export default {
     },
     gethouse(data) {
       this.loading = true
-      let totalData = data.res
+      const totalData = data.res
       this.value = data.value
       this.housePaginationData.totalNumber = totalData.count
       this.houselist = totalData.results
       this.loading = false
     },
-    handleClick(inputVal,page) {
-      console.log(inputVal,page)
+    handleClick(inputVal, page) {
+      console.log(inputVal, page)
       try {
-        getAll(inputVal,page).then((res,err)=>{
+        getAll(inputVal, page).then((res, err) => {
           this.houselist = res.results
         })
       } catch (err) {
-        console.log("请求失败", err);
+        console.log('请求失败', err)
       }
     }
   }
@@ -163,7 +165,6 @@ export default {
     height: 194px;
     border-bottom:1px solid #f1f1f1;
     margin: 10px 0;
-
 
     .leftimg {
       float: left;

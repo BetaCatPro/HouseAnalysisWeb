@@ -44,17 +44,17 @@ export default {
   methods: {
     initChart() {
       this.chart = echarts.init(this.$el, 'macarons')
-      let xAxisData = []
-      let num = []
-      let piedata = []
+      const xAxisData = []
+      const num = []
+      const piedata = []
 
-      getRegionInfo('').then((res,err)=>{
-        Array.from(res).map((item,index)=>{
+      getRegionInfo('').then((res, err) => {
+        Array.from(res).map((item, index) => {
           xAxisData.push(item.region)
           num.push(item.num)
-          piedata.push({value:item.num,name:item.region})
+          piedata.push({ value: item.num, name: item.region })
         })
-        this.$emit('hideloading',false)
+        this.$emit('hideloading', false)
         this.chart.setOption({
           backgroundColor: '#eee',
 
@@ -82,16 +82,16 @@ export default {
             name: 'bar',
             type: 'bar',
             data: num,
-            animationDelay: function (idx) {
-              return idx * 10;
+            animationDelay: function(idx) {
+              return idx * 10
             }
           },
           {
             name: '区划',
             type: 'pie',
             radius: '45%',
-//            roseType: 'radius',
-//            radius: [15, 95],
+            //            roseType: 'radius',
+            //            radius: [15, 95],
             center: ['80%', '33%'],
             data: piedata,
             emphasis: {
@@ -103,12 +103,12 @@ export default {
             }
           }],
           animationEasing: 'elasticOut',
-          animationDelayUpdate: function (idx) {
-            return idx * 5;
+          animationDelayUpdate: function(idx) {
+            return idx * 5
           }
         })
 
-        if(err) {
+        if (err) {
           Promise.reject(err)
         }
       })

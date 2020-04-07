@@ -42,13 +42,13 @@ export const constantRoutes = [
         name: 'Multifactor',
         component: () => import('@/views/multiple/index'),
         meta: { title: '各区划详细信息', icon: 'manalysis' }
-      },
-      {
-        path: 'Word',
-        component: () => import('@/views/word/index'),
-        name: 'Word',
-        meta: { title: '房源信息词云', icon: 'word' }
       }
+      // {
+      //   path: 'Word',
+      //   component: () => import('@/views/word/index'),
+      //   name: 'Word',
+      //   meta: { title: '房源信息词云', icon: 'word' }
+      // }
     ]
   },
 
@@ -64,21 +64,21 @@ export const constantRoutes = [
     }]
   },
 
-  {
-    path: '/HeatMap',
-    component: Layout,
-    redirect: '/dashboard',
-    name: 'HeatMap',
-    meta: { title: '热力图', icon: '热力图' },
-    children: [
-      {
-        path: 'MeanHeatMap',
-        component: () => import('@/views/heatmap/mean'),
-        name: 'MeanHeatMap',
-        meta: { title: '均价热力图', icon: 'hotmap' }
-      }
-    ]
-  },
+  // {
+  //   path: '/HeatMap',
+  //   component: Layout,
+  //   redirect: '/dashboard',
+  //   name: 'HeatMap',
+  //   meta: { title: '热力图', icon: '热力图' },
+  //   children: [
+  //     {
+  //       path: 'MeanHeatMap',
+  //       component: () => import('@/views/heatmap/mean'),
+  //       name: 'MeanHeatMap',
+  //       meta: { title: '均价热力图', icon: 'hotmap' }
+  //     }
+  //   ]
+  // },
 
   // {
   //   path: '/map',

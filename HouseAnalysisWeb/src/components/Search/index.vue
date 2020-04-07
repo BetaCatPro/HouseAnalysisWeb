@@ -3,18 +3,19 @@
     <el-col :xs="24" :sm="24" :md="24" :lg="24" :xl="24">
       <div class="searchbox">
         <el-autocomplete
-          popper-class="my-autocomplete"
           v-model="searchinfo"
+          popper-class="my-autocomplete"
           :fetch-suggestions="querySearch"
           placeholder="请输入内容"
           style="width: 55%;"
-          @select="handleSelect">
+          @select="handleSelect"
+        >
           <i
-            class="el-icon-search el-input__icon"
             slot="suffix"
+            class="el-icon-search el-input__icon"
             style="cursor: pointer;"
-            @click="handleIconClick">
-          </i>
+            @click="handleIconClick"
+          />
           <template slot-scope="props">
             <div class="name">{{ props.item.title }}</div>
             <span class="addr">{{ props.item.community_name }}</span>
@@ -32,52 +33,52 @@ export default {
   data() {
     return {
       activeIndex: '1',
-      searchinfo:'',
+      searchinfo: '',
       timeout: null,
       searchPoi: [],
       emitData: {}
-    };
+    }
   },
   watch: {
     searchinfo(curVal, oldVal) {
       // 实现input连续输入，只发一次请求
-      clearTimeout(this.timeout);
+      clearTimeout(this.timeout)
       this.timeout = setTimeout(() => {
-        this.getListPOIWatcher(curVal);
-      }, 300);
+        this.getListPOIWatcher(curVal)
+      }, 300)
     }
   },
   beforeCreate() {
-    getAllHouse('/all_house').then((res,err)=>{
+    getAllHouse('/all_house').then((res, err) => {
       console.log(res)
-      this.$emit('gethouse',{'res':res,'value':this.searchinfo})
+      this.$emit('gethouse', { 'res': res, 'value': this.searchinfo })
     })
   },
   methods: {
     querySearch(queryString, cb) {
-      var searchPoi = this.searchPoi;
+      var searchPoi = this.searchPoi
       // 调用 callback 返回建议列表的数据
-      cb(searchPoi);
+      cb(searchPoi)
     },
     handleSelect(item) {
-      this.getListPOI(item.title).then((res,err)=>{
-        this.$emit('gethouse',{'res':res,'value':this.searchinfo})
-      });
+      this.getListPOI(item.title).then((res, err) => {
+        this.$emit('gethouse', { 'res': res, 'value': this.searchinfo })
+      })
     },
     handleIconClick() {
-      this.getListPOI(this.searchinfo).then((res,err)=>{
-        this.$emit('gethouse',{'res':res,'value':this.searchinfo})
-      });
+      this.getListPOI(this.searchinfo).then((res, err) => {
+        this.$emit('gethouse', { 'res': res, 'value': this.searchinfo })
+      })// TODO: 添加搜索超时提示
     },
     async getListPOI(inputVal) {
       if (inputVal === '') {
         return false
       }
       try {
-        const res = await getAll(inputVal,1)
+        const res = await getAll(inputVal, 1)
         return res
       } catch (err) {
-        console.log("请求失败", err);
+        console.log('请求失败', err)
       }
     },
     async getListPOIWatcher(inputVal) {
@@ -85,15 +86,15 @@ export default {
         return false
       }
       try {
-        const res = await getAll(inputVal,1)
+        const res = await getAll(inputVal, 1)
         if (this.searchinfo === inputVal) { // 关键代码 避免先请求后返回问题，确保给列表赋值是以当前输入的值为参数的
           if (res.results) {
-            let data = res.results
+            const data = res.results
             if (data.length === 0) {
               this.searchPoi = []
             } else { // 有结果
-              Array.from(data).map((item,index)=>{
-                this.searchPoi.push({'title':item.title,'community_name':item.community_name})
+              Array.from(data).map((item, index) => {
+                this.searchPoi.push({ 'title': item.title, 'community_name': item.community_name })
               })
             }
           } else {
@@ -101,7 +102,7 @@ export default {
           }
         }
       } catch (err) {
-        console.log("请求失败", err);
+        console.log('请求失败', err)
       }
     }
   }
