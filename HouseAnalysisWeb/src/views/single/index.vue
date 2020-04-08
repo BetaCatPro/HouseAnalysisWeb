@@ -142,6 +142,7 @@ export default {
     }
   },
   methods: {
+    // TODO:面积图表
     showchart1(val) {
       this.loading1 = val
     },
