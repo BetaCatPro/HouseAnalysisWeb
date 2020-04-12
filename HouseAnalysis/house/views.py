@@ -16,12 +16,18 @@ from rest_framework_extensions.cache.mixins import CacheResponseMixin
 from .models import Api, Elevator, Floor, Layout, Region, Decortion, Purposes, Orientation, Constructure, Community,CommunityRange
 from .serializers import HouseSerializer, ElevatorSerializer, FloorSerializer, LayoutSerializer
 from .serializers import RegionSerializer, DecortionSerializer, PurposesSerializer, OrientationSerializer, ConstructureSerializer
-from .serializers import CommunitySerializer,CommunityRangeSerializer
+from .serializers import CommunitySerializer,CommunityRangeSerializer,PositionSerializer
 
 from utils.getinfo import res
 
 class HousePagination(PageNumberPagination):
     page_size = 30
+    page_size_query_param = 'page_size'
+    page_query_param = "page"
+    max_page_size = 100
+
+class PositionPagination(PageNumberPagination):
+    page_size = 10000
     page_size_query_param = 'page_size'
     page_query_param = "page"
     max_page_size = 100
@@ -46,6 +52,11 @@ class HouseListViewSet(CacheResponseMixin, mixins.ListModelMixin, mixins.Retriev
         serializer = self.get_serializer(instance)
         return Response(serializer.data)
 
+
+class PositionViewSet(CacheResponseMixin, mixins.ListModelMixin, GenericViewSet):
+    queryset = Api.objects.all()
+    # pagination_class = PositionPagination
+    serializer_class = PositionSerializer
 
 class ElevaorViewSet(CacheResponseMixin, mixins.ListModelMixin, GenericViewSet):
     queryset = Elevator.objects.all()

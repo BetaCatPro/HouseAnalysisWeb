@@ -22,12 +22,13 @@ from rest_framework.routers import DefaultRouter
 
 from house.views import HouseListViewSet, ElevaorViewSet, FloorViewSet, LayoutViewSet, RegionViewSet
 from house.views import DecortionViewSet, PurposesViewSet, OrientationViewSet, ConstructureViewSet
-from house.views import CommunityViewSet, CommunityRangeViewSet
+from house.views import CommunityViewSet, CommunityRangeViewSet, PositionViewSet
 from house.views import index
 
 
 router = DefaultRouter()
 router.register(r'v1/api/all_house', HouseListViewSet, base_name="house")
+router.register(r'v1/api/position', PositionViewSet, base_name="position")
 router.register(r'v1/api/elevator', ElevaorViewSet, base_name="elevator")
 router.register(r'v1/api/floor', FloorViewSet, base_name="floor")
 router.register(r'v1/api/layout', LayoutViewSet, base_name="layout")

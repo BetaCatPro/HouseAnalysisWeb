@@ -8,6 +8,12 @@ class HouseSerializer(serializers.ModelSerializer):
         model = Api
         fields = "__all__"
 
+class PositionSerializer(serializers.ModelSerializer):
+
+    class Meta:
+        model = Api
+        fields = ("lng","lat")
+
 class ElevatorSerializer(serializers.ModelSerializer):
 
     class Meta:
