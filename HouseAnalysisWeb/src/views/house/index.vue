@@ -59,6 +59,7 @@
 import { getAll, getOrderHouse } from '@/api/charts.js'
 import Search from '@/components/Search'
 import Pagination from '@/components/Pagination'
+import { Notification } from 'element-ui';
 
 export default {
   components: {

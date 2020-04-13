@@ -1,6 +1,7 @@
 import axios from 'axios'
 import qs from 'qs'
 import { Message } from 'element-ui'
+import { Notification } from 'element-ui';
 
 const service = axios.create({
   // baseURL: process.env.VUE_APP_BASE_API,
@@ -29,26 +30,34 @@ service.interceptors.response.use(
     if (response.statusText === 'OK') {
       return response.data
     } else {
-      Message({
+      Notification({
+        title: '错误',
         message: '访问api错误', // TODO 后端拦截错误请求
-        type: 'warning',
+        type: 'error',
         duration: 3 * 1000
       })
     }
   },
   error => {
-    console.log('error')
-    console.log(error)
-    console.log(JSON.stringify(error))
+    let dtext = JSON.parse(JSON.stringify(error))
+    try {
+      if(dtext.response.status === 404) {
+        Notification({
+          type: 'error',
+          title: '出问题404',
+          message: '访问api错误或服务器忙',
+          duration: 3 * 1000
+        })
+      }
+    } catch (err) {
+      Notification({
+        title: '错误',
+        message: '请求超时,请稍后再试或刷新页面',
+        type: 'error',
+        duration: 3 * 1000
+      })
+    }
 
-    const dtext = JSON.parse(JSON.stringify(error)).response.status === 404
-      ? '404'
-      : '网络异常，请重试'
-    Message({
-      message: dtext,
-      type: 'warning',
-      duration: 3 * 1000
-    })
 
     return Promise.reject(error)
   }
