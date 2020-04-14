@@ -5,10 +5,11 @@
     <el-row style="margin-left: 20px">
       <el-col :span="18">
         <el-menu :default-active="activeIndex" class="el-menu-demo" mode="horizontal" @select="handleSelect">
-          <el-menu-item index="1">默认</el-menu-item>
-          <el-menu-item index="2">总价</el-menu-item>
-          <el-menu-item index="3">单价</el-menu-item>
-          <el-menu-item index="4">面积</el-menu-item>
+          <el-menu-item index="1">全部房源</el-menu-item>
+          <el-menu-item index="2">默认</el-menu-item>
+          <el-menu-item index="3">总价</el-menu-item>
+          <el-menu-item index="4">单价</el-menu-item>
+          <el-menu-item index="5">面积</el-menu-item>
         </el-menu>
       </el-col>
     </el-row>
@@ -100,10 +101,16 @@ export default {
       this.loading = true
       this.housePaginationData.currentPage = 1
       const tags = ['', 'price', 'unit_price', 'construction_area']
-      getOrderHouse(tags[key - 1]).then((res, err) => {
+      let params = {}
+      if(key != 1) {
+        params = {
+          ordering: tags[key-2],
+          search: this.value
+        }
+      }
+      getOrderHouse(params).then((res, err) => {
         this.housePaginationData.totalNumber = res.count
         this.houselist = res.results
-        console.log(res.results)
         this.loading = false
       })
     },

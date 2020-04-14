@@ -12,9 +12,10 @@ export function getAllHouse(url,params) {
 }
 
 // 排序
-export function getOrderHouse(methods,params) {
+export function getOrderHouse(params) {
   return request({
-    url: '/all_house/?ordering='+ methods,
+    // url: '/all_house/?ordering='+ methods + '&search='+ search +'&page=' + num,
+    url: '/all_house/',
     method: 'get',
     params
   })

@@ -94,6 +94,15 @@
         </div>
       </el-col>
     </el-row>
+    <el-row style="margin-top: 20px;">
+      <el-col :xs="24" :sm="24" :md="24" :lg="24" :xl="24" style="background: #F5F5F6;">
+        <div class="housemap">
+          <h1>房屋周边</h1>
+          <div class="innerHMap"></div>
+          <div class="innerHInfo"></div>
+        </div>
+      </el-col>
+    </el-row>
   </div>
 </template>
 
@@ -403,4 +412,34 @@ export default {
     width: 1150px;
   }
 }
+
+.housemap {
+  width: 100%;
+  height:560px;
+  overflow: hidden;
+  padding-left:70px;
+  margin-bottom:40px;
+
+  h {
+    width: 100%;
+    height: 29px;
+    font-size:26px;
+    font-weight:700;
+    line-height:29px;
+  }
+  .innerHMap {
+    width: 60%;
+    height: 80%;
+    border:1px solid red;
+    float: left;
+  }
+  .innerHInfo {
+    width: 35%;
+    height: 80%;
+    border:1px solid blue;
+    float: right;
+    margin-right: 20px;
+  }
+}
+
 </style>

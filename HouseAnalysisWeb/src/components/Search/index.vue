@@ -29,6 +29,7 @@
 <script>
 import { getAll } from '@/api/charts.js'
 import { getAllHouse } from '@/api/charts.js'
+import { Message } from 'element-ui'
 export default {
   data() {
     return {
@@ -63,22 +64,36 @@ export default {
     handleSelect(item) {
       this.getListPOI(item.title).then((res, err) => {
         this.$emit('gethouse', { 'res': res, 'value': this.searchinfo })
+        Message.close()
       })
     },
     handleIconClick() {
       this.getListPOI(this.searchinfo).then((res, err) => {
-        this.$emit('gethouse', { 'res': res, 'value': this.searchinfo })
-      })// TODO: 添加搜索超时提示
+        if(res) {
+          this.$emit('gethouse', { 'res': res, 'value': this.searchinfo })
+        }
+        Message.close()
+      })
     },
     async getListPOI(inputVal) {
       if (inputVal === '') {
+        Message({
+          showClose: true,
+          message: '输入不能为空',
+          type: 'error',
+          duration: 3000
+        })
         return false
-      }
-      try {
-        const res = await getAll(inputVal, 1)
-        return res
-      } catch (err) {
-        console.log('请求失败', err)
+      } else {
+        Message({
+          message: '正在搜索中......',
+        })
+        try {
+          const res = await getAll(inputVal, 1)
+          return res
+        } catch (err) {
+          console.log('请求失败', err)
+        }
       }
     },
     async getListPOIWatcher(inputVal) {
