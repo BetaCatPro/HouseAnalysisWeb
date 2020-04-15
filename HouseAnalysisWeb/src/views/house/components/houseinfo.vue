@@ -98,8 +98,91 @@
       <el-col :xs="24" :sm="24" :md="24" :lg="24" :xl="24" style="background: #F5F5F6;">
         <div class="housemap">
           <h1>房屋周边</h1>
-          <div class="innerHMap"></div>
-          <div class="innerHInfo"></div>
+          <div class="innerHMap">
+            <baidu-map  class="bm-view"
+                        style="width:100%;height:100%"
+                        ak="Qmz0VMtKw3uAI2GWClu9Q6iCnP2j2uH2"
+                        :center="{lng: 104.094544000, lat: 30.702538520}"
+                        :zoom="15">
+              <!--<bm-marker :position="{lng: 104.094544000, lat: 30.702538520}" ></bm-marker>-->
+              <my-overlay
+                :position="{lng: 104.094544000, lat: 30.702538520}"
+                :text="name"
+                :color='color'
+              ></my-overlay>
+            </baidu-map>
+          </div>
+          <div class="innerHInfo">
+            <el-row>
+              <el-col>
+                <el-tabs type="border-card">
+                  <el-tab-pane v-for="zhoubian in allinfor" :label="zhoubian.title">
+                    <el-tabs v-model="activeName" @tab-click="handleClick">
+                      <el-tab-pane v-for="detail in zhoubian.sub" :label="detail.subname" :name="detail.lab">
+                        <el-card class="box-card">
+                          <div v-for="o in 4" :key="o" class="text item">
+                          {{'列表内容 ' + o }}
+                          </div>
+                        </el-card>
+                      </el-tab-pane>
+                    </el-tabs>
+                  </el-tab-pane>
+
+                  <!--<el-tab-pane label="交通">-->
+                    <!--<el-tabs v-model="activeName" @tab-click="handleClick">-->
+                      <!--<el-tab-pane label="地铁站" name="first">-->
+                        <!--<el-card class="box-card">-->
+                          <!--<div v-for="o in 4" :key="o" class="text item">-->
+                            <!--{{'列表内容 ' + o }}-->
+                          <!--</div>-->
+                        <!--</el-card>-->
+                      <!--</el-tab-pane>-->
+                      <!--<el-tab-pane label="公交站" name="second">公交站</el-tab-pane>-->
+                    <!--</el-tabs>-->
+                  <!--</el-tab-pane>-->
+                  <!--<el-tab-pane label="教育">-->
+                    <!--<el-tabs v-model="activeName" @tab-click="handleClick">-->
+                      <!--<el-tab-pane label="幼儿园" name="first">幼儿园</el-tab-pane>-->
+                      <!--<el-tab-pane label="小学" name="second">小学</el-tab-pane>-->
+                      <!--<el-tab-pane label="中学" name="third">中学</el-tab-pane>-->
+                      <!--<el-tab-pane label="大学" name="fourth">大学</el-tab-pane>-->
+                    <!--</el-tabs>-->
+                  <!--</el-tab-pane>-->
+                  <!--<el-tab-pane label="医疗">-->
+                    <!--<el-tabs v-model="activeName" @tab-click="handleClick">-->
+                      <!--<el-tab-pane label="医院" name="first">医院</el-tab-pane>-->
+                      <!--<el-tab-pane label="药店" name="second">药店</el-tab-pane>-->
+                    <!--</el-tabs>-->
+                  <!--</el-tab-pane>-->
+                  <!--<el-tab-pane label="购物">-->
+                    <!--<el-tabs v-model="activeName" @tab-click="handleClick">-->
+                      <!--<el-tab-pane label="商场" name="first">商场</el-tab-pane>-->
+                      <!--<el-tab-pane label="超市" name="second">超市</el-tab-pane>-->
+                      <!--<el-tab-pane label="市场" name="third">市场</el-tab-pane>-->
+                    <!--</el-tabs>-->
+                  <!--</el-tab-pane>-->
+                  <!--<el-tab-pane label="生活">-->
+                    <!--<el-tabs v-model="activeName" @tab-click="handleClick">-->
+                      <!--<el-tab-pane label="银行" name="first">银行</el-tab-pane>-->
+                      <!--<el-tab-pane label="ATM" name="second">ATM</el-tab-pane>-->
+                      <!--<el-tab-pane label="餐厅" name="third">餐厅</el-tab-pane>-->
+                      <!--<el-tab-pane label="咖啡馆" name="fourth">咖啡馆</el-tab-pane>-->
+                    <!--</el-tabs>-->
+                  <!--</el-tab-pane>-->
+                  <!--<el-tab-pane label="娱乐">-->
+                    <!--<el-tabs v-model="activeName" @tab-click="handleClick">-->
+                      <!--<el-tab-pane label="公园" name="first">公园</el-tab-pane>-->
+                      <!--<el-tab-pane label="电影院" name="second">电影院</el-tab-pane>-->
+                      <!--<el-tab-pane label="健身房" name="third">健身房</el-tab-pane>-->
+                      <!--<el-tab-pane label="体育馆" name="fourth">体育馆</el-tab-pane>-->
+                    <!--</el-tabs>-->
+                  <!--</el-tab-pane>-->
+                </el-tabs>
+              </el-col>
+            </el-row>
+            <el-row></el-row>
+            <el-row></el-row>
+          </div>
         </div>
       </el-col>
     </el-row>
@@ -107,8 +190,9 @@
 </template>
 
 <script>
-// import BaiduMap from 'vue-baidu-map/components/map/Map.vue'
-// import {BmView, BmLocalSearch, BmCircle} from 'vue-baidu-map'
+import BaiduMap from 'vue-baidu-map/components/map/Map.vue'
+import { BmNavigation, BmMarker, BmOverlay } from 'vue-baidu-map'
+import MyOverlay from '@/components/MyOverlay'
 import { getAllHouse } from '@/api/charts.js'
 
 export default {
@@ -120,16 +204,96 @@ export default {
   },
   data() {
     return {
+      allinfor: [{
+        title:'交通',
+        sub: [{
+          subname: '地铁站',
+          lab: 'first'
+        },{
+          subname: '公交站',
+          lab: 'second'
+        }]
+      },{
+        title:'教育',
+        sub: [{
+          subname: '幼儿园',
+          lab: 'first'
+        },{
+          subname: '小学',
+          lab: 'second'
+        },{
+          subname: '中学',
+          lab: 'third'
+        },{
+          subname: '大学',
+          lab: 'fourth'
+        }]
+      },{
+        title:'医疗',
+        sub: [{
+          subname: '医院',
+          lab: 'first'
+        },{
+          subname: '药店',
+          lab: 'second'
+        }]
+      },{
+        title:'购物',
+        sub: [{
+          subname: '商场',
+          lab: 'first'
+        },{
+          subname: '超市',
+          lab: 'second'
+        },{
+          subname: '市场',
+          lab: 'third'
+        }]
+      },{
+        title:'生活',
+        sub: [{
+          subname: '银行',
+          lab: 'first'
+        },{
+          subname: 'ATM',
+          lab: 'second'
+        },{
+          subname: '餐厅',
+          lab: 'third'
+        },{
+          subname: '咖啡馆',
+          lab: 'fourth'
+        }]
+      },{
+        title:'娱乐',
+        sub: [{
+          subname: '公园',
+          lab: 'first'
+        },{
+          subname: '电影院',
+          lab: 'second'
+        },{
+          subname: '健身房',
+          lab: 'third'
+        },{
+          subname: '体育馆',
+          lab: 'fourth'
+        }]
+      }],
+      name: '新绿苑',
+      color: '#fff',
       houseDetail: {},
+      activeName: 'first',
       imgs: [],
       errorImg: 'this.src="' + require('../../../assets/house_detail.png') + '"'
     }
   },
-  //  components: {
-  //    BaiduMap,
-  //    BmView,
-  //    BmLocalSearch
-  //  },
+    components: {
+      BaiduMap,
+      BmNavigation,
+      BmMarker,
+      MyOverlay
+    },
   created() {
     /*
     {
@@ -168,6 +332,9 @@ export default {
   methods: {
     setActiveItemC(index) {
       this.$refs.carousel.setActiveItem(index)
+    },
+    handleClick(tab, event) {
+      console.log(tab.label);
     }
   }
 }
@@ -415,7 +582,7 @@ export default {
 
 .housemap {
   width: 100%;
-  height:560px;
+  height:600px;
   overflow: hidden;
   padding-left:70px;
   margin-bottom:40px;
@@ -428,18 +595,27 @@ export default {
     line-height:29px;
   }
   .innerHMap {
-    width: 60%;
+    width: 68%;
     height: 80%;
-    border:1px solid red;
     float: left;
   }
   .innerHInfo {
-    width: 35%;
+    width: 28%;
     height: 80%;
     border:1px solid blue;
     float: right;
     margin-right: 20px;
   }
 }
+.text {
+  font-size: 14px;
+}
 
+.item {
+  padding: 18px 0;
+}
+
+.box-card {
+  width: 100%;
+}
 </style>
