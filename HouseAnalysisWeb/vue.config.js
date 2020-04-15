@@ -23,6 +23,18 @@ module.exports = {
     overlay: {
       warnings: false,
       errors: true
+    },
+    proxy: {
+      '/api': {
+        // 此处的写法，目的是为了 将 /api 替换成 http://api.map.baidu.com/place/v2
+        target: 'http://api.map.baidu.com/place/v2',
+        // 允许跨域
+        changeOrigin: true,
+        ws: true,
+        pathRewrite: {
+          '^/api': ''
+        }
+      }
     }
   },
   configureWebpack: {

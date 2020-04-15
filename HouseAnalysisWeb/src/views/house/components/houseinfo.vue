@@ -102,26 +102,37 @@
             <baidu-map  class="bm-view"
                         style="width:100%;height:100%"
                         ak="Qmz0VMtKw3uAI2GWClu9Q6iCnP2j2uH2"
-                        :center="{lng: 104.094544000, lat: 30.702538520}"
+                        :center="{lng: houseDetail.lng, lat: houseDetail.lat}"
                         :zoom="15">
-              <!--<bm-marker :position="{lng: 104.094544000, lat: 30.702538520}" ></bm-marker>-->
               <my-overlay
-                :position="{lng: 104.094544000, lat: 30.702538520}"
+                :position="{lng: houseDetail.lng, lat: houseDetail.lat}"
                 :text="name"
                 :color='color'
               ></my-overlay>
+              <bm-marker v-for="spoi in searchResults"
+                         :position="{lng: spoi.location.lng, lat: spoi.location.lat}"
+                         :icon="{url: 'https://www.cnblogs.com/images/cnblogs_com/progor/1390402/o_bike2.png',size: {width: 32, height: 32}}">
+              </bm-marker>
             </baidu-map>
           </div>
           <div class="innerHInfo">
             <el-row>
               <el-col>
-                <el-tabs type="border-card">
+                <el-tabs type="border-card" @tab-click="processData">
                   <el-tab-pane v-for="zhoubian in allinfor" :label="zhoubian.title">
                     <el-tabs v-model="activeName" @tab-click="handleClick">
                       <el-tab-pane v-for="detail in zhoubian.sub" :label="detail.subname" :name="detail.lab">
-                        <el-card class="box-card">
-                          <div v-for="o in 4" :key="o" class="text item">
-                          {{'列表内容 ' + o }}
+                        <el-card class="box-card"
+                                 v-loading="loading"
+                                 element-loading-text="拼命加载中">
+                          <div v-for="spoi in searchResults" :key="spoi.uid" class="text item">
+                            <div class="contentBox">
+                              <div class="itemContent">
+                                <i class="icon"></i>
+                                <span class="itemTitle">{{ spoi.name }}</span>
+                                <span class="itemInfo">{{ spoi.address }}</span>
+                              </div>
+                            </div>
                           </div>
                         </el-card>
                       </el-tab-pane>
@@ -194,6 +205,8 @@ import BaiduMap from 'vue-baidu-map/components/map/Map.vue'
 import { BmNavigation, BmMarker, BmOverlay } from 'vue-baidu-map'
 import MyOverlay from '@/components/MyOverlay'
 import { getAllHouse } from '@/api/charts.js'
+import axios from 'axios'
+axios.defaults.baseURL = '/api'
 
 export default {
   filters: {
@@ -204,6 +217,8 @@ export default {
   },
   data() {
     return {
+      loading: true,
+      searchResults: [],
       allinfor: [{
         title:'交通',
         sub: [{
@@ -328,13 +343,36 @@ export default {
         this.imgs.push(item.replace(/\'/g, ''))
       })
     })
+
+    this.getSearchPoi('地铁站')
+    this.loading = false
   },
   methods: {
+    getSearchPoi(searchKey) {
+      console.log(searchKey)
+      axios.get(`/search?query=${searchKey}&location=30.702538520,104.094544000&radius=1000&output=json&ak=Qmz0VMtKw3uAI2GWClu9Q6iCnP2j2uH2`).then((res,err)=>{
+        this.searchResults = res.data.results
+      })
+    },
     setActiveItemC(index) {
       this.$refs.carousel.setActiveItem(index)
     },
+    processData(tab) {
+      this.loading = true
+      this.activeName = 'first'
+      this.allinfor.map((item,index) => {
+        if(item.title == tab.label) {
+          let tag = item.sub[0].subname
+          this.getSearchPoi(tag)
+          this.loading = false
+        }
+      })
+      this.loading = false
+    },
     handleClick(tab, event) {
-      console.log(tab.label);
+      this.loading = true
+      this.getSearchPoi(tab.label)
+      this.loading = false
     }
   }
 }
@@ -602,9 +640,9 @@ export default {
   .innerHInfo {
     width: 28%;
     height: 80%;
-    border:1px solid blue;
     float: right;
     margin-right: 20px;
+    overflow: hidden;
   }
 }
 .text {
@@ -617,5 +655,39 @@ export default {
 
 .box-card {
   width: 100%;
+  height: 352px;
+}
+.contentBox {
+  border-left: 2px solid #fff;
+  padding: 0 23px;
+
+  .itemTitle {
+    font-size:14px;
+    font-weight:700;
+    max-width: 49%;
+    margin-right: 30px;
+    overflow: hidden;
+    white-space: nowrap;
+    text-overflow: ellipsis;
+  }
+  .icon {
+    background: url('../../../assets/house_detail.png') no-repeat;
+    -webkit-background-size: 100% 100%;
+    background-size: 100% 100%;
+    position: absolute;
+    left:10px;
+    width: 20px;
+    height: 20px;
+  }
+  .itemInfo {
+    color: #9c9fa1;
+    font-size: 14px;
+    padding: 8px 19px 0 30px;
+    text-align: justify;
+    overflow: hidden;
+    word-break: break-all;
+    word-wrap: break-word;
+    white-space: normal;
+  }
 }
 </style>

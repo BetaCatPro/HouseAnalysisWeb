@@ -37,6 +37,8 @@
       draw ({ el, BMap, map }) {
         const { lng, lat } = this.position
         const pixel = map.pointToOverlayPixel(new BMap.Point(lng, lat))
+//        map.addoverlay
+//        map.clearOverlays()
 
         // 设置位置偏移,由于样式影响
         el.style.left = pixel.x - 26 + 'px'
