@@ -12,7 +12,7 @@ class PositionSerializer(serializers.ModelSerializer):
 
     class Meta:
         model = Api
-        fields = ("lng","lat")
+        fields = ("lng","lat","unit_price")
 
 class ElevatorSerializer(serializers.ModelSerializer):
 

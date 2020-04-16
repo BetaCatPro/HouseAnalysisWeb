@@ -27,7 +27,7 @@ class HousePagination(PageNumberPagination):
     max_page_size = 100
 
 class PositionPagination(PageNumberPagination):
-    page_size = 10000
+    page_size = 9000
     page_size_query_param = 'page_size'
     page_query_param = "page"
     max_page_size = 100
@@ -55,7 +55,7 @@ class HouseListViewSet(CacheResponseMixin, mixins.ListModelMixin, mixins.Retriev
 
 class PositionViewSet(CacheResponseMixin, mixins.ListModelMixin, GenericViewSet):
     queryset = Api.objects.all()
-    # pagination_class = PositionPagination
+    pagination_class = PositionPagination
     serializer_class = PositionSerializer
 
 class ElevaorViewSet(CacheResponseMixin, mixins.ListModelMixin, GenericViewSet):

@@ -156,6 +156,8 @@ class Community(models.Model):
     name = models.CharField(max_length=30,verbose_name="小区名")
     num = models.IntegerField(verbose_name="数量")
     mean_unit_price = models.DecimalField(max_digits=8, decimal_places=3, verbose_name="单价均价")
+    lat = models.DecimalField(max_digits=12,decimal_places=9,verbose_name="纬度")
+    lng = models.DecimalField(max_digits=12,decimal_places=9,verbose_name="经度")
 
     class Meta:
         verbose_name = 'Neighbor'

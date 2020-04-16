@@ -20,7 +20,7 @@ django.setup()
 from house.models import Community, CommunityRange, Region
 
 engine = create_engine('mysql+pymysql://root:123456@localhost:3306/house')
-df_sql = 'select community_name, region, unit_price from house_api'
+df_sql = 'select community_name, region, unit_price, lng, lat from house_api'
 df = pd.read_sql(df_sql, engine)
 df['region'] = df['region'].apply(lambda x:re.sub(r"\[|\]|'",'',x).split(',')[0])
 
@@ -33,6 +33,9 @@ for reg in region:
     community_num = df[df['region']==reg]['community_name'].value_counts().values
 
     for comm,num in zip(community,community_num):
+        lng = df[df['community_name']==comm]['lng'].iloc[0]
+        lat = df[df['community_name']==comm]['lat'].iloc[0]
+
         mean_price = df[df['region'] == reg][df['community_name'] == comm]['unit_price'].mean()
         mean_price = float(format(mean_price, '.3f'))
         mean_prices.append(mean_price)
@@ -46,6 +49,8 @@ for reg in region:
         CommunityModel.name = comm
         CommunityModel.num = num
         CommunityModel.mean_unit_price = mean_price
+        CommunityModel.lng = lng
+        CommunityModel.lat = lat
         CommunityModel.save()
 
     print(reg+'community执行完成')
