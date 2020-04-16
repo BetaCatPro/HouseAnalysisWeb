@@ -15,11 +15,9 @@
             <div class="big">
               <el-carousel ref="carousel" height="400px">
                 <el-carousel-item v-for="(item,index) in imgs" :key="item" name="index">
-                  <div
-                    ref="bigimg"
-                    class="innerimg"
-                    :style="{background: 'url('+ item +') no-repeat',backgroundSize:'cover'}"
-                  />
+                  <div ref="bigimg"
+                       class="innerimg"
+                       :style="{background: 'url('+ item +') no-repeat',backgroundSize:'cover'}"/>
                 </el-carousel-item>
               </el-carousel>
             </div>
@@ -111,8 +109,26 @@
               ></my-overlay>
               <bm-marker v-for="spoi in searchResults"
                          :position="{lng: spoi.location.lng, lat: spoi.location.lat}"
+                         @click="infoWindowOpen"
+                         :title="spoi.name"
                          :icon="{url: 'https://www.cnblogs.com/images/cnblogs_com/progor/1390402/o_bike2.png',size: {width: 32, height: 32}}">
               </bm-marker>
+              <bm-info-window v-for="spoi in searchResults"
+                              :show="showWindow"
+                              :position="{lng: spoi.location.lng, lat: spoi.location.lat}"
+                              :titledata="spoi.name"
+                              @close="infoWindowClose"
+                              @open="infoWindowOpen" ref="demo"
+                              >
+                <div class="contentBox">
+                  <div class="itemContent">
+                    <i class="icon"></i>
+                    <span class="itemTitle">{{ spoi.name }}</span>
+                    <br />
+                    <span class="itemInfo initem">{{ spoi.address }}</span>
+                  </div>
+                </div>
+              </bm-info-window>
             </baidu-map>
           </div>
           <div class="innerHInfo">
@@ -125,12 +141,19 @@
                         <el-card class="box-card"
                                  v-loading="loading"
                                  element-loading-text="拼命加载中">
+                          <div v-if="searchResults.length === 0">
+                            <div class="contentBox">
+                              <div class="itemContent">
+                                <span class="itemTitle">暂无信息</span>
+                              </div>
+                            </div>
+                          </div>
                           <div v-for="spoi in searchResults" :key="spoi.uid" class="text item">
                             <div class="contentBox">
                               <div class="itemContent">
-                                <i class="icon"></i>
-                                <span class="itemTitle">{{ spoi.name }}</span>
-                                <span class="itemInfo">{{ spoi.address }}</span>
+                                  <i class="icon"></i>
+                                  <span class="itemTitle">{{ spoi.name }}</span>
+                                  <span class="itemInfo">{{ spoi.address }}</span>
                               </div>
                             </div>
                           </div>
@@ -202,7 +225,7 @@
 
 <script>
 import BaiduMap from 'vue-baidu-map/components/map/Map.vue'
-import { BmNavigation, BmMarker, BmOverlay } from 'vue-baidu-map'
+import { BmNavigation, BmMarker, BmOverlay, BmInfoWindow } from 'vue-baidu-map'
 import MyOverlay from '@/components/MyOverlay'
 import { getAllHouse } from '@/api/charts.js'
 import axios from 'axios'
@@ -217,6 +240,8 @@ export default {
   },
   data() {
     return {
+      showWindowInfo: '',
+      showWindow: false,
       loading: true,
       searchResults: [],
       allinfor: [{
@@ -295,7 +320,7 @@ export default {
           lab: 'fourth'
         }]
       }],
-      name: '新绿苑',
+      name: '',
       color: '#fff',
       houseDetail: {},
       activeName: 'first',
@@ -303,12 +328,23 @@ export default {
       errorImg: 'this.src="' + require('../../../assets/house_detail.png') + '"'
     }
   },
-    components: {
-      BaiduMap,
-      BmNavigation,
-      BmMarker,
-      MyOverlay
-    },
+//  watch: {
+//    showWindowInfo(newval,oldval) {
+//      let pos_arr = this.$refs.demo
+//      Array.from(pos_arr).map((item,index)=>{
+//        if(item.$attrs.titledata == newval){
+//          return true
+//        }
+//      })
+//    }
+//  },
+  components: {
+    BaiduMap,
+    BmNavigation,
+    BmMarker,
+    MyOverlay,
+    BmInfoWindow
+  },
   created() {
     /*
     {
@@ -337,6 +373,9 @@ export default {
     const id = this.$route.query.id
     getAllHouse('/all_house/' + id).then((res, err) => {
       this.houseDetail = res
+      this.name = res.community_name
+      this.getSearchPoi('地铁站',res.lng,res.lat)
+      this.loading = false
       //      this.nearby.center.lat = res.lat
       //      this.nearby.center.lng = res.lng
       res.image_urls.match(/'(.+?)'/g).map((item, index) => {
@@ -344,14 +383,26 @@ export default {
       })
     })
 
-    this.getSearchPoi('地铁站')
     this.loading = false
   },
   methods: {
-    getSearchPoi(searchKey) {
-      console.log(searchKey)
-      axios.get(`/search?query=${searchKey}&location=30.702538520,104.094544000&radius=1000&output=json&ak=Qmz0VMtKw3uAI2GWClu9Q6iCnP2j2uH2`).then((res,err)=>{
+    infoWindowClose () {
+      this.showWindow = false
+    },
+    infoWindowOpen (event) {
+//      let pos_arr = this.$refs.demo
+//      Array.from(pos_arr).map((item,index)=>{
+//        if(item.$attrs.titledata == event.target.z.title){
+//          item.show = true
+//        }
+//      })
+      this.showWindowInfo = event.target.z.title
+      this.showWindow = true
+    },
+    getSearchPoi(searchKey, lng, lat) {
+      axios.get(`/search?query=${searchKey}&location=${lat},${lng}&radius=1000&output=json&ak=Qmz0VMtKw3uAI2GWClu9Q6iCnP2j2uH2`).then((res,err)=>{
         this.searchResults = res.data.results
+//        console.log(this.searchResults)
       })
     },
     setActiveItemC(index) {
@@ -363,7 +414,7 @@ export default {
       this.allinfor.map((item,index) => {
         if(item.title == tab.label) {
           let tag = item.sub[0].subname
-          this.getSearchPoi(tag)
+          this.getSearchPoi(tag,this.houseDetail.lng,this.houseDetail.lat)
           this.loading = false
         }
       })
@@ -371,7 +422,7 @@ export default {
     },
     handleClick(tab, event) {
       this.loading = true
-      this.getSearchPoi(tab.label)
+      this.getSearchPoi(tab.label,this.houseDetail.lng,this.houseDetail.lat)
       this.loading = false
     }
   }
@@ -642,7 +693,6 @@ export default {
     height: 80%;
     float: right;
     margin-right: 20px;
-    overflow: hidden;
   }
 }
 .text {
@@ -656,10 +706,15 @@ export default {
 .box-card {
   width: 100%;
   height: 352px;
+  overflow: scroll;
 }
 .contentBox {
   border-left: 2px solid #fff;
   padding: 0 23px;
+
+  .itemContent {
+    position: relative;
+  }
 
   .itemTitle {
     font-size:14px;
@@ -675,7 +730,7 @@ export default {
     -webkit-background-size: 100% 100%;
     background-size: 100% 100%;
     position: absolute;
-    left:10px;
+    left:-30px;
     width: 20px;
     height: 20px;
   }
@@ -688,6 +743,9 @@ export default {
     word-break: break-all;
     word-wrap: break-word;
     white-space: normal;
+  }
+  .initem {
+    padding:0;
   }
 }
 </style>

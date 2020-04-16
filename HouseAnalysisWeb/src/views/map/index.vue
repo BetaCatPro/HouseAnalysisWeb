@@ -1,48 +1,80 @@
 <template>
-  <div class="mapbox">
-    <baidu-map :center="center" :zoom="zoom" :scroll-wheel-zoom="true" style="height:100vh" ak="Qmz0VMtKw3uAI2GWClu9Q6iCnP2j2uH2" @ready="handler" @click="getClickInfo">
-      <bm-navigation anchor="BMAP_ANCHOR_TOP_RIGHT" />
-      <bm-marker :position="center" :dragging="true" @click="infoWindowOpen">
-        <bm-info-window :show="show" @close="infoWindowClose" @open="infoWindowOpen">我爱北京天安门</bm-info-window>
-      </bm-marker>
-    </baidu-map>
+  <div class="information">
+    <div class="innerHMap">
+      <baidu-map  ref="baidumap"
+                  class="bm-view"
+                  style="width:100%;height:92vh"
+                  ak="Qmz0VMtKw3uAI2GWClu9Q6iCnP2j2uH2"
+                  :center="{lng: 104.07, lat: 30.67}"
+                  :scroll-wheel-zoom="true"
+                  :zoom="13">
+        <bm-navigation anchor="BMAP_ANCHOR_TOP_RIGHT"></bm-navigation>
+        <!--<bm-marker v-for="spoi in searchResults"-->
+                   <!--:position="{lng: spoi.lng, lat: spoi.lat}"-->
+                   <!--:title="spoi.community_name">-->
+        <!--</bm-marker>-->
+        <bm-point-collection :points="searchResults"
+                             shape="BMAP_POINT_SHAPE_CIRCLE"
+                             color="red"
+                             size="BMAP_POINT_SIZE_BIGGER">
+        </bm-point-collection>
+      </baidu-map>
+    </div>
   </div>
 </template>
+
 <script>
-import BaiduMap from 'vue-baidu-map/components/map/Map.vue'
-import { BmNavigation } from 'vue-baidu-map'
-export default {
-  name: 'Mapbox',
-  components: {
-    BaiduMap,
-    BmNavigation
-  },
-  data() {
-    return {
-      show: false,
-      center: { lng: 0, lat: 0 }, // 经纬度
-      zoom: 13 // 地图展示级别
-    }
-  },
-  methods: {
-    infoWindowClose() {
-      this.show = false
+  import BaiduMap from 'vue-baidu-map/components/map/Map.vue'
+  import { BmMarker, BmPointCollection, BmNavigation } from 'vue-baidu-map'
+  import { getAllHouse, getPotion } from '@/api/charts.js'
+
+  export default {
+    data() {
+      return {
+        searchResults: [],
+        interval: '',
+        hasNext: true,
+        next: '/all_house/'
+      }
     },
-    infoWindowOpen() {
-      this.show = true
+    components: {
+      BaiduMap,
+      BmMarker,
+      BmPointCollection,
+      BmNavigation
     },
-    handler({ BMap, map }) {
-      console.log(BMap, map)
-      this.center.lng = 113.6313915479
-      this.center.lat = 34.7533581487
-      this.zoom = this.zoom
+    created() {
+//      this.interval = setInterval(()=>{
+//        if(this.hasNext) {
+//          this.getRes(this.next)
+//        } else {
+//          clearInterval(this.interval)
+//        }
+//      },1500)
+//      this.getRes(this.next)
+      this.getRes()
     },
-    getClickInfo(e) {
-      console.log(e.point.lng)
-      console.log(e.point.lat)
-      this.center.lng = e.point.lng
-      this.center.lat = e.point.lat
+    methods: {
+      // http://127.0.0.1:8000/v1/api/all_house/?page=2
+//      getRes(next) {
+//        getAllHouse(next).then((res,err)=>{
+//          if(res.next) {
+//            this.next = '/all_house/?' + res.next.split('?')[1]
+//          } else {
+//            this.hasNext = false
+//          }
+//          Array.from(res.results).map((item,index)=>{
+//            this.searchResults.push(item)
+//          })
+//        })
+//      }
+      getRes() {
+        getPotion().then((res,err)=>{
+          Array.from(res.results).map((item,index)=>{
+            this.searchResults.push(item)
+          })
+        })
+      }
     }
   }
-}
 </script>

@@ -64,33 +64,33 @@ export const constantRoutes = [
     }]
   },
 
-  {
-    path: '/HeatMap',
-    component: Layout,
-    redirect: '/dashboard',
-    name: 'HeatMap',
-    meta: { title: '热力图', icon: '热力图' },
-    children: [
-      {
-        path: 'MeanHeatMap',
-        component: () => import('@/views/heatmap/mean'),
-        name: 'MeanHeatMap',
-        meta: { title: '均价热力图', icon: 'hotmap' }
-      }
-    ]
-  },
-
   // {
-  //   path: '/map',
+  //   path: '/HeatMap',
   //   component: Layout,
   //   redirect: '/dashboard',
-  //   children: [{
-  //     path: 'map',
-  //     name: 'Map',
-  //     component: () => import('@/views/map/index'),
-  //     meta: { title: '地图找房', icon: 'wan_map' }
-  //   }]
+  //   name: 'HeatMap',
+  //   meta: { title: '热力图', icon: '热力图' },
+  //   children: [
+  //     {
+  //       path: 'MeanHeatMap',
+  //       component: () => import('@/views/heatmap/mean'),
+  //       name: 'MeanHeatMap',
+  //       meta: { title: '均价热力图', icon: 'hotmap' }
+  //     }
+  //   ]
   // },
+
+  {
+    path: '/map',
+    component: Layout,
+    redirect: '/dashboard',
+    children: [{
+      path: 'map',
+      name: 'Map',
+      component: () => import('@/views/map/index'),
+      meta: { title: '地图找房', icon: 'wan_map' }
+    }]
+  },
 
   {
     path: '/show',

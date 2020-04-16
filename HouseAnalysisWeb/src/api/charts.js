@@ -4,8 +4,17 @@ import request from '@/utils/request'
  * @param send data
  */
 export function getAllHouse(url,params) {
+  // http://127.0.0.1:8000/v1/api/all_house/?page=2
   return request({
     url: url,
+    method: 'get',
+    params
+  })
+}
+
+export function getPotion(params) {
+  return request({
+    url: '/position/',
     method: 'get',
     params
   })
