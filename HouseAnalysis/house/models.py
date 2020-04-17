@@ -155,6 +155,7 @@ class Community(models.Model):
     region = models.ForeignKey(Region, on_delete=None,verbose_name="行政区划")
     name = models.CharField(max_length=30,verbose_name="小区名")
     num = models.IntegerField(verbose_name="数量")
+    rangeIndex = models.IntegerField(verbose_name="房价等级")
     mean_unit_price = models.DecimalField(max_digits=8, decimal_places=3, verbose_name="单价均价")
     lat = models.DecimalField(max_digits=12,decimal_places=9,verbose_name="纬度")
     lng = models.DecimalField(max_digits=12,decimal_places=9,verbose_name="经度")

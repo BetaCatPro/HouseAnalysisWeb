@@ -22,9 +22,33 @@ from house.models import Community, CommunityRange, Region
 engine = create_engine('mysql+pymysql://root:123456@localhost:3306/house')
 df_sql = 'select community_name, region, unit_price, lng, lat from house_api'
 df = pd.read_sql(df_sql, engine)
-df['region'] = df['region'].apply(lambda x:re.sub(r"\[|\]|'",'',x).split(',')[0])
+df['region'] = df['region'].apply(lambda x: re.sub(r"\[|\]|'", '', x).split(',')[0])
 
 region = df['region'].value_counts().index
+
+ranges = []
+flag = 0
+for i in range(1,100):
+    if i <= 10:
+        ranges.append({
+            'priceRange': i,
+            'min': flag,
+            'max': flag + 4000
+          })
+        flag = flag + 4000
+    else :
+        ranges.append({
+            'priceRange': i,
+            'min': flag,
+            'max': flag + 5000
+          })
+        flag = flag + 5000
+    if flag > 95000:
+        break
+
+def judgePriceRange(price):
+    RANG = filter(lambda item: price >= item['min'] and price < item['max'], ranges)
+    return next(RANG)['priceRange']
 
 for reg in region:
     mean_prices = []
@@ -38,6 +62,8 @@ for reg in region:
 
         mean_price = df[df['region'] == reg][df['community_name'] == comm]['unit_price'].mean()
         mean_price = float(format(mean_price, '.3f'))
+        rangeIndex = judgePriceRange(mean_price)
+
         mean_prices.append(mean_price)
         communities.append(comm)
 
@@ -49,6 +75,7 @@ for reg in region:
         CommunityModel.name = comm
         CommunityModel.num = num
         CommunityModel.mean_unit_price = mean_price
+        CommunityModel.rangeIndex = rangeIndex
         CommunityModel.lng = lng
         CommunityModel.lat = lat
         CommunityModel.save()
