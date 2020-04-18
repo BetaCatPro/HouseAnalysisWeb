@@ -95,7 +95,7 @@ class CommunityViewSet(CacheResponseMixin, mixins.ListModelMixin, mixins.Retriev
     #     return queryset
 
     def get_queryset(self):
-        if self.request.GET['rid'] == '0':
+        if self.request.GET['rid'] == '0' :
             # 获取所有
             return  Community.objects.all()
         else:
@@ -114,9 +114,12 @@ class CommunityPagination(PageNumberPagination):
 
 class AllCommunityViewSet(CacheResponseMixin, mixins.ListModelMixin,GenericViewSet):
     # 不采取分页
-    pagination_class = CommunityPagination
+    # pagination_class = CommunityPagination
     queryset = Community.objects.all()
     serializer_class = CommunitySerializer
+
+    def get_queryset(self):
+        return  Community.objects.filter(rangeIndex=self.request.GET['rangeindex'])
 
 class CommunityRangeViewSet(CacheResponseMixin, mixins.ListModelMixin,GenericViewSet):
     pagination_class = HousePagination
