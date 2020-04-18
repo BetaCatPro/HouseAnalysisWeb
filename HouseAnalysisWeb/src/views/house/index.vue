@@ -85,6 +85,7 @@ export default {
       houselist: [],
       activeIndex: '1',
       value: '',
+      tag: '',
       housePaginationData: {
         pageSize: 30,
         currentPage: 1,
@@ -103,10 +104,13 @@ export default {
       const tags = ['', 'price', 'unit_price', 'construction_area']
       let params = {}
       if(key != 1) {
+        this.tag = tags[key-2]
         params = {
           ordering: tags[key-2],
           search: this.value
         }
+      } else {
+        this.tag = ''
       }
       getOrderHouse(params).then((res, err) => {
         this.housePaginationData.totalNumber = res.count
@@ -123,9 +127,14 @@ export default {
       this.loading = false
     },
     handleClick(inputVal, page) {
-      console.log(inputVal, page)
       try {
-        getAll(inputVal, page).then((res, err) => {
+        let params = {}
+        params = {
+          ordering: this.tag,
+          search: inputVal,
+          page: page
+        }
+        getOrderHouse(params).then((res, err) => {
           this.houselist = res.results
         })
       } catch (err) {

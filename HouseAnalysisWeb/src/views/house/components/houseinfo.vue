@@ -109,7 +109,6 @@
               ></my-overlay>
               <bm-marker v-for="spoi in searchResults"
                          :position="{lng: spoi.location.lng, lat: spoi.location.lat}"
-                         @click="infoWindowOpen"
                          :title="spoi.name"
                          :icon="{url: 'https://www.cnblogs.com/images/cnblogs_com/progor/1390402/o_bike2.png',size: {width: 32, height: 32}}">
               </bm-marker>

@@ -36,6 +36,7 @@
 </template>
 
 <script>
+  import { Message } from 'element-ui'
   import BaiduMap from 'vue-baidu-map/components/map/Map.vue'
   import { BmMarker, BmPointCollection, BmNavigation } from 'vue-baidu-map'
   import { getAllHouse, getAllCommunityInfo } from '@/api/charts.js'
@@ -92,6 +93,11 @@
             this.getRes(rangeIndex)
             rangeIndex += 1
           } else {
+            Message({
+              message: '数据已全部加载完成了',
+              type: 'success',
+              duration: 3 * 1000
+            })
             clearInterval(this.interval)
           }
         }.bind(this),2500)

@@ -52,7 +52,7 @@ export default {
   beforeCreate() {
     getAllHouse('/all_house').then((res, err) => {
       console.log(res)
-      this.$emit('gethouse', { 'res': res, 'value': this.searchinfo })
+      this.$emit('gethouse', { 'res': res, 'value': this.searchinfo})
     })
   },
   methods: {
@@ -63,14 +63,14 @@ export default {
     },
     handleSelect(item) {
       this.getListPOI(item.title).then((res, err) => {
-        this.$emit('gethouse', { 'res': res, 'value': this.searchinfo })
+        this.$emit('gethouse', { 'res': res, 'value': this.searchinfo})
         Message.close()
       })
     },
     handleIconClick() {
       this.getListPOI(this.searchinfo).then((res, err) => {
         if(res) {
-          this.$emit('gethouse', { 'res': res, 'value': this.searchinfo })
+          this.$emit('gethouse', { 'res': res, 'value': this.searchinfo})
         }
         Message.close()
       })
