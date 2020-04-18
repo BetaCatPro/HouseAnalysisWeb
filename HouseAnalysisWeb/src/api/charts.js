@@ -12,13 +12,13 @@ export function getAllHouse(url,params) {
   })
 }
 
-export function getPotion(params) {
-  return request({
-    url: '/position/',
-    method: 'get',
-    params
-  })
-}
+// export function getPotion(params) {
+//   return request({
+//     url: '/position/',
+//     method: 'get',
+//     params
+//   })
+// }
 
 // 排序
 export function getOrderHouse(params) {
@@ -113,6 +113,14 @@ export function getOrientationInfo(params) {
 export function getCommunityInfo(params) {
   return request({
     url: '/community',
+    method: 'get',
+    params
+  })
+}
+
+export function getAllCommunityInfo(params) {
+  return request({
+    url: '/allcommunity/',
     method: 'get',
     params
   })

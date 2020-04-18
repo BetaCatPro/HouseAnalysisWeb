@@ -88,7 +88,7 @@ export const constantRoutes = [
       path: 'map',
       name: 'Map',
       component: () => import('@/views/map/index'),
-      meta: { title: '地图找房', icon: 'wan_map' }
+      meta: { title: '房源热力信息图', icon: 'wan_map' }
     }]
   },
 
