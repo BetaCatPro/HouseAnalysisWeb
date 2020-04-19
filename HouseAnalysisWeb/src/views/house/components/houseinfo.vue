@@ -110,7 +110,7 @@
               <bm-marker v-for="spoi in searchResults"
                          :position="{lng: spoi.location.lng, lat: spoi.location.lat}"
                          :title="spoi.name"
-                         :icon="{url: 'https://www.cnblogs.com/images/cnblogs_com/progor/1390402/o_bike2.png',size: {width: 32, height: 32}}">
+                         :icon="{url: `http://120.25.197.182/staticfiles/png/${spoi.searchKey}_32.png`,size: {width: 32, height: 32}}">
               </bm-marker>
               <bm-info-window v-for="spoi in searchResults"
                               :show="showWindow"
@@ -150,9 +150,10 @@
                           <div v-for="spoi in searchResults" :key="spoi.uid" class="text item">
                             <div class="contentBox">
                               <div class="itemContent">
-                                  <i class="icon"></i>
-                                  <span class="itemTitle">{{ spoi.name }}</span>
-                                  <span class="itemInfo">{{ spoi.address }}</span>
+                                <svg-icon :iconClass="`http://120.25.197.182/staticfiles/svg/${spoi.searchKey}.svg`" class-name="icon"></svg-icon>
+                                <!--<i class="icon" ref="myicon"></i>-->
+                                <span class="itemTitle">{{ spoi.name }}</span>
+                                <span class="itemInfo">{{ spoi.address }}</span>
                               </div>
                             </div>
                           </div>
@@ -226,6 +227,7 @@
 import BaiduMap from 'vue-baidu-map/components/map/Map.vue'
 import { BmNavigation, BmMarker, BmOverlay, BmInfoWindow } from 'vue-baidu-map'
 import MyOverlay from '@/components/MyOverlay'
+import SvgIcon from '@/components/SvgIcon'
 import { getAllHouse } from '@/api/charts.js'
 import axios from 'axios'
 axios.defaults.baseURL = '/api'
@@ -338,6 +340,7 @@ export default {
 //    }
 //  },
   components: {
+    SvgIcon,
     BaiduMap,
     BmNavigation,
     BmMarker,
@@ -400,8 +403,11 @@ export default {
     },
     getSearchPoi(searchKey, lng, lat) {
       axios.get(`/search?query=${searchKey}&location=${lat},${lng}&radius=1000&output=json&ak=Qmz0VMtKw3uAI2GWClu9Q6iCnP2j2uH2`).then((res,err)=>{
-        this.searchResults = res.data.results
-//        console.log(this.searchResults)
+        let results = Array.from(res.data.results).map((item)=>{
+          item.searchKey = searchKey
+          return item
+        })
+        this.searchResults = results
       })
     },
     setActiveItemC(index) {
@@ -725,7 +731,7 @@ export default {
     text-overflow: ellipsis;
   }
   .icon {
-    background: url('../../../assets/house_detail.png') no-repeat;
+    /*background: url('../../../assets/house_detail.png') no-repeat;*/
     -webkit-background-size: 100% 100%;
     background-size: 100% 100%;
     position: absolute;
