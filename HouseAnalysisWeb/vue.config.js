@@ -12,7 +12,7 @@ const port = process.env.port || process.env.npm_config_port || 9527
 
 // https://cli.vuejs.org/config/
 module.exports = {
-  publicPath: '/',
+  publicPath: './',
   outputDir: 'dist',
   assetsDir: 'static',
   lintOnSave: process.env.NODE_ENV === 'development',
@@ -25,6 +25,7 @@ module.exports = {
       errors: true
     },
     proxy: {
+      // dev环境下
       '/api': {
         // 此处的写法，目的是为了 将 /api 替换成 http://api.map.baidu.com/place/v2
         target: 'http://api.map.baidu.com/place/v2',
