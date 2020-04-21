@@ -172,6 +172,7 @@ REST_FRAMEWORK_EXTENSIONS = {
     'DEFAULT_CACHE_RESPONSE_TIMEOUT': 10
 }
 
+
 #redis缓存
 CACHES = {
     "default": {
