@@ -27,7 +27,7 @@ module.exports = {
     proxy: {
       // dev环境下
       '/api': {
-        // 此处的写法，目的是为了 将 /api 替换成 http://api.map.baidu.com/place/v2
+        // 此处的写法，目的是为了 将 /api 替换成 http://api.map.baidu.com/place/v2 
         target: 'http://api.map.baidu.com/place/v2',
         // 允许跨域
         changeOrigin: true,
