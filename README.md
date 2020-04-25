@@ -11,4 +11,4 @@
 
 ##### 前端页面展示
 
-![](imgs/首页.png)
+![](https://github.com/BetaCatPro/HouseAnalysisWeb/blob/master/imgs/%E9%A6%96%E9%A1%B5.png)
