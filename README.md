@@ -11,4 +11,38 @@
 
 ##### 前端页面展示
 
+1. 房源信息页面
+
 ![](imgs/首页.png)
+
+2. 房价分析-数据探索分析可视化页面
+
+![](imgs/single.png)
+
+3. 房价分析-各区划详细信息页面
+
+![](imgs/region.png)
+
+4. 区划小区详情
+
+![](imgs/detail.png)
+
+5. 小区房源列表详情
+
+![](imgs/h-detail.png)
+
+6. 搜索房源页面
+
+![](imgs/search.png)
+
+7. 具体房源详情页面
+
+![](imgs/house-detail.png)
+
+8. 房屋周边
+
+![](imgs/fangwuHOubian.png)
+
+9. 房源热力信息图页面
+
+![](imgs/map.png)
