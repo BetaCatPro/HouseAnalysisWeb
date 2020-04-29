@@ -108,7 +108,7 @@
 
 ### 二. 系统实现
 
-#### 1)后端部分
+#### 1) 后端部分
 
 ```shell
 # 项目依赖
@@ -129,7 +129,15 @@ redis==3.0.1
 SQLAlchemy==1.3.2
 ```
 
+**基本流程**
 
+- Django生命周期:
+
+  前端发送请求-->Django的wsgi-->中间件-->路由系统-->视图-->ORM数据库操作-->模板-->返回数据给用户
+
+- rest framework生命周期：
+
+  前端发送请求-->Django的wsgi-->中间件-->路由系统_执行CBV的as_view()，就是执行内部的dispath方法-->在执行dispath之前，有版本分析 和 渲染器-->在dispath内，对request封装-->版本-->认证-->权限-->限流-->视图-->如果视图用到缓存( request.data or  request.query_params )就用到了 解析器-->视图处理数据，用到了序列化(对数据进行序列化或验证) -->视图返回数据可以用到分页
 
 1. 基本接口框架搭建
 
@@ -440,6 +448,74 @@ def insertIndexInfo():
 - 将处理好的数据存入MySQL，包括(电梯，装修情况等信息)
 
 ```python
-# 定义专门数据库操作类InsertIntoMysql
+# 1. 定义专门数据库操作类InsertIntoMysql
+class InsertIntoMysql():
+
+    # 属性中定义sql语句获取数据
+    def __init__(self):
+        self.elevator_sql = 'select unit_price, price, elevator from house_api'
+        # ......
+	
+    # 定义数据插入方法
+    def insertElevator(self):
+        index, values, price_mean, unit_price_mean = multiple(self.elevator_sql, engine, 'elevator')
+        for i in range(len(index)):
+            elevator = Elevator()
+            elevator.version = 'v1'
+            elevator.title = '电梯分布情况'
+            elevator.has_ele = index[i]
+            elevator.el_num = values[i]
+            elevator.mean_price = price_mean[i]
+            elevator.mean_unit_price = unit_price_mean[i]
+            elevator.save()
+     # 其他剩余数据插入方法
+     # ......
+# 2. 数据处理模块，包括单因子和对因子处理
+#	 利用数据处理模块pandas
+def single(sql,engine,feature):
+    """
+    :param sql: sql语句
+    :param engine: mysql引擎
+    :param feature: 数据特征
+    :return: 特征，数量
+    """
+    df_sql = sql
+    df = pd.read_sql(df_sql, engine)
+    df[feature] = df[feature].astype(str)
+    if feature=='floor':
+        df[df[feature]=='暂无数据'] = '18'
+        df[feature] = df[feature].apply(lambda x: re.findall('\d+',x)[0])
+    feature_res = df[feature].value_counts()
+    index = feature_res.index
+    values = feature_res.values
+    return index,values
+
+def multiple(sql,engine,feature):
+    """
+    :param sql: sql语句
+    :param engine: mysql引擎
+    :param feature: 数据特征
+    :return: 特征，数量，总价均价，单价均价
+    """
+    df_sql = sql
+    df = pd.read_sql(df_sql, engine)
+    df[feature] = df[feature].astype(str)
+    if feature == 'region':
+        df[feature] = df[feature].apply(lambda x:re.sub(r"\[|\]|'",'',x).split(',')[0])
+    feature_res = df[feature].value_counts()
+    index = feature_res.index
+    values = feature_res.values
+    price_mean = []
+    unit_price_mean = []
+    max_unit_price = []
+    min_unit_price = []
+    for inx,val in zip(index,values):
+        price_mean.append(format(df[df[feature]==inx]['price'].astype(float).mean(),'.3f'))
+        unit_price_mean.append(format(df[df[feature]==inx]['unit_price'].astype(float).mean(),'.3f'))
+        max_unit_price.append(format(df[df[feature]==inx]['unit_price'].astype(float).max(),'.3f'))
+        min_unit_price.append(format(df[df[feature]==inx]['unit_price'].astype(float).min(),'.3f'))
+    return index, values, price_mean, unit_price_mean, max_unit_price, min_unit_price
 ```
+
+#### 2) 前端部分
 
