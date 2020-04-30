@@ -139,6 +139,11 @@ SQLAlchemy==1.3.2
 
   前端发送请求-->Django的wsgi-->中间件-->路由系统_执行CBV的as_view()，就是执行内部的dispath方法-->在执行dispath之前，有版本分析 和 渲染器-->在dispath内，对request封装-->版本-->认证-->权限-->限流-->视图-->如果视图用到缓存( request.data or  request.query_params )就用到了 解析器-->视图处理数据，用到了序列化(对数据进行序列化或验证) -->视图返回数据可以用到分页
 
+项目文件树：
+
+![在这里插入图片描述](https://img-blog.csdnimg.cn/20200430224556947.png?x-oss-process=image/watermark,type_ZmFuZ3poZW5naGVpdGk,shadow_10,text_aHR0cHM6Ly9ibG9nLmNzZG4ubmV0L2J5NjY3MTcxNQ==,size_16,color_FFFFFF,t_70#pic_center)
+
+
 1. 基本接口框架搭建
 
 ```shell
@@ -239,7 +244,8 @@ CACHES = {
 docs为接口文档路由，通过http://localhost:8000/docs/可进行访问，如下图：
 
 
-![](imgs/接口文档.png)
+![在这里插入图片描述](https://img-blog.csdnimg.cn/20200430224619888.png?x-oss-process=image/watermark,type_ZmFuZ3poZW5naGVpdGk,shadow_10,text_aHR0cHM6Ly9ibG9nLmNzZG4ubmV0L2J5NjY3MTcxNQ==,size_16,color_FFFFFF,t_70#pic_center)
+
 
 3. 数据model设计
 
@@ -400,7 +406,7 @@ path('', include(router.urls)),
 
 7. 关于接口数据
 
-![](imgs/接口数据.png)
+[外链图片转存失败,源站可能有防盗链机制,建议将图片保存下来直接上传(img-JmH9EULX-1588257851195)(imgs/接口数据.png)]
 
 **数据描述**
 
@@ -519,3 +525,247 @@ def multiple(sql,engine,feature):
 
 #### 2) 前端部分
 
+​	前端使用基本框架Vue搭建，基于vue-admin-template开发。前端主要业务用于图表展示，地图信息，主要用于做成都二手房房价数据及相关信息可视化，包括总体信息展示，各项特征-如房屋装修情况等的图表信息可视化，房源搜索，基本房源信息可视化，地图展示等功能。
+
+**项目说明**
+
+- 关于地图模块，这里我们采用的是百度地图，使用之前，需要申请百度地图ak，用于我们的WebAPI服务
+- 地图库使用开源vue-baidu-map库，并采取按需加载的方式，即在需要用到的页面才进行模块导入。
+- 项目UI使用element-ui组件库，采用全局加载模式。
+- 图表库使用echarts.js，采用按需加载的方式使用模块。
+
+
+
+前端项目文件树：
+
+![在这里插入图片描述](https://img-blog.csdnimg.cn/2020043022464976.png#pic_center)
+
+
+- src目录为项目核心代码文件，所欲自定义工具，接口文件，页面文件都在这里面编写。
+- test目录是项目测试文件，使用jest进行项目测试。
+- public目录为公共资源文件。
+- dist目录为项目开发完成后进行打包后自动生成的文件。
+
+
+
+**具体流程**
+
+1. UI组件的使用
+
+```shell
+# 安装到项目
+npm install -S element-ui
+
+# 全局加载: 在main.js中
+import ElementUI from 'element-ui'
+import 'element-ui/lib/theme-chalk/index.css'
+import locale from 'element-ui/lib/locale/lang/en' // i18n
+Vue.use(ElementUI, { locale })
+
+# 这样我们据可以在vue文件中使用UI组件，如: 按钮组件<Button />
+```
+
+2. 地图组件使用
+
+```shell
+# 安装到项目
+npm install -S vue-baidu-map
+
+# 局部加载: 在任意vue文件中
+import BaiduMap from 'vue-baidu-map/components/map/Map.vue'
+# 地图标注组件
+import { BmMarker } from 'vue-baidu-map'
+
+# 使用，例如:
+      <baidu-map  ref="baidumap"
+                  class="bm-view"
+                  style="width:100%;height:93vh"
+                  ak="YOUR AK"
+                  :center="{lng: 104.07, lat: 30.67}"
+                  :scroll-wheel-zoom="true"
+                  :zoom="16">
+        <bm-navigation anchor="BMAP_ANCHOR_TOP_LEFT"></bm-navigation>
+        <bm-marker v-for="spoi in searchResults"-->
+                   <!--:position="{lng: spoi.lng, lat: spoi.lat}"-->
+                   <!--:title="spoi.community_name">-->
+        </bm-marker>
+      </baidu-map>
+```
+
+
+
+3. 定义请求拦截-用于截获错误请求及超时请求等。
+
+在src目录下新建文件夹utils，用于存放我们自定义的工具文件，新建requests.js，重新封装axios方法，满足我们请求接口时的操作。此文件将暴露一个用作异步请求的对象，做为更高级的接口访问方法，在接口文件设计中将使用此方法。
+
+- 初始化
+
+```js
+# 新建一个servie对象
+const service = axios.create({
+  // 项目基本配置文件中定义的VUE_APP_BASE_API，开发和发布环境各部相同，在.env.devolopment和.env.product文件中进行配置
+  baseURL: process.env.VUE_APP_BASE_API,
+  // 直接写死的url，无论环境如何都不会改变
+  // baseURL: 'http://127.0.0.1:8000/v1/api',
+  timeout: 8000 // 最大请求时间
+})
+```
+
+
+
+- 请求拦截-发送请求时
+
+```js
+service.interceptors.request.use(config => {
+  // 请求方法为POST时，配置请求头
+  config.method === 'post'
+    ? config.data = qs.stringify({ ...config.data })
+    : config.params = { ...config.params }
+  config.headers['Content-Type'] = 'application/x-www-form-urlencoded'
+
+  return config
+}, error => {
+  // 错误时提示信息
+  Message({
+    message: error,
+    type: 'error',
+    duration: 3 * 1000
+  })
+  Promise.reject(error)
+})
+```
+
+- 响应拦截-接收数据时
+
+```js
+service.interceptors.response.use(
+  response => {
+    if (response.statusText === 'OK') {
+      // 正确响应时，直接返回数据
+      return response.data
+    } else {
+      Notification({
+        title: '错误',
+        message: '访问api错误', // TODO 后端拦截错误请求
+        type: 'error',
+        duration: 3 * 1000
+      })
+    }
+  },
+  // 错误处理
+  error => {
+    let dtext = JSON.parse(JSON.stringify(error))
+    try {
+      if(dtext.response.status === 404) {
+        Notification({
+          type: 'error',
+          title: '出问题404',
+          message: '访问api错误或服务器忙',
+          duration: 3 * 1000
+        })
+      }
+    } catch (err) {
+      Notification({
+        title: '错误',
+        message: '请求超时,请稍后再试或刷新页面',
+        type: 'error',
+        duration: 3 * 1000
+      })
+    }
+
+
+    return Promise.reject(error)
+  }
+)
+```
+
+- 最后一定要暴露service对象
+
+```js
+export default service
+```
+
+4. 前端路由配置
+
+使用vue-router实现路由功能，在新建router.js，进行路由项配置。
+
+```js
+// 定义路由列表
+export const constantRoutes = [
+  {
+    path: '/404',
+    component: () => import('@/views/404'),
+    hidden: true
+  },
+  {
+    path: '/',
+    component: Layout,
+    redirect: '/dashboard',
+    children: [{
+      path: 'dashboard',
+      name: 'Dashboard',
+      // 采用路由懒加载的方式
+      component: () => import('@/views/dashboard/index'),
+      meta: { title: '房源信息', icon: 'house' }
+    }]
+  },
+  // ......
+  ]
+// 构造路由对象
+const createRouter = () => new Router({
+  // mode: 'history', // require service support
+  scrollBehavior: () => ({ y: 0 }),
+  routes: constantRoutes
+})
+
+// 在main.js 中引入并挂载
+import router from './router'
+new Vue({
+  el: '#app',
+  router,
+  render: h => h(App)
+})
+
+```
+
+5. 接口函数编写
+
+接口api.js文件中定义了所有与项目有关的接口访问请求，并封装成函数暴露出去，供组件使用。
+
+```js
+// 例如获取区划信息接口
+export function getRegionInfo(id,params) {
+  return request({
+    url: '/region/'+id,
+    method: 'get',
+    params
+  })
+}
+```
+
+其中request为上面封装好的接口访问对象，使用前需引入，组件中使用接口的时候，按需导入，例如：
+
+```js
+// charts.js是接口函数文件
+import { getRegionInfo } from '@/api/charts'
+
+// 使用
+// 第一种方式，由于它本来就是一个promise对象，所以直接在then中获取响应
+getRegionInfo(1).then((res,err)=>{
+    // 相关操作
+})
+// 第二种方式，使用async await方式,包含await的方法中需要加上async 作为方法前缀
+let res = await getRegionInfo(1)
+```
+
+6. 项目页面编写
+![在这里插入图片描述](https://img-blog.csdnimg.cn/20200430224712964.png#pic_center)
+
+
+- dashbord为总体信息展示面班，也是页面入口
+- ~~heatmap为热力图页面~~
+- house为房源搜索和基本信息展示页面
+- map为房源地图分布图
+- multiple为区划信息页面
+- single为房源一系列数据可视化图表页
+- ~~word为词云页~~
